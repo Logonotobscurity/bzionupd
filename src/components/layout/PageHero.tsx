@@ -145,14 +145,14 @@ export function PageHero({
           )}
           
           <AnimatedDiv delay={0.3}>
-            <div className={cn('flex flex-col sm:flex-row gap-3 sm:gap-4 px-2 sm:px-0', { 'justify-center': !hasImage, 'justify-start': hasImage })}>
+            <div className={cn('flex flex-col sm:flex-row gap-4 px-2 sm:px-0', { 'justify-center': !hasImage, 'justify-start': hasImage })}>
               {primaryCta && (
-                <Button asChild size="sm" className="bg-white text-primary hover:bg-slate-100 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-h-10 md:min-h-12">
+                <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary font-bold">
                   <Link href={primaryCta.href}>{primaryCta.text}</Link>
                 </Button>
               )}
               {secondaryCta && (
-                <Button asChild size="sm" variant="outline" className="bg-transparent text-white border-2 border-white hover:bg-white/10 hover:border-white font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm min-h-10 md:min-h-12">
+                <Button asChild size="lg" variant="secondary" className="font-bold">
                   <Link href={secondaryCta.href}>{secondaryCta.text}</Link>
                 </Button>
               )}

@@ -10,7 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { SectionContact } from '@/components/sections/SectionContact';
+import { CTASection } from '@/components/cta-section';
 
 const faqData = [
     {
@@ -115,7 +115,14 @@ const FaqPage = () => {
             <PageHero
                 title="Frequently Asked Questions"
                 description="Find answers to common questions about orders, shipping, account management, and more. If you can't find what you're looking for, feel free to contact us."
-                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'FAQ', href: '/faq' }]}
+                primaryCta={{
+                    text: "Contact Support",
+                    href: "/contact"
+                }}
+                secondaryCta={{
+                    text: "Browse Products",
+                    href: "/products"
+                }}
             />
             <div className="border-b-2 border-slate-200"></div>
             
@@ -160,11 +167,14 @@ const FaqPage = () => {
                 )}
             </Section>
 
-            <SectionContact
-                title="Still have questions?"
-                description="Wherever you are in Nigeria, you can be certain we're nearby. Get in touch for reliable supply, fair wholesale prices, and a partnership dedicated to your growth."
-                buttonText="Contact Us"
-            />
+            <Section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5 border-t border-primary/10">
+                <CTASection
+                    title="Still have questions?"
+                    description="Wherever you are in Nigeria, you can be certain we're nearby. Get in touch for reliable supply, fair wholesale prices, and a partnership dedicated to your growth."
+                    ctaText="Contact Us"
+                    ctaHref="/contact"
+                />
+            </Section>
         </>
     )
 }

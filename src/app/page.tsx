@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className='h-[300px] sm:h-[400px] md:h-[600px] lg:h-[700px] w-full'>
+      <div className='h-[500px] md:h-[700px] w-full'>
         <HomeCarousel slides={carouselSlides} />
       </div>
       

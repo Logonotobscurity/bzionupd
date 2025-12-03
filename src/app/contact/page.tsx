@@ -63,6 +63,132 @@ const PageHero = () => {
     );
 }
 
+const ContactForm = () => {
+    const form = useForm<ContactFormValues>({
+        resolver: zodResolver(contactFormSchema),
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            subject: "",
+            message: "",
+        }
+    });
+
+    const onSubmit = (data: ContactFormValues) => {
+        toast({
+            title: "Message Sent!",
+            description: "Thanks for reaching out. We'll get back to you shortly.",
+        });
+        form.reset();
+    }
+
+    return (
+        <Section className="bg-gradient-to-b from-secondary/5 to-background">
+            <div className="max-w-2xl mx-auto">
+                <SectionHeading className="text-center">
+                    <SectionTitle>Send us a Message</SectionTitle>
+                    <SectionDescription>Fill out the form below and we'll get back to you as soon as possible.</SectionDescription>
+                </SectionHeading>
+                
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-8">
+                        <div className="grid sm:grid-cols-2 gap-6">
+                            <FormField
+                                control={form.control}
+                                name="firstName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>First Name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="John" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="lastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Last Name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Doe" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email Address</FormLabel>
+                                    <FormControl>
+                                        <Input type="email" placeholder="john@example.com" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Phone Number (Optional)</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="+234 1 234 5678" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="subject"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Subject</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="How can we help?" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="message"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Message</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder="Tell us more about your inquiry..." className="min-h-32" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80">
+                            Send Message
+                        </Button>
+                    </form>
+                </Form>
+            </div>
+        </Section>
+    );
+}
+
 const ContactDetails = () => {
     const hqImage = findImage('contact-hq');
     return (
@@ -148,31 +274,12 @@ const ContactDetails = () => {
 }
 
 export default function ContactPage() {
-    const form = useForm<ContactFormValues>({
-        resolver: zodResolver(contactFormSchema),
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            subject: "",
-            message: "",
-        }
-    });
-
-    const onSubmit = (data: ContactFormValues) => {
-        toast({
-            title: "Message Sent!",
-            description: "Thanks for reaching out. We'll get back to you shortly.",
-        });
-        form.reset();
-    }
-
     return (
         <>
             <PageHero />
             <div className="border-b-2 border-slate-200"></div>
             <ContactDetails />
+            <ContactForm />
             
             <Section className="bg-slate-100/50">
                 <SectionHeading>
