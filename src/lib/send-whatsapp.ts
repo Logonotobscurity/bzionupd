@@ -105,17 +105,8 @@ export async function sendQuoteRequestToWhatsApp(
   businessPhone?: string
 ): Promise<{ success: boolean; whatsappUrl?: string; error?: string }> {
   try {
-    const phone = businessPhone || process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_PHONE;
-    
-    if (!phone) {
-      console.warn('WhatsApp business phone not configured');
-      return {
-        success: false,
-        error: 'WhatsApp business phone not configured',
-      };
-    }
-
-    const whatsappUrl = generateQuoteRequestWhatsAppURL(data, phone);
+    // Use the specific BZION WhatsApp Business URL
+    const whatsappUrl = 'https://api.whatsapp.com/message/TOVLTP6EMAWNI1?autoload=1&app_absent=0';
     
     return {
       success: true,

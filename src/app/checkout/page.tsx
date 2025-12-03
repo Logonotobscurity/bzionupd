@@ -112,9 +112,6 @@ export default function CheckoutPage() {
     <main className="flex-grow bg-white md:bg-gradient-to-b md:from-slate-50 md:via-white md:to-slate-50 min-h-screen">
       <Section className="py-6 md:py-12 px-4 md:px-0">
         <div className="mb-8 md:mb-12">
-            <div className="hidden md:block mb-6">
-              <Breadcrumbs items={breadcrumbItems} lightText={false} />
-            </div>
             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mt-2 md:mt-4 mb-2 md:mb-3">Complete Your Quote</h1>
             <p className="text-base md:text-lg xl:text-xl text-slate-600 max-w-2xl">Review your items and provide your delivery details to get started</p>
         </div>

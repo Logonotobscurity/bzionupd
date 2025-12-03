@@ -223,7 +223,7 @@ export default function ProductDetailPage(props: PageProps) {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-3">
               Similar Items
             </h2>
-            <p className="text-lg text-slate-600">More products from {category.name}</p>
+            <p className="text-lg text-slate-600">More products from {brand.name}</p>
           </div>
           
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
@@ -245,7 +245,7 @@ export default function ProductDetailPage(props: PageProps) {
                     />
                   </div>
                   <div className="p-4">
-                    <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-2">{brand.name}</p>
+                    <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-2">{relProduct.brand}</p>
                     <h3 className="text-sm font-bold text-slate-900 line-clamp-2 group-hover:text-primary transition-colors">
                       {relProduct.name}
                     </h3>

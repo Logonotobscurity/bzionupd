@@ -4,7 +4,6 @@ import { Logo } from '@/components/logo';
 import { FOOTER_LINKS } from '@/lib/constants';
 import { FooterMobileAccordion } from './footer-mobile-accordion';
 import { FooterNewsletter } from './footer-newsletter';
-import CtaBanner from '../cta-banner';
 import { Section } from '../ui/section';
 
 export const Footer = () => {
@@ -15,9 +14,7 @@ export const Footer = () => {
   };
 
   return (
-    <>
-      <CtaBanner />
-      <footer className="bg-primary text-white" aria-labelledby="footer-heading">
+    <footer className="bg-primary text-white" aria-labelledby="footer-heading">
         <h2 id="footer-heading" className="sr-only">Footer</h2>
         <Section className="!py-section-md">
             <div className="pb-16 border-b-2 border-secondary">
@@ -61,6 +58,5 @@ export const Footer = () => {
             </div>
         </Section>
       </footer>
-    </>
   );
 };

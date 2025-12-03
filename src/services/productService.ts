@@ -77,8 +77,9 @@ export class ProductService {
             return undefined;
         }
 
+        // Get related products from the same brand (expert recommendation)
         const relatedProducts = this.products
-            .filter(p => p.categorySlug === product.categorySlug && p.slug !== slug)
+            .filter(p => p.brand === product.brand && p.slug !== slug)
             .slice(0, 4);
 
         return {

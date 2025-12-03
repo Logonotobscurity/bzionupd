@@ -44,10 +44,6 @@ export default function AllBrandsPage() {
             ]}
         />
         <Section className="py-8 md:py-12">
-            <div className="mb-8">
-                <Breadcrumbs items={breadcrumbItems} />
-            </div>
-
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 {brands.map(brand => {
                     const { productCount, categoryCount } = brandStats[brand.name] || { productCount: 0, categoryCount: 0 };
