@@ -1,0 +1,43 @@
+
+"use client";
+
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import { SectionTitle } from "@/components/ui/section";
+
+export const FmcgBanner = () => {
+  return (
+    <section className="bg-zinc-100">
+      <div className="container-constrained grid grid-cols-1 md:grid-cols-2">
+        <div className="flex items-center justify-center p-8 md:p-12 order-2 md:order-1">
+          <div className="max-w-md text-left">
+            <SectionTitle className="leading-tight">
+              The Foundation of Culinary Excellence: Cooking Oils & Fats
+            </SectionTitle>
+            <p className="mt-4 text-slate-600">
+              From high-stability frying oils to versatile vegetable oils and premium spreads, our curated selection is engineered for consistency, quality, and performance in professional kitchens.
+            </p>
+            <div className="mt-8">
+              <Button asChild variant="secondary">
+                <Link href="/products">
+                  Explore Cooking Oils
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className="relative min-h-[300px] md:min-h-[500px] order-1 md:order-2">
+            <Image
+              src="https://i.ibb.co/pdt2YJc/banner3.png"
+              alt="A variety of cooking oils"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              data-ai-hint="cooking oils"
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
