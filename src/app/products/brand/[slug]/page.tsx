@@ -10,6 +10,7 @@ import { ProductSortOptions } from '@/components/product-sort-options';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PageHero } from '@/components/layout/PageHero';
+import { CTASection } from '@/components/cta-section';
 
 interface BrandPageProps {
   params: {
@@ -93,6 +94,16 @@ export default async function BrandPage({ params: { slug } }: BrandPageProps) {
             </div>
           )}
         </div>
+      </Section>
+
+      {/* CTA Section */}
+      <Section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5">
+        <CTASection
+          title={`Discover More from ${brand.name}`}
+          description="Browse our complete selection of premium products. We offer competitive pricing and reliable delivery to support your business growth."
+          ctaText="Shop Now"
+          ctaHref="#products"
+        />
       </Section>
     </main>
   );

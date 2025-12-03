@@ -10,6 +10,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ProductSortOptions } from '@/components/product-sort-options';
+import { CTASection } from '@/components/cta-section';
 
 export default function CategoryPage(props: { params: Promise<{ slug: string }> }) {
     const params = use(props.params);
@@ -83,6 +84,16 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
                         </div>
                     )}
                 </div>
+            </Section>
+
+            {/* CTA Section */}
+            <Section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5">
+                <CTASection
+                    title={`Complete Your ${category.name} Inventory`}
+                    description="Find everything you need in the product category. Partner with BZION for reliable supply and competitive pricing."
+                    ctaText="View All Products"
+                    ctaHref="#products"
+                />
             </Section>
         </main>
       );

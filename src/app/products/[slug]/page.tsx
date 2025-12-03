@@ -10,6 +10,8 @@ import Image from 'next/image';
 import { findImage } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { AnimatedDiv } from '@/components/animated-div';
+import { Section } from '@/components/ui/section';
+import { CTASection } from '@/components/cta-section';
 
 // Mock function to simulate Next.js Page Params
 interface PageProps {
@@ -257,6 +259,16 @@ export default function ProductDetailPage(props: PageProps) {
             )}
           </div>
         </AnimatedDiv>
+
+        {/* CTA Section */}
+        <Section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5">
+          <CTASection
+            title="Ready to Order?"
+            description="Add this product to your quote and get started with BZION today. We offer competitive pricing and reliable delivery."
+            ctaText="Add to Quote"
+            ctaHref="/checkout"
+          />
+        </Section>
       </div>
     </div>
   );
