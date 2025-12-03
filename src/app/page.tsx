@@ -6,22 +6,22 @@ import { findImage } from '@/lib/placeholder-images';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const ValueProps = dynamic(() => import('@/components/value-props'), {
+const ValueProps = dynamic(() => import('@/components/value-props').then(mod => mod.default), {
   loading: () => <Skeleton className="h-[500px] w-full" />,
 });
-const InfoBlocks = dynamic(() => import('@/components/info-blocks'), {
+const InfoBlocks = dynamic(() => import('@/components/info-blocks').then(mod => mod.default), {
   loading: () => <Skeleton className="h-[500px] w-full" />,
 });
 const ShopByCategorySection = dynamic(() => import('@/components/shop-by-category').then(mod => mod.ShopByCategorySection), {
   loading: () => <Skeleton className="h-[500px] w-full" />,
 });
-const LocationsSection = dynamic(() => import('@/components/locations-section'), {
+const LocationsSection = dynamic(() => import('@/components/locations-section').then(mod => mod.default), {
   loading: () => <Skeleton className="h-[400px] w-full" />,
 });
-const Testimonials = dynamic(() => import('@/components/testimonials'), {
+const Testimonials = dynamic(() => import('@/components/testimonials').then(mod => mod.default), {
   loading: () => <Skeleton className="h-[400px] w-full" />,
 });
-const FaqSection = dynamic(() => import('@/components/faq-section'), {
+const FaqSection = dynamic(() => import('@/components/faq-section').then(mod => mod.default), {
   loading: () => <Skeleton className="h-[500px] w-full" />,
 });
 
