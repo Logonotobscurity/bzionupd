@@ -191,7 +191,7 @@ export default function ResourceDetailPage(props: PageProps) {
         {/* Related Resources */}
         {relatedResources.length > 0 && (
           <div className="mt-20 pt-12 border-t border-slate-200">
-            <h2 className="text-3xl font-bold text-primary mb-8">Related Resources</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-8">Related Resources</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedResources.map((item) => (
                 <Link

@@ -220,7 +220,7 @@ export default function ProductDetailPage(props: PageProps) {
         {/* --- RELATED PRODUCTS SECTION --- */}
         <AnimatedDiv delay={0.4} className="mt-20 border-t-2 border-slate-200 pt-16">
           <div className="mb-12">
-            <h2 className="text-4xl font-bold text-slate-900 mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-3">
               Similar Items
             </h2>
             <p className="text-lg text-slate-600">More products from {category.name}</p>

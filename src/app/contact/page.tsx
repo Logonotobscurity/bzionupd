@@ -51,7 +51,7 @@ const PageHero = () => {
                     <p className="text-sm font-bold tracking-widest text-secondary uppercase mb-4">
                         Contact Us
                     </p>
-                    <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Get in Touch with BZION</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">Get in Touch with BZION</h1>
                     <p className="text-lg text-slate-300 mb-8">We're here to help. Whether you're a potential partner, a customer with a question, or just want to learn more about our services, we'd love to hear from you.</p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">View Open Positions</Button>
@@ -81,7 +81,7 @@ const ContactDetails = () => {
                 </div>
                 <div className="space-y-10">
                     <div>
-                        <h2 className="text-3xl font-bold text-primary mb-6">Global Headquarters</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-6">Global Headquarters</h2>
                         <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                             <div className="flex items-center gap-3 mb-2">
                                 <MapPin className="h-5 w-5 text-secondary" />
@@ -92,7 +92,7 @@ const ContactDetails = () => {
                         </div>
                     </div>
                     <div>
-                        <h2 className="text-3xl font-bold text-primary mb-6">Strategic Branches</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-6">Strategic Branches</h2>
                         <div className="grid sm:grid-cols-2 gap-6">
                             <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                                 <div className="flex items-center gap-3 mb-2">
