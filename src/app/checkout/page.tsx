@@ -219,7 +219,7 @@ export default function CheckoutPage() {
                 </form>
               </Form>
             </Card>
-          </AnimatedDiv>
+          </div>
 
           {/* --- RIGHT: ORDER SUMMARY --- */}
           <div className="lg:col-span-1 order-1 lg:order-2 space-y-4 md:space-y-6">

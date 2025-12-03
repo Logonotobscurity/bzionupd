@@ -104,8 +104,8 @@ export default function ProductDetailPage(props: PageProps) {
         <div className="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2 items-start">
           
           {/* --- LEFT: PRODUCT IMAGE --- */}
-          <div className="sticky top-20 md:top-24 will-change-auto">
-            <div className="rounded-2xl md:rounded-3xl bg-white md:bg-gradient-to-br md:from-white md:via-slate-50 md:to-white p-4 md:p-8 shadow-sm md:shadow-lg border border-slate-200/80 flex items-center justify-center min-h-[400px] md:min-h-[500px] relative overflow-hidden">
+          <div className="md:sticky md:top-24 will-change-auto">
+            <div className="rounded-xl md:rounded-3xl bg-white md:bg-gradient-to-br md:from-white md:via-slate-50 md:to-white p-3 sm:p-4 md:p-8 shadow-sm md:shadow-lg border border-slate-200/50 md:border-slate-200/80 flex items-center justify-center min-h-[250px] sm:min-h-[350px] md:min-h-[500px] relative overflow-hidden">
               {/* Background gradient orbs - only on desktop */}
               <div className="hidden md:block absolute top-0 right-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -mr-32 -mt-32" />
               <div className="hidden md:block absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl -ml-24 -mb-24" />
@@ -115,7 +115,7 @@ export default function ProductDetailPage(props: PageProps) {
                 alt={product.name} 
                 width={400}
                 height={400}
-                className="max-h-[350px] md:max-h-[450px] w-auto object-contain transition-transform duration-300 hover:scale-105 relative z-10" 
+                className="max-h-[200px] sm:max-h-[300px] md:max-h-[450px] w-auto object-contain transition-transform duration-300 relative z-10" 
                 onLoad={() => setImageLoaded(true)}
                 priority
               />
@@ -214,8 +214,8 @@ export default function ProductDetailPage(props: PageProps) {
                  {shareSuccess ? 'Copied!' : 'Share'}
                </Button>
             </AnimatedDiv>
-          </AnimatedDiv>
         </div>
+      </div>
 
         {/* --- RELATED PRODUCTS SECTION --- */}
         <AnimatedDiv delay={0.4} className="mt-20 border-t-2 border-slate-200 pt-16">
