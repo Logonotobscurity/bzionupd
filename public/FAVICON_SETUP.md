@@ -81,6 +81,7 @@ export const metadata: Metadata = {
 ## Tools to Generate Favicons
 
 If you need to regenerate favicons from a source image:
+
 - [realfavicongenerator.net](https://realfavicongenerator.net)
 - [favicon.io](https://favicon.io)
 - [convertio.co](https://convertio.co)
