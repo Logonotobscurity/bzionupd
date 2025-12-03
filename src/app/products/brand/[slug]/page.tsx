@@ -75,9 +75,9 @@ export default async function BrandPage({ params: { slug } }: BrandPageProps) {
           </div>
           
           {brandProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {brandProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
+              {brandProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} priority={index < 8} />
               ))}
             </div>
           ) : (

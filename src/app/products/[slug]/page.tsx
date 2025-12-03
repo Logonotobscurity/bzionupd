@@ -75,12 +75,12 @@ export default function ProductDetailPage(props: PageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 pb-20">
+    <div className="min-h-screen bg-white md:bg-gradient-to-b md:from-slate-50 md:via-white md:to-slate-50 pb-20">
       
       {/* --- BREADCRUMBS --- */}
-      <div className="container mx-auto px-4 py-6 hidden md:block border-b border-slate-200/50">
+      <div className="container mx-auto px-4 py-4 md:py-6 hidden md:block border-b border-slate-200/50">
         <nav className="text-sm text-slate-600">
-          <ol className="flex list-none p-0 items-center gap-2">
+          <ol className="flex list-none p-0 items-center gap-2 flex-wrap">
             <li className="flex items-center">
               <Link href="/" className="text-primary hover:text-primary/80 font-medium transition">Home</Link>
               <ArrowRight className="mx-2 h-3 w-3 text-slate-300" />
@@ -100,29 +100,30 @@ export default function ProductDetailPage(props: PageProps) {
         </nav>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-start">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2 items-start">
           
           {/* --- LEFT: PRODUCT IMAGE --- */}
-          <AnimatedDiv className="sticky top-24">
-            <div className="rounded-3xl bg-gradient-to-br from-white via-slate-50 to-white p-8 shadow-lg border border-slate-200/80 flex items-center justify-center min-h-[500px] relative overflow-hidden group">
-              {/* Background gradient orbs */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -mr-32 -mt-32 group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl -ml-24 -mb-24" />
+          <div className="sticky top-20 md:top-24 will-change-auto">
+            <div className="rounded-2xl md:rounded-3xl bg-white md:bg-gradient-to-br md:from-white md:via-slate-50 md:to-white p-4 md:p-8 shadow-sm md:shadow-lg border border-slate-200/80 flex items-center justify-center min-h-[400px] md:min-h-[500px] relative overflow-hidden">
+              {/* Background gradient orbs - only on desktop */}
+              <div className="hidden md:block absolute top-0 right-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -mr-32 -mt-32" />
+              <div className="hidden md:block absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl -ml-24 -mb-24" />
               
               <Image 
                 src={product.imageUrl || fallbackImage.imageUrl} 
                 alt={product.name} 
                 width={400}
                 height={400}
-                className="max-h-[450px] w-auto object-contain transition-all duration-500 group-hover:scale-110 relative z-10" 
+                className="max-h-[350px] md:max-h-[450px] w-auto object-contain transition-transform duration-300 hover:scale-105 relative z-10" 
                 onLoad={() => setImageLoaded(true)}
+                priority
               />
             </div>
-          </AnimatedDiv>
+          </div>
 
           {/* --- RIGHT: PRODUCT INFO --- */}
-          <AnimatedDiv delay={0.1} className="space-y-8">
+          <div className="space-y-6 md:space-y-8">
             <div>
               <div className="mb-4 flex items-center gap-2 flex-wrap">
                 <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary uppercase tracking-wide">
@@ -134,44 +135,44 @@ export default function ProductDetailPage(props: PageProps) {
                    </span>
                 )}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight mb-4">
                 {product.name}
               </h1>
               {product.specifications?.size && (
-                <p className="text-lg text-slate-600">
+                <p className="text-base md:text-lg text-slate-600">
                   <span className="text-slate-500">Size:</span> <span className="font-semibold text-slate-900">{product.specifications.size}</span>
                 </p>
               )}
             </div>
 
-            <div className="w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full" />
+            <div className="w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full hidden md:block" />
 
-            <div className="space-y-6">
-              <p className="text-lg text-slate-700 leading-relaxed font-medium">
+            <div className="space-y-4 md:space-y-6">
+              <p className="text-base md:text-lg text-slate-700 leading-relaxed font-medium">
                 {product.description}
               </p>
               
               {/* Features List with Icons */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200/50">
-                  <div className="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center">
-                    <Check className="h-5 w-5 text-white" />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                <div className="flex flex-col items-start gap-2 p-3 md:p-4 rounded-xl md:rounded-2xl bg-green-50 border border-green-200/50">
+                  <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                    <Check className="h-4 w-4 md:h-5 md:w-5 text-white" />
                   </div>
-                  <span className="font-semibold text-slate-900 text-sm">In Stock</span>
+                  <span className="font-semibold text-slate-900 text-xs md:text-sm">In Stock</span>
                   <span className="text-xs text-slate-600">Ready to ship</span>
                 </div>
-                <div className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200/50">
-                  <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-                    <ShieldCheck className="h-5 w-5 text-white" />
+                <div className="flex flex-col items-start gap-2 p-3 md:p-4 rounded-xl md:rounded-2xl bg-blue-50 border border-blue-200/50">
+                  <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="h-4 w-4 md:h-5 md:w-5 text-white" />
                   </div>
-                  <span className="font-semibold text-slate-900 text-sm">Authentic</span>
+                  <span className="font-semibold text-slate-900 text-xs md:text-sm">Authentic</span>
                   <span className="text-xs text-slate-600">{brand.name} verified</span>
                 </div>
-                <div className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200/50">
-                  <div className="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center">
-                    <Truck className="h-5 w-5 text-white" />
+                <div className="flex flex-col items-start gap-2 p-3 md:p-4 rounded-xl md:rounded-2xl bg-orange-50 border border-orange-200/50">
+                  <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <Truck className="h-4 w-4 md:h-5 md:w-5 text-white" />
                   </div>
-                  <span className="font-semibold text-slate-900 text-sm">Bulk Ready</span>
+                  <span className="font-semibold text-slate-900 text-xs md:text-sm">Bulk Ready</span>
                   <span className="text-xs text-slate-600">Wholesale available</span>
                 </div>
               </div>

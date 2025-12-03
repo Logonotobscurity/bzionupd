@@ -65,9 +65,9 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
                     </div>
 
                     {categoryProducts.length > 0 ? (
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {categoryProducts.map(product => (
-                                <ProductCard key={product.id} product={product} />
+                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
+                            {categoryProducts.map((product, index) => (
+                                <ProductCard key={product.id} product={product} priority={index < 8} />
                             ))}
                         </div>
                     ) : (

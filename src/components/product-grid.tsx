@@ -13,13 +13,13 @@ interface ProductGridProps {
 export const ProductGrid = ({ 
   products, 
   columns = 4,
-  gap = 'gap-8'
+  gap = 'gap-3 md:gap-6 lg:gap-8'
 }: ProductGridProps) => {
   const gridColsClass = {
-    2: 'grid-cols-2 md:grid-cols-2 lg:grid-cols-2',
-    3: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3',
-    4: 'grid-cols-2 md:grid-cols-4 lg:grid-cols-4',
-  }[columns] || 'grid-cols-2 md:grid-cols-4 lg:grid-cols-4';
+    2: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2',
+    3: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3',
+    4: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+  }[columns] || 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
 
   if (products.length === 0) {
     return (
@@ -30,10 +30,10 @@ export const ProductGrid = ({
   }
 
   return (
-    <div className={`grid ${gridColsClass} ${gap} mt-12`}>
-      {products.map((product) => (
+    <div className={`grid ${gridColsClass} ${gap} mt-12 w-full`}>
+      {products.map((product, index) => (
         <GsapScrollTrigger key={product.id}>
-          <ProductCard product={product} />
+          <ProductCard product={product} priority={index < 8} />
         </GsapScrollTrigger>
       ))}
     </div>

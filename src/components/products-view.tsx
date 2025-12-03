@@ -86,31 +86,31 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
             <SectionDescription>Browse our extensive catalog of quality products.</SectionDescription>
         </SectionHeading>
 
-        <div className="flex justify-center gap-2 md:gap-4 my-8 flex-wrap">
+        <div className="flex justify-center gap-2 md:gap-4 my-6 md:my-8 flex-wrap">
             <Button 
                 variant={activeFilter === 'all' ? 'default' : 'outline'}
                 onClick={() => handleFilterClick('all')}
-                size="sm" className="md:size-md"
+                size="sm" className="text-xs md:text-sm"
             >
                 All Products
             </Button>
             <Button 
                 variant={activeFilter === 'brand' ? 'default' : 'outline'}
                 onClick={() => handleFilterClick('brand')}
-                size="sm" className="md:size-md"
+                size="sm" className="text-xs md:text-sm"
             >
                 Shop by Brand
             </Button>
             <Button 
                 variant={activeFilter === 'category' ? 'default' : 'outline'}
                 onClick={() => handleFilterClick('category')}
-                size="sm" className="md:size-md"
+                size="sm" className="text-xs md:text-sm"
             >
                 Shop by Category
             </Button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
             {activeFilter === 'all' && paginatedProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
             ))}
