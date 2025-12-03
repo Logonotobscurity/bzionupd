@@ -89,10 +89,6 @@ export default function ResourcesPage() {
       <PageHero
         title="Resources"
         description="Access guides, insights, case studies, and industry updates to help you grow your FMCG business with BZION."
-        breadcrumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Resources', href: '/resources' },
-        ]}
       />
       <div className="border-b-2 border-slate-200"></div>
       
@@ -104,7 +100,7 @@ export default function ResourcesPage() {
             <Button
               onClick={() => setSelectedCategory(null)}
               variant={selectedCategory === null ? 'default' : 'outline'}
-              className="rounded-full"
+              size="lg"
             >
               All Resources
             </Button>
@@ -113,7 +109,7 @@ export default function ResourcesPage() {
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 variant={selectedCategory === category ? 'default' : 'outline'}
-                className="rounded-full"
+                size="lg"
               >
                 {category}
               </Button>

@@ -65,7 +65,7 @@ export const FaqSection = () => {
             <p className="text-slate-300 mb-8 max-w-md mx-auto text-lg sm:text-xl">
             Can't find the answer you're looking for? Reach out to our dedicated partnership team for assistance.
             </p>
-            <Button asChild variant="secondary">
+            <Button asChild variant="secondary" size="lg">
                 <Link href="/contact">Contact Us</Link>
             </Button>
         </SectionHeading>

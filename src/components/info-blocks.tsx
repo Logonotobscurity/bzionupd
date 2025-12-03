@@ -90,7 +90,7 @@ export const InfoBlock = ({ id, preamble, title, description, features, closing,
                 <p className={cn("text-sm sm:text-base md:text-lg font-light leading-relaxed", isDark ? 'text-slate-300' : 'text-slate-600')}>
                     {closing.description}
                 </p>
-                <Button asChild variant={isDark ? 'secondary' : 'default'} className="w-full sm:w-auto">
+                <Button asChild variant={isDark ? 'secondary' : 'default'} size="lg" className="w-full sm:w-auto">
                     <Link href={closing.cta.href}>
                         {closing.cta.text}
                     </Link>

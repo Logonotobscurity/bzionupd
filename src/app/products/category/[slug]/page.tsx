@@ -25,20 +25,12 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
     const categoryStats = ProductService.getCategoryStats();
     const { productCount, brandCount } = categoryStats[slug] || { productCount: 0, brandCount: 0 };
 
-    const breadcrumbItems = [
-        { label: 'Home', href: '/' },
-        { label: 'Products', href: '/products' },
-        { label: 'Categories', href: '/products/categories' },
-        { label: category.name, href: `/products/category/${slug}` },
-    ];
-
     return (
         <main className="flex-grow">
             <PageHero 
                 preamble="Shop by Category"
                 title={category.name}
                 description={category.description || "Browse our complete selection of high-quality products in this category. Find exactly what your business needs."}
-                breadcrumbs={breadcrumbItems}
                 stats={[
                     { label: 'Products Available', value: productCount },
                     { label: 'Trusted Brands', value: brandCount },
@@ -66,7 +58,7 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
                     </div>
 
                     {categoryProducts.length > 0 ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
+                        <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8 overflow-hidden">
                             {categoryProducts.map((product, index) => (
                                 <ProductCard key={product.id} product={product} priority={index < 8} />
                             ))}

@@ -240,7 +240,7 @@ export default function AccountPage() {
               </div>
 
               <div className="pt-4 border-t border-primary/10">
-                <Button variant="outline" className="w-full justify-center" disabled>
+                <Button variant="outline" size="lg" className="w-full justify-center" disabled>
                   <Settings className="w-4 h-4 mr-2" />
                   Edit Profile
                 </Button>

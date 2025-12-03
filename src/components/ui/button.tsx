@@ -22,7 +22,7 @@ const buttonVariants = cva(
       size: {
         default: "min-h-11 px-6", // 44px minimum for touch targets
         sm: "min-h-10 px-3 text-sm", // 40px for dense layouts
-        lg: "min-h-12 px-8", // 48px for prominent buttons
+        lg: "min-h-12 px-8 sm:px-10", // 48px for prominent buttons with generous padding
         icon: "min-h-11 min-w-11", // 44x44px for icon buttons
       },
     },

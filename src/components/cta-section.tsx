@@ -48,8 +48,8 @@ export function CTASection({
           <Button
             asChild
             size="lg"
-            className="rounded-full"
             variant={variant === 'dark' ? 'secondary' : 'default'}
+            className="font-semibold"
           >
             <Link href={ctaHref}>{ctaText}</Link>
           </Button>

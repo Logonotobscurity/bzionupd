@@ -8,12 +8,6 @@ import { ProductService } from "@/services/productService";
 
 export default function CategoriesPage() {
 
-    const breadcrumbItems = [
-        { label: 'Home', href: '/' },
-        { label: 'Products', href: '/products' },
-        { label: 'Categories', href: '/products/categories' },
-    ];
-
     const categoryStats = ProductService.getCategoryStats();
     
     // Calculate aggregate stats
@@ -27,7 +21,6 @@ export default function CategoriesPage() {
                 preamble="Shop by Category"
                 title="Product Categories"
                 description="Browse our extensive range of products organized by category. Find exactly what you need with our comprehensive selection of food and beverage products."
-                breadcrumbs={breadcrumbItems}
                 stats={[
                   { label: 'Categories', value: totalCategories },
                   { label: 'Total Products', value: totalProducts },

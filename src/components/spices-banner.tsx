@@ -30,7 +30,7 @@ export const SpicesBanner = () => {
               application.
             </p>
             <div className="mt-6 sm:mt-8">
-              <Button asChild variant="secondary" className="w-full sm:w-auto">
+              <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
                 <Link href="/products/category/seasonings-flavor">
                   Discover Seasonings
                 </Link>

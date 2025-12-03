@@ -52,7 +52,7 @@ export function QuoteDrawer() {
                   <p className="text-slate-700 font-semibold mb-2">Your quote is empty</p>
                   <p className="text-sm text-slate-600">Browse products and add items to get started</p>
                 </div>
-                <Button onClick={() => setOpen(false)} variant="outline" className="rounded-xl border-slate-300">
+                <Button onClick={() => setOpen(false)} variant="outline" size="lg" className="rounded-xl border-slate-300">
                   Continue Browsing
                 </Button>
             </div>
@@ -133,17 +133,17 @@ export function QuoteDrawer() {
                 {/* Actions */}
                 {items.length > 0 && (
                   <Button 
-                    variant="outline" 
-                    size="sm" 
+                    variant="destructive" 
+                    size="lg" 
                     onClick={clearQuote} 
-                    className="w-full rounded-xl border-slate-300 text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-400 transition-all duration-200"
+                    className="w-full rounded-xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-400 transition-all duration-200"
                   >
                     Clear All Items
                   </Button>
                 )}
                 <Button 
                   size="lg" 
-                  className="w-full rounded-xl bg-gradient-to-r from-primary to-primary/90 text-base font-bold shadow-lg hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200 h-12" 
+                  className="w-full rounded-xl bg-gradient-to-r from-primary to-primary/90 text-base font-bold text-white shadow-lg hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200" 
                   asChild 
                   onClick={() => setOpen(false)}
                 >

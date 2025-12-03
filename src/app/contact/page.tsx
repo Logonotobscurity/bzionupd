@@ -93,7 +93,11 @@ const ContactForm = () => {
                 </SectionHeading>
                 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-8">
+                    <div className="relative mt-8 p-8 rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden">
+                        {/* Grid border pattern */}
+                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-40 pointer-events-none" style={{backgroundPosition: '0 0'}}></div>
+                        
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                         <div className="grid sm:grid-cols-2 gap-6">
                             <FormField
                                 control={form.control}
@@ -183,6 +187,7 @@ const ContactForm = () => {
                             Send Message
                         </Button>
                     </form>
+                    </div>
                 </Form>
             </div>
         </Section>
@@ -290,7 +295,7 @@ export default function ContactPage() {
                         <div key={index} className="bg-white p-8 rounded-xl shadow-sm border border-slate-200/80 flex flex-col items-center text-center">
                             <h3 className="text-xl font-semibold text-primary mb-4">{standard.title}</h3>
                             <p className="text-slate-600 mb-6 flex-grow">{standard.description}</p>
-                            <Button variant="outline">{standard.cta}</Button>
+                            <Button variant="outline" size="lg">{standard.cta}</Button>
                         </div>
                     ))}
                 </div>

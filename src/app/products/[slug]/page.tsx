@@ -79,29 +79,6 @@ export default function ProductDetailPage(props: PageProps) {
   return (
     <div className="min-h-screen bg-white md:bg-gradient-to-b md:from-slate-50 md:via-white md:to-slate-50 pb-20">
       
-      {/* --- BREADCRUMBS --- */}
-      <div className="container mx-auto px-4 py-4 md:py-6 hidden md:block border-b border-slate-200/50">
-        <nav className="text-sm text-slate-600">
-          <ol className="flex list-none p-0 items-center gap-2 flex-wrap">
-            <li className="flex items-center">
-              <Link href="/" className="text-primary hover:text-primary/80 font-medium transition">Home</Link>
-              <ArrowRight className="mx-2 h-3 w-3 text-slate-300" />
-            </li>
-            <li className="flex items-center">
-              <Link href={`/products/category/${category.slug}`} className="text-primary hover:text-primary/80 font-medium transition">{category.name}</Link>
-              <ArrowRight className="mx-2 h-3 w-3 text-slate-300" />
-            </li>
-            <li className="flex items-center">
-              <Link href={`/products/brand/${brand.slug}`} className="text-primary hover:text-primary/80 font-medium transition">{brand.name}</Link>
-              <ArrowRight className="mx-2 h-3 w-3 text-slate-300" />
-            </li>
-            <li className="font-semibold text-slate-900 truncate max-w-[200px]">
-              {product.name}
-            </li>
-          </ol>
-        </nav>
-      </div>
-
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2 items-start">
           
@@ -203,14 +180,16 @@ export default function ProductDetailPage(props: PageProps) {
             <AnimatedDiv delay={0.3} className="flex gap-3 pt-6 flex-col sm:flex-row">
                <Button 
                  onClick={handleRequestQuote}
-                 className="flex-1 rounded-xl bg-gradient-to-r from-primary to-primary/90 px-8 py-3 text-base font-bold text-white shadow-lg hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200 min-h-12"
+                 size="lg"
+                 className="flex-1 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-base font-bold text-white shadow-lg hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200"
                >
                  {isProductAdded ? '✓ Go to Checkout' : 'Add to Quote Request'}
                </Button>
                <Button 
                  onClick={handleSaveShare}
                  variant="outline"
-                 className="flex-1 sm:flex-none rounded-xl border-2 border-slate-300 px-6 py-3 text-base font-bold text-slate-700 hover:bg-slate-100 hover:border-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary min-h-12 flex items-center justify-center gap-2 transition-all duration-200"
+                 size="lg"
+                 className="flex-1 sm:flex-none rounded-xl border-2 border-slate-300 text-base font-bold text-slate-700 hover:bg-slate-100 hover:border-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary flex items-center justify-center gap-2 transition-all duration-200"
                  title={shareSuccess ? 'Copied to clipboard!' : 'Share this product'}>
                  <Share2 className="h-5 w-5" />
                  {shareSuccess ? 'Copied!' : 'Share'}

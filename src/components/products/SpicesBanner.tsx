@@ -29,7 +29,7 @@ export const SpicesBanner = () => {
               application.
             </p>
             <div className="mt-8">
-              <Button asChild variant="secondary">
+              <Button asChild variant="secondary" size="lg">
                 <Link href="/products/category/seasonings-flavor">
                   Discover Seasonings
                 </Link>

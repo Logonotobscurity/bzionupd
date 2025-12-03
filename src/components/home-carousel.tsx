@@ -56,7 +56,7 @@ const HomeCarousel = ({ slides }: HeroCarouselProps) => {
       role="region"
       aria-roledescription="carousel"
     >
-      <div className="flex h-full">
+      <div className="flex h-full w-full">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -84,14 +84,14 @@ const HomeCarousel = ({ slides }: HeroCarouselProps) => {
             </div>
 
             <div className="container-constrained relative z-10 flex flex-col items-center justify-center h-full text-center text-white py-section-md sm:py-section-lg md:py-section-xl">
-              <AnimatedDiv className="w-full max-w-4xl space-y-3 sm:space-y-4 md:space-y-6 px-4 sm:px-6">
+              <AnimatedDiv className="w-full max-w-4xl space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10 px-4 sm:px-6">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight drop-shadow-lg">
                   {slide.title}
                 </h1>
                 <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-100 max-w-2xl mx-auto drop-shadow-md leading-relaxed">
                   {slide.description}
                 </p>
-                <div className="pt-2 sm:pt-4">
+                <div className="pt-2 sm:pt-4 md:pt-6 lg:pt-8">
                   <Button 
                     asChild 
                     size="lg" 

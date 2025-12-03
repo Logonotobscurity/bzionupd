@@ -154,16 +154,16 @@ export function Header() {
         "sticky top-0 z-40 w-full bg-white shadow-sm transition-all duration-300"
       )}
     >
-      <div className="container-constrained flex items-center justify-between h-14 sm:h-16 md:h-20 gap-2">
-        <div className="flex items-center gap-x-2 sm:gap-x-4 md:gap-x-8 min-w-0">
-          <Logo className="w-28 sm:w-28 md:w-36 flex-shrink-0" />
-          <nav className="hidden lg:flex items-center space-x-0.5">
+      <div className="w-full px-[var(--navbar-padding-inline)] py-[var(--navbar-padding-block)] flex items-center justify-between gap-[var(--navbar-gap)]">
+        <div className="flex items-center gap-[var(--navbar-gap)] min-w-0">
+          <Logo className="w-32 sm:w-32 md:w-40 flex-shrink-0" />
+          <nav className="hidden lg:flex items-center gap-[var(--nav-link-spacing)]">
             {navLinks.map((link) => (
               <React.Fragment key={link.label}>
                 {link.dropdown || link.subMenus ? (
                    <DropdownMenu>
-                    <DropdownMenuTrigger className={cn("flex items-center text-sm font-bold transition-colors hover:text-primary !bg-transparent min-h-11 px-4 py-2 outline-none",
-                       pathname.startsWith(link.href) ? "text-primary" : "text-muted-foreground"
+                    <DropdownMenuTrigger className={cn("flex items-center text-sm font-semibold transition-colors hover:text-primary !bg-transparent px-2 py-1.5 outline-none whitespace-nowrap",
+                       pathname.startsWith(link.href) ? "text-primary" : "text-foreground"
                     )}>
                       {link.label}
                       <ChevronDown className="relative top-[1px] ml-1 h-3 w-3 transition duration-200" />
@@ -206,8 +206,8 @@ export function Header() {
                 ) : (
                   <Link
                     href={link.href}
-                    className={cn("text-sm font-bold transition-colors hover:text-primary min-h-11 px-4 py-2 inline-flex items-center",
-                        pathname === link.href ? 'text-primary' : 'text-muted-foreground'
+                    className={cn("text-sm font-semibold transition-colors hover:text-primary px-2 py-1.5 inline-flex items-center whitespace-nowrap",
+                        pathname === link.href ? 'text-primary' : 'text-foreground'
                     )}
                   >
                     {link.label}
@@ -217,13 +217,13 @@ export function Header() {
             ))}
           </nav>
         </div>
-        <div className="hidden md:flex items-center gap-2 lg:gap-3">
+        <div className="hidden md:flex items-center gap-2 lg:gap-[var(--navbar-gap)]">
             <SearchBar />
             <QuoteListIcon />
-            <Button asChild size="sm">
+            <Button asChild size="sm" className="font-semibold">
                 <Link href="/products">Shop now</Link>
             </Button>
-            <Button asChild variant="outline" size="sm">
+            <Button asChild variant="outline" size="sm" className="font-semibold">
                 <Link href="/login">Become a Customer</Link>
             </Button>
         </div>
@@ -267,8 +267,8 @@ export function Header() {
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex flex-col h-full py-4 sm:py-6 overflow-hidden">
-          <div className="flex-shrink-0 px-4 sm:px-6">
+        <div className="flex flex-col h-full py-[var(--navbar-padding-block)] sm:py-6 overflow-hidden">
+          <div className="flex-shrink-0 px-[var(--container-padding-x)] sm:px-6">
             <div className="flex justify-between items-center">
               <Logo className="w-24 sm:w-28" />
               <button
@@ -280,10 +280,10 @@ export function Header() {
               </button>
             </div>
           </div>
-          <div className="mt-4 sm:mt-6 mb-4 sm:mb-6 flex-shrink-0 px-4 sm:px-6">
+          <div className="mt-[var(--navbar-padding-block)] sm:mt-6 mb-[var(--navbar-padding-block)] sm:mb-6 flex-shrink-0 px-[var(--container-padding-x)] sm:px-6">
             <SearchBar />
           </div>
-          <nav className="mt-4 sm:mt-6 overflow-y-auto flex-1 px-4 sm:px-6">
+          <nav className="mt-[var(--navbar-padding-block)] sm:mt-6 overflow-y-auto flex-1 px-[var(--container-padding-x)] sm:px-6">
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => (
                 <React.Fragment key={link.label}>
@@ -363,10 +363,10 @@ export function Header() {
               ))}
             </div>
           </nav>
-          <div className="flex-shrink-0 space-y-3 border-t pt-4 sm:pt-6 pb-4 sm:pb-6 px-4 sm:px-6">
+          <div className="flex-shrink-0 space-y-3 border-t pt-[var(--navbar-padding-block)] sm:pt-6 pb-[var(--navbar-padding-block)] sm:pb-6 px-[var(--container-padding-x)] sm:px-6">
             <Button
               asChild
-              size="md"
+              size="lg"
               className="w-full"
             >
               <Link href="/products" onClick={toggleMenu}>
@@ -376,7 +376,7 @@ export function Header() {
             <Button
               asChild
               variant="outline"
-              size="md"
+              size="lg"
               className="w-full"
             >
               <Link href="/login" onClick={toggleMenu}>

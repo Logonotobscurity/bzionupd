@@ -14,10 +14,7 @@ const ProductsPage = () => {
       <PageHero 
         title="Our Products"
         description="Explore our extensive catalog of high-quality, authentic food products and ingredients sourced from Nigeria's most trusted brands. We provide the supplies your business needs to thrive."
-        breadcrumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'Products', href: '/products' },
-        ]}
+
       />
 
       <ProductsView title="Featured Products" />

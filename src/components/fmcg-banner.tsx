@@ -18,7 +18,7 @@ export const FmcgBanner = () => {
               From high-stability frying oils to versatile vegetable oils and premium spreads, our curated selection is engineered for consistency, quality, and performance in professional kitchens.
             </p>
             <div className="mt-6 sm:mt-8">
-              <Button asChild variant="secondary" className="w-full sm:w-auto">
+              <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
                 <Link href="/products">
                   Explore Cooking Oils
                 </Link>

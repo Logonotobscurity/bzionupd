@@ -8,10 +8,6 @@ export default function SuppliersPage() {
       <PageHero
         title="Supplier Intelligence"
         description="Leverage our AI-powered tools to analyze, classify, and discover the best suppliers for your business needs. Make data-driven decisions to build a stronger, more reliable supply chain."
-        breadcrumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Suppliers', href: '/suppliers' },
-        ]}
         primaryCta={{ text: 'Analyze a Supplier', href: '#supplier-tools' }}
         secondaryCta={{ text: 'Find Suppliers', href: '#supplier-tools' }}
       />

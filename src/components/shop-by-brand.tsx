@@ -80,7 +80,7 @@ export function ShopByBrandSection() {
                     <p className="text-slate-300 mb-6">
                         We partner with Nigeria's most trusted brands to bring you authentic, high-quality products.
                     </p>
-                    <Button asChild variant="secondary">
+                    <Button asChild variant="secondary" size="lg">
                         <Link href="/products">View All Brands <ArrowRight className="ml-2 h-4 w-4" /></Link>
                     </Button>
                 </div>

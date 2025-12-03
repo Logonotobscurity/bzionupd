@@ -41,14 +41,14 @@ export function ShopByCategorySection() {
                 </SectionDescription>
             </SectionHeading>
             <div className="mt-12">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4 overflow-hidden">
                     {categories.slice(0, 6).map(category => (
                         <CategoryCard key={category.id} category={category} />
                     ))}
                 </div>
             </div>
              <div className="mt-12 text-center">
-                <Button asChild variant="secondary">
+                <Button asChild variant="secondary" size="lg">
                     <Link href="/products/categories">
                         View All Categories <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>

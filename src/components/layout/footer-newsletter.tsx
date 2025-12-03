@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Instagram, Linkedin, Facebook } from 'lucide-react';
+import { Instagram, Linkedin, Facebook, Twitter, Music } from 'lucide-react';
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -64,9 +64,11 @@ export function FooterNewsletter() {
                     </form>
                 </Form>
                  <div className="mt-4 flex justify-end items-center gap-4">
-                    <a href="https://www.linkedin.com/company/bzion-shop" target="_blank" rel="noopener noreferrer" className="text-white hover:text-secondary"><Linkedin size={20}/></a>
-                    <a href="https://www.instagram.com/bzion.shop" target="_blank" rel="noopener noreferrer" className="text-white hover:text-secondary"><Instagram size={20}/></a>
-                    <a href="https://www.facebook.com/share/1FDUZrAczB/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="text-white hover:text-secondary"><Facebook size={20}/></a>
+                    <a href="https://www.linkedin.com/company/bzion-shop" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-white hover:text-secondary"><Linkedin size={20}/></a>
+                    <a href="https://www.instagram.com/bzion.shop" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-white hover:text-secondary"><Instagram size={20}/></a>
+                    <a href="https://www.facebook.com/share/1FDUZrAczB/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-white hover:text-secondary"><Facebook size={20}/></a>
+                    <a href="https://twitter.com/bzion" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-white hover:text-secondary"><Twitter size={20}/></a>
+                    <a href="https://www.tiktok.com/@bzion.shop" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="text-white hover:text-secondary"><Music size={20}/></a>
                 </div>
             </div>
         </div>

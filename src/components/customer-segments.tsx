@@ -44,7 +44,7 @@ export const CustomerSegments = () => {
                                         <FeatureIcon key={feature.label} icon={feature.icon} label={feature.label} />
                                     ))}
                                 </div>
-                                <Button asChild>
+                                <Button asChild size="lg">
                                     <Link href="/contact">Partner With Us</Link>
                                 </Button>
                             </div>
