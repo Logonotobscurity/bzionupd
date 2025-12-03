@@ -86,31 +86,31 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
             <SectionDescription>Browse our extensive catalog of quality products.</SectionDescription>
         </SectionHeading>
 
-        <div className="flex justify-center gap-2 md:gap-4 my-6 md:my-8 flex-wrap">
+        <div className="flex justify-center gap-1.5 sm:gap-2 md:gap-3 my-6 md:my-8 flex-wrap px-3 sm:px-4 md:px-0">
             <Button 
                 variant={activeFilter === 'all' ? 'default' : 'outline'}
                 onClick={() => handleFilterClick('all')}
-                size="sm" className="text-xs md:text-sm"
+                size="sm" className="text-xs sm:text-sm min-h-10 sm:min-h-11 px-2.5 sm:px-4"
             >
                 All Products
             </Button>
             <Button 
                 variant={activeFilter === 'brand' ? 'default' : 'outline'}
                 onClick={() => handleFilterClick('brand')}
-                size="sm" className="text-xs md:text-sm"
+                size="sm" className="text-xs sm:text-sm min-h-10 sm:min-h-11 px-2.5 sm:px-4"
             >
                 Shop by Brand
             </Button>
             <Button 
                 variant={activeFilter === 'category' ? 'default' : 'outline'}
                 onClick={() => handleFilterClick('category')}
-                size="sm" className="text-xs md:text-sm"
+                size="sm" className="text-xs sm:text-sm min-h-10 sm:min-h-11 px-2.5 sm:px-4"
             >
                 Shop by Category
             </Button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 px-3 sm:px-4 md:px-0">
             {activeFilter === 'all' && paginatedProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
             ))}

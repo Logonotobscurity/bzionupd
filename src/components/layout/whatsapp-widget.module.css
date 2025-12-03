@@ -14,3 +14,22 @@
 .fill-dark-green {
   fill: #189433;
 }
+
+.whatsappIcon {
+  width: 28px;
+  height: 28px;
+}
+
+@media (min-width: 641px) {
+  .whatsappIcon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (min-width: 768px) {
+  .whatsappIcon {
+    width: 36px;
+    height: 36px;
+  }
+}

@@ -50,7 +50,7 @@ export function PageHero({
 
   return (
     <header
-      className="relative flex flex-col justify-center py-16 md:py-24 bg-gradient-to-br from-primary via-primary to-primary/95 text-primary-foreground overflow-hidden"
+      className="relative flex flex-col justify-center py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-primary via-primary to-primary/95 text-primary-foreground overflow-hidden"
       role="banner"
       aria-labelledby="hero-heading"
     >
@@ -74,14 +74,14 @@ export function PageHero({
       <div className={containerClasses}>
         {hasImage && (
           <AnimatedDiv className="relative hidden lg:flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-3xl blur-2xl opacity-40" />
-            <div className="relative w-72 h-72 bg-gradient-to-br from-white to-slate-50 p-8 rounded-3xl shadow-2xl border border-white/30 backdrop-blur-md transform hover:scale-105 transition-transform duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5 rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-2xl sm:rounded-3xl blur-2xl opacity-40" />
+            <div className="relative w-56 sm:w-64 md:w-72 h-56 sm:h-64 md:h-72 bg-gradient-to-br from-white to-slate-50 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl shadow-2xl border border-white/30 backdrop-blur-md transform hover:scale-105 transition-transform duration-500">
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5 rounded-2xl sm:rounded-3xl" />
               <Image
                 src={imageUrl}
                 alt={`${title} logo`}
                 fill
-                className="object-contain p-8 relative z-10"
+                className="object-contain p-4 sm:p-6 md:p-8 relative z-10"
                 sizes="288px"
                 priority
               />
@@ -104,40 +104,40 @@ export function PageHero({
             )}
             <h1
               id="hero-heading"
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight"
+              className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight tracking-tight"
             >
               {title}
             </h1>
           </AnimatedDiv>
           
           <AnimatedDiv delay={0.1}>
-            <p className="text-base md:text-lg text-slate-100 mb-8 leading-relaxed max-w-2xl">
+            <p className="text-sm sm:text-base md:text-lg text-slate-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl px-2 sm:px-0">
               {description}
             </p>
           </AnimatedDiv>
 
           {stats && stats.length > 0 && (
             <AnimatedDiv delay={0.2}>
-              <div className={cn('grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-10', {'lg:text-left': hasImage})}>
+              <div className={cn('grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 mb-8 sm:mb-10 px-2 sm:px-0', {'lg:text-left': hasImage})}>
                 {stats.map((stat, index) => (
                   <div 
                     key={index} 
                     className="group relative"
                   >
                     {/* Background card with gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 rounded-2xl border border-white/30 group-hover:border-white/60 transition-all duration-500 group-hover:bg-gradient-to-br group-hover:from-white/25 group-hover:to-white/10 backdrop-blur-md shadow-lg group-hover:shadow-2xl transform group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 rounded-lg sm:rounded-2xl border border-white/30 group-hover:border-white/60 transition-all duration-500 group-hover:bg-gradient-to-br group-hover:from-white/25 group-hover:to-white/10 backdrop-blur-md shadow-lg group-hover:shadow-2xl transform group-hover:scale-110" />
                     
                     {/* Content */}
-                    <div className="relative z-10 p-5 md:p-7">
+                    <div className="relative z-10 p-3 sm:p-5 md:p-7">
                       <div className="flex items-baseline gap-2">
-                        <p className="text-3xl md:text-4xl font-bold text-white tracking-tight">{stat.value.toLocaleString()}</p>
+                        <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">{stat.value.toLocaleString()}</p>
                         <span className="text-xs md:text-sm font-bold text-secondary/70">+</span>
                       </div>
-                      <p className="text-sm md:text-base text-slate-100 mt-2 font-medium tracking-wide group-hover:text-white transition-colors">{stat.label}</p>
+                      <p className="text-xs sm:text-sm md:text-base text-slate-100 mt-1 sm:mt-2 font-medium tracking-wide group-hover:text-white transition-colors">{stat.label}</p>
                     </div>
                     
                     {/* Bottom accent line */}
-                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-secondary to-accent group-hover:w-full transition-all duration-500 rounded-br-2xl rounded-bl-2xl" />
+                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-secondary to-accent group-hover:w-full transition-all duration-500 rounded-br-lg sm:rounded-br-2xl rounded-bl-lg sm:rounded-bl-2xl" />
                   </div>
                 ))}
               </div>
@@ -145,14 +145,14 @@ export function PageHero({
           )}
           
           <AnimatedDiv delay={0.3}>
-            <div className={cn('flex flex-col sm:flex-row gap-4', { 'justify-center': !hasImage, 'justify-start': hasImage })}>
+            <div className={cn('flex flex-col sm:flex-row gap-3 sm:gap-4 px-2 sm:px-0', { 'justify-center': !hasImage, 'justify-start': hasImage })}>
               {primaryCta && (
-                <Button asChild size="lg" className="bg-white text-primary hover:bg-slate-100 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                <Button asChild size="sm" className="bg-white text-primary hover:bg-slate-100 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-h-10 md:min-h-12">
                   <Link href={primaryCta.href}>{primaryCta.text}</Link>
                 </Button>
               )}
               {secondaryCta && (
-                <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-2 border-white hover:bg-white/10 hover:border-white font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
+                <Button asChild size="sm" variant="outline" className="bg-transparent text-white border-2 border-white hover:bg-white/10 hover:border-white font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm min-h-10 md:min-h-12">
                   <Link href={secondaryCta.href}>{secondaryCta.text}</Link>
                 </Button>
               )}

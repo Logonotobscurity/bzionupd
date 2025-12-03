@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { Product } from '@/lib/schema';
 
 export interface CartItem {
-  id: string;
+  id: number;
   name: string;
   price: number;
   quantity: number;
@@ -14,8 +14,8 @@ export interface CartItem {
 interface CartStore {
   items: CartItem[];
   addItem: (product: Product, quantity: number) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  removeItem: (productId: number) => void;
+  updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   getTotal: () => number;
   getItemCount: () => number;
@@ -60,13 +60,13 @@ export const useCartStore = create<CartStore>()(
         });
       },
       
-      removeItem: (productId: string) => {
+      removeItem: (productId: number) => {
         set((state) => ({
           items: state.items.filter((item) => item.id !== productId),
         }));
       },
       
-      updateQuantity: (productId: string, quantity: number) => {
+      updateQuantity: (productId: number, quantity: number) => {
         if (quantity <= 0) {
           get().removeItem(productId);
           return;

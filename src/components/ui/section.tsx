@@ -28,12 +28,12 @@ SectionPreamble.displayName = 'SectionPreamble';
 
 
 const SectionTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(({ className, ...props }, ref) => (
-  <h2 ref={ref} className={cn('mt-2 font-bold tracking-tight text-foreground', className)} {...props} />
+  <h2 ref={ref} className={cn('mt-2 font-bold tracking-tight text-foreground text-3xl sm:text-4xl md:text-5xl', className)} {...props} />
 ));
 SectionTitle.displayName = 'SectionTitle';
 
 const SectionDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn('mt-6 text-lg leading-relaxed text-muted-foreground', className)} {...props} />
+  <p ref={ref} className={cn('mt-3 sm:mt-4 md:mt-6 text-sm sm:text-base md:text-lg leading-relaxed text-muted-foreground', className)} {...props} />
 ));
 SectionDescription.displayName = 'SectionDescription';
 

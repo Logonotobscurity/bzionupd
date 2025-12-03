@@ -66,11 +66,12 @@ export function useMonitoring(options?: {
         }
       }
 
-      // Log page unload for cleanup
+      // Log page unload for cleanup - don't await async operations
       const handleBeforeUnload = () => {
         const logger = getErrorLogger()
         if (logger) {
           logger.trackUserAction('page_unload')
+          // Synchronously flush errors using sendBeacon
           logger.flush()
         }
       }

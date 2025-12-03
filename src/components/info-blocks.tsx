@@ -57,39 +57,40 @@ export const InfoBlock = ({ id, preamble, title, description, features, closing,
     const textContent = (
     <div className={cn(
         "col-span-12 md:col-span-5 flex flex-col justify-center",
-        align === 'left' ? 'md:col-start-8' : 'md:col-start-1'
+        align === 'left' ? 'md:col-start-8' : 'md:col-start-1',
+        "px-3 sm:px-4 md:px-0 mb-6 md:mb-0"
     )}>
       <GsapScrollTrigger>
         <SectionHeading className="!text-left">
-            <p className={cn("text-sm font-bold tracking-widest uppercase mb-4", isDark ? "text-accent" : "text-primary")}>{preamble}</p>
-            <SectionTitle dangerouslySetInnerHTML={{ __html: title }} className={cn("text-3xl sm:text-4xl", isDark && "!text-white")} />
+            <p className={cn("text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 sm:mb-4", isDark ? "text-accent" : "text-primary")}>{preamble}</p>
+            <SectionTitle dangerouslySetInnerHTML={{ __html: title }} className={cn("text-2xl sm:text-3xl md:text-4xl leading-tight", isDark && "!text-white")} />
         </SectionHeading>
-        <p className={cn("text-base md:text-lg mb-8 font-light", isDark ? 'text-slate-300' : 'text-slate-600')}>
+        <p className={cn("text-sm sm:text-base md:text-lg mb-6 md:mb-8 font-light leading-relaxed", isDark ? 'text-slate-300' : 'text-slate-600')}>
             {description}
         </p>
-        <div className="space-y-6 mb-8">
+        <div className="space-y-4 md:space-y-6 mb-6 md:mb-8">
             {features.items.map((feature, index) => {
             const Icon = iconMap[feature.icon];
             return (
-                <div key={index} className="flex items-start gap-4">
-                <div className="flex-shrink-0 mt-1">
-                    <Icon className={cn("h-6 w-6", isDark ? "text-accent" : "text-primary")} strokeWidth={2} />
+                <div key={index} className="flex items-start gap-3 md:gap-4">
+                <div className="flex-shrink-0 mt-0.5 md:mt-1">
+                    <Icon className={cn("h-5 w-5 md:h-6 md:w-6", isDark ? "text-accent" : "text-primary")} strokeWidth={2} />
                 </div>
-                <div>
-                    <h4 className={cn("font-semibold text-md sm:text-lg", isDark ? 'text-white' : 'text-foreground')}>{feature.title}</h4>
-                    <p className={cn("font-light mt-1", isDark ? 'text-slate-300' : 'text-slate-600')}>{feature.description}</p>
+                <div className="flex-1 min-w-0">
+                    <h4 className={cn("font-semibold text-sm sm:text-base md:text-lg leading-tight", isDark ? 'text-white' : 'text-foreground')}>{feature.title}</h4>
+                    <p className={cn("font-light mt-1 text-xs sm:text-sm md:text-base leading-relaxed", isDark ? 'text-slate-300' : 'text-slate-600')}>{feature.description}</p>
                 </div>
                 </div>
             );
             })}
         </div>
         {closing && (
-            <div className="space-y-4">
-                <h4 className={cn("font-semibold text-lg sm:text-xl", isDark ? 'text-white' : 'text-foreground')}>{closing.title}</h4>
-                <p className={cn("text-base sm:text-lg font-light", isDark ? 'text-slate-300' : 'text-slate-600')}>
+            <div className="space-y-3 md:space-y-4">
+                <h4 className={cn("font-semibold text-base sm:text-lg md:text-xl", isDark ? 'text-white' : 'text-foreground')}>{closing.title}</h4>
+                <p className={cn("text-sm sm:text-base md:text-lg font-light leading-relaxed", isDark ? 'text-slate-300' : 'text-slate-600')}>
                     {closing.description}
                 </p>
-                <Button asChild variant={isDark ? 'secondary' : 'default'}>
+                <Button asChild variant={isDark ? 'secondary' : 'default'} className="w-full sm:w-auto">
                     <Link href={closing.cta.href}>
                         {closing.cta.text}
                     </Link>
@@ -102,18 +103,20 @@ export const InfoBlock = ({ id, preamble, title, description, features, closing,
     const imageGrid = (
     <div className={cn(
         "col-span-12 md:col-span-6",
-         align === 'left' ? 'md:col-start-1' : 'md:col-start-7'
+        align === 'left' ? 'md:col-start-1' : 'md:col-start-7',
+        "px-2 sm:px-3 md:px-0"
     )}>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
             {images.map((image, index) => (
                 <GsapScrollTrigger key={index}>
-                    <div className="relative aspect-square">
+                    <div className="relative w-full aspect-square min-h-[140px] sm:min-h-[180px] md:min-h-[200px]">
                         <Image
                             src={image.imageUrl}
                             alt={image.description}
                             fill
                             className="object-cover rounded-lg"
-                            sizes="(max-width: 768px) 50vw, 33vw"
+                            sizes="(max-width: 640px) 45vw, (max-width: 768px) 48vw, (max-width: 1024px) 35vw, 30vw"
+                            priority={index === 0}
                             data-ai-hint={image.imageHint}
                         />
                     </div>
@@ -123,7 +126,7 @@ export const InfoBlock = ({ id, preamble, title, description, features, closing,
     </div>
   );
     return (
-    <div className="grid grid-cols-12 gap-x-gap-md gap-y-gap-lg items-center">
+    <div className="grid grid-cols-12 gap-x-gap-md gap-y-gap-lg md:gap-y-0 items-start md:items-center">
         {align === 'left' ? (
             <>
                 {imageGrid}

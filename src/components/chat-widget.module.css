@@ -1,7 +1,21 @@
 /* Chat Widget SVG and animation styles */
 .chatIconSvg {
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
+}
+
+@media (min-width: 640px) {
+  .chatIconSvg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 768px) {
+  .chatIconSvg {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 .typingBubbleBase {

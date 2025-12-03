@@ -263,8 +263,18 @@ class ErrorLogger {
       version: this.version,
     }
 
-    if (!navigator.sendBeacon) {
-      // Fallback to fetch
+    try {
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        // Use sendBeacon for reliable delivery (even on page unload)
+        navigator.sendBeacon(this.reportEndpoint, JSON.stringify(payload))
+        return
+      }
+    } catch (error) {
+      // Silently fail if sendBeacon throws
+    }
+
+    // Fallback to fetch for non-critical endpoints
+    if (typeof fetch !== 'undefined') {
       fetch(this.reportEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -273,11 +283,7 @@ class ErrorLogger {
       }).catch(() => {
         // Silently fail
       })
-      return
     }
-
-    // Use sendBeacon for reliable delivery
-    navigator.sendBeacon(this.reportEndpoint, JSON.stringify(payload))
   }
 
   /**
@@ -328,11 +334,13 @@ class ErrorLogger {
   /**
    * Flush all pending errors
    */
-  async flush(): Promise<void> {
-    // Send any remaining errors
+  flush(): void {
+    // Send any remaining errors without waiting for response
+    // This is important for page unload scenarios
     for (const error of this.errorQueue) {
-      await this.sendToEndpoint(error)
+      this.sendToEndpoint(error)
     }
+    this.errorQueue = []
   }
 }
 

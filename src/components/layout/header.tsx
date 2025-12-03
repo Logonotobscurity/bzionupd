@@ -154,10 +154,10 @@ export function Header() {
         "sticky top-0 z-40 w-full bg-white shadow-sm transition-all duration-300"
       )}
     >
-      <div className="container-constrained flex items-center justify-between h-[60px] md:h-[80px]">
-        <div className="flex items-center gap-x-8">
-          <Logo className="w-[120px] md:w-[162px]" />
-          <nav className="hidden md:flex items-center space-x-1">
+      <div className="container-constrained flex items-center justify-between h-14 sm:h-16 md:h-20 gap-2">
+        <div className="flex items-center gap-x-2 sm:gap-x-4 md:gap-x-8 min-w-0">
+          <Logo className="w-20 sm:w-28 md:w-36 flex-shrink-0" />
+          <nav className="hidden lg:flex items-center space-x-0.5">
             {navLinks.map((link) => (
               <React.Fragment key={link.label}>
                 {link.dropdown || link.subMenus ? (
@@ -217,22 +217,22 @@ export function Header() {
             ))}
           </nav>
         </div>
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden md:flex items-center gap-2 lg:gap-3">
             <SearchBar />
             <QuoteListIcon />
-            <Button asChild>
+            <Button asChild size="sm">
                 <Link href="/products">Shop now</Link>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" size="sm">
                 <Link href="/login">Become a Customer</Link>
             </Button>
         </div>
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden flex items-center gap-1.5">
           <QuoteListIcon />
           <button
             onClick={toggleMenu}
             aria-label="Toggle menu"
-            className="min-w-11 min-h-11 flex flex-col justify-center items-center gap-1 p-1"
+            className="min-w-10 min-h-10 flex flex-col justify-center items-center gap-1 p-1.5"
           >
             <span
               className={cn(
@@ -267,34 +267,34 @@ export function Header() {
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="container-constrained flex flex-col h-full py-6">
+        <div className="container-constrained flex flex-col h-full py-4 sm:py-6">
           <div className="flex justify-between items-center">
-            <Logo className="w-[120px]" />
+            <Logo className="w-24 sm:w-28" />
             <button
               onClick={toggleMenu}
               aria-label="Close menu"
-              className="min-w-11 min-h-11 flex justify-center items-center p-1"
+              className="min-w-10 min-h-10 flex justify-center items-center p-1.5"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
-          <div className="mt-4 mb-6">
+          <div className="mt-3 sm:mt-4 mb-4 sm:mb-6">
             <SearchBar />
           </div>
-          <nav className="mt-4 overflow-y-auto">
-            <div className="flex flex-col space-y-1">
+          <nav className="mt-3 sm:mt-4 overflow-y-auto flex-1">
+            <div className="flex flex-col space-y-0.5">
               {navLinks.map((link) => (
                 <React.Fragment key={link.label}>
                   {(link.dropdown || link.subMenus) ? (
                     <div className="flex flex-col space-y-0">
                       <button
                         onClick={() => toggleExpandMenu(link.label)}
-                        className="flex items-center justify-between w-full rounded-md min-h-11 px-3 py-3 text-lg font-bold text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                        className="flex items-center justify-between w-full rounded-md min-h-10 sm:min-h-11 px-3 py-2.5 text-sm sm:text-base font-bold text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                       >
                         <span>{link.label}</span>
                         <ChevronDown
                           className={cn(
-                            "w-5 h-5 transition-transform duration-300",
+                            "w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300",
                             expandedMenus.includes(link.label) ? "rotate-180" : ""
                           )}
                         />
@@ -305,7 +305,7 @@ export function Header() {
                             <>
                               {link.subMenus.map((subMenu) => (
                                 <div key={subMenu.label} className="flex flex-col space-y-0">
-                                  <div className="px-3 py-2 text-sm font-semibold text-muted-foreground">
+                                  <div className="px-3 py-2 text-xs sm:text-sm font-semibold text-muted-foreground">
                                     {subMenu.label}
                                   </div>
                                   {subMenu.items.map((item) => (
@@ -313,7 +313,7 @@ export function Header() {
                                       key={item.title}
                                       href={item.href}
                                       onClick={toggleMenu}
-                                      className="block w-full min-h-10 px-6 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors flex items-center"
+                                      className="block w-full min-h-10 px-6 py-2 text-xs sm:text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors flex items-center"
                                     >
                                       {item.title}
                                     </Link>
@@ -322,7 +322,7 @@ export function Header() {
                                     <Link
                                       href={subMenu.allLink.href}
                                       onClick={toggleMenu}
-                                      className="block w-full min-h-10 px-6 py-2 text-sm font-semibold text-primary hover:bg-accent transition-colors border-t flex items-center"
+                                      className="block w-full min-h-10 px-6 py-2 text-xs sm:text-sm font-semibold text-primary hover:bg-accent transition-colors border-t flex items-center"
                                     >
                                       {subMenu.allLink.title}
                                     </Link>
@@ -336,7 +336,7 @@ export function Header() {
                                 key={item.title}
                                 href={item.href}
                                 onClick={toggleMenu}
-                                className="block w-full min-h-10 px-6 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors flex items-center"
+                                className="block w-full min-h-10 px-6 py-2 text-xs sm:text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors flex items-center"
                               >
                                 {item.title}
                               </Link>
