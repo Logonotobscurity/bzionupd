@@ -1,55 +1,35 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function CookieBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
 
-  useEffect(() => {
-    // Only show the banner if the user hasn't made a choice yet
-    const cookieConsent = localStorage.getItem('cookie_consent');
-    if (cookieConsent === null) {
-      setIsVisible(true);
-    }
-  }, []);
-
-  const handleAccept = () => {
-    localStorage.setItem('cookie_consent', 'accepted');
-    setIsVisible(false);
-  };
-
-  const handleDecline = () => {
-    localStorage.setItem('cookie_consent', 'declined');
-    setIsVisible(false);
-  };
-
-  if (!isVisible) {
+  if (!showBanner) {
     return null;
   }
 
   return (
-    <div
-      className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 p-4 bg-primary text-primary-foreground shadow-2xl transition-transform duration-500 ease-in-out",
-        isVisible ? "translate-y-0" : "translate-y-full"
-      )}
-    >
-      <div className="container-constrained flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-center sm:text-left">
-          We use cookies to enhance your browsing experience and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.
-          <Link href="/privacy-policy" className="underline ml-2 hover:text-secondary">
-            Learn more
-          </Link>
+    <div className="fixed bottom-20 left-0 right-0 w-full bg-white/80 backdrop-blur-md shadow-lg z-[2000] p-4 md:bottom-4 md:left-4 md:right-auto md:max-w-md">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <p className="text-sm text-slate-700">
+          Our website uses cookies to provide you with the best experience. By clicking "Accept," you consent to the use of cookies.
         </p>
-        <div className="flex-shrink-0 flex gap-2">
-          <Button variant="secondary" onClick={handleAccept}>
-            Accept All
+        <div className="flex gap-2 flex-shrink-0">
+          <Button 
+            onClick={() => setShowBanner(false)} 
+            variant="default"
+            size="sm"
+          >
+            Accept
           </Button>
-          <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary" onClick={handleDecline}>
-            Decline
+          <Button 
+            onClick={() => setShowBanner(false)} 
+            variant="outline"
+            size="sm"
+          >
+            Reject
           </Button>
         </div>
       </div>

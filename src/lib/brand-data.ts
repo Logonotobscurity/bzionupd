@@ -3,9 +3,9 @@ import { type Brand } from '@/lib/schema';
 export const brands: Brand[] = [
     { id: 'BRA_001', name: 'Honeywell', slug: 'honeywell', imageUrl: 'https://i.ibb.co/xSyMM4Nx/Honeywell-Flour-Mills-logo.jpg', isFeatured: true, brand_description: 'A leading Nigerian producer of flour, pasta, and other food products.' },
     { id: 'BRA_002', name: 'Golden Penny', slug: 'golden-penny', imageUrl: 'https://i.ibb.co/ycwyjLB4/Golden-penny.png', isFeatured: true, brand_description: 'A popular brand known for its high-quality flour, pasta, and semolina.' },
-    { id: 'BRA_004', name: 'IRS', slug: 'irs', imageUrl: '/brands/irs.png', isFeatured: true, brand_description: 'IRS specializes in quality rice and other grains, sourced to deliver the best taste and texture for your meals.' },
-    { id: 'BRA_006', name: "Mama's Pride", slug: 'mamas-pride', imageUrl: '/brands/mamas-pride.png', isFeatured: false },
-    { id: 'BRA_007', name: 'Mamagold', slug: 'mamagold', imageUrl: 'https://i.ibb.co/ks43Mj6d/Mama-gold.png', isFeatured: true, brand_description: 'Mamagold provides high-quality flour and pasta products, perfect for baking and creating delicious meals.' },
+    { id: 'BRA_004', name: 'IRS', slug: 'irs', imageUrl: 'https://i.ibb.co/7N68zWdJ/irs-logo.png', isFeatured: true, brand_description: 'IRS specializes in quality rice and other grains, sourced to deliver the best taste and texture for your meals.' },
+    { id: 'BRA_006', name: "Mama's Pride", slug: 'mamas-pride', imageUrl: 'https://i.ibb.co/15ZSNPR/MAMA-GOLD-SEMO-Logo.png', isFeatured: false },
+    { id: 'BRA_007', name: 'Mamagold', slug: 'mamagold', imageUrl: '', isFeatured: true, brand_description: 'Mamagold provides high-quality flour and pasta products, perfect for baking and creating delicious meals.' },
     { id: 'BRA_008', name: 'Power Oil', slug: 'power-oil', imageUrl: 'https://i.ibb.co/0VCJWbFF/Power-oil.png', isFeatured: false },
     { id: 'BRA_009', name: 'Activa', slug: 'activa', imageUrl: 'https://i.ibb.co/SYgLZTR/Activa.png', isFeatured: true, brand_description: 'Activa provides high-quality cooking oils that are perfect for a variety of culinary applications.' },
     { id: 'BRA_010', name: 'Whippy', slug: 'whippy', imageUrl: 'https://i.ibb.co/chvRLy9C/whippy.png', isFeatured: false, brand_description: 'Whippy offers delicious and creamy spreads, perfect for bread and other snacks.' },

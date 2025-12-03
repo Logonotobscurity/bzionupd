@@ -15,12 +15,24 @@ export default function CategoriesPage() {
     ];
 
     const categoryStats = ProductService.getCategoryStats();
+    
+    // Calculate aggregate stats
+    const totalCategories = categories.length;
+    const totalProducts = Object.values(categoryStats).reduce((sum, stat) => sum + stat.productCount, 0);
+    const totalBrands = Object.values(categoryStats).reduce((sum, stat) => sum + stat.brandCount, 0);
 
     return (
         <main className="flex-grow">
             <PageHero 
+                preamble="Shop by Category"
                 title="Product Categories"
-                description="Browse our products by category to find exactly what you need."
+                description="Browse our extensive range of products organized by category. Find exactly what you need with our comprehensive selection of food and beverage products."
+                breadcrumbs={breadcrumbItems}
+                stats={[
+                  { label: 'Categories', value: totalCategories },
+                  { label: 'Total Products', value: totalProducts },
+                  { label: 'Brands Available', value: totalBrands },
+                ]}
             />
             <Section className="py-8 md:py-12">
                 <div className="mb-8">

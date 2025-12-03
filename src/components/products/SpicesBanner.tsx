@@ -6,7 +6,7 @@ import { SectionTitle } from "@/components/ui/section";
 export const SpicesBanner = () => {
   return (
     <section className="bg-zinc-100">
-      <div className="max-w-container mx-auto px-padding-md grid grid-cols-1 md:grid-cols-2">
+      <div className="container-constrained grid grid-cols-1 md:grid-cols-2">
         <div className="relative min-h-[300px] md:min-h-[500px]">
           <Image
             src="https://i.ibb.co/RNVf7X/banner-2.png"

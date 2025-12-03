@@ -514,8 +514,8 @@ export const products: Product[] = [
     inStock: true,
     quantity: 300,
     images: [
-      "https://i.ibb.co/wNby9CK3/Goldenpenny-auntie-b-spaghetti.jpg",
-      "https://i.ibb.co/Wv1C38Cf/Golden-Penny-Spaghetti-500g.png"
+      "https://i.ibb.co/Wv1C38Cf/Golden-Penny-Spaghetti-500g.png",
+      "https://i.ibb.co/Wv1C38Cf/Golden-Penny-Spaghetti-500g-alt.png"
     ],
     specifications: {
       brand: "Golden Penny",
@@ -588,8 +588,8 @@ export const products: Product[] = [
     inStock: true,
     quantity: 180,
     images: [
-      "https://i.ibb.co/DDrkVs4b/Golden-penny-auntie-b-spaghetti-slim.jpg",
-      "https://i.ibb.co/Nn3wN6Hw/Golden-Penny-Spaghettini-500g.png"
+      "https://i.ibb.co/DDrkVs4b/Auntie-B-Spaghetti-Slim.jpg",
+      "https://i.ibb.co/Nn3wN6Hw/Auntie-B-Spaghettini-500g.png"
     ],
     specifications: {
       brand: "Auntie B",
@@ -663,8 +663,8 @@ export const products: Product[] = [
     inStock: true,
     quantity: 150,
     images: [
-      "https://i.ibb.co/cc1QXFLv/Goldenpenny-auntie-b-semo.jpg",
-      "https://i.ibb.co/1txXstSf/Golden-Penny-Semovita-2kg.jpg"
+      "https://i.ibb.co/cc1QXFLv/Auntie-B-Semovita.jpg",
+      "https://i.ibb.co/1txXstSf/Auntie-B-Semovita-2kg.jpg"
     ],
     specifications: {
       brand: "Auntie B",
@@ -701,8 +701,8 @@ export const products: Product[] = [
     inStock: true,
     quantity: 200,
     images: [
-      "https://i.ibb.co/p6VpV1Q3/Goldenpenny-auntie-b-twist.jpg",
-      "https://i.ibb.co/93NdXbdn/Golden-Penny-Twist-200g.png"
+      "https://i.ibb.co/p6VpV1Q3/Auntie-B-Twist.jpg",
+      "https://i.ibb.co/93NdXbdn/Auntie-B-Twist-200g.png"
     ],
     specifications: {
       brand: "Auntie B",
@@ -1550,8 +1550,8 @@ export const products: Product[] = [
     slug: "kings-vegetable-oil-2l",
     brand: "Kings",
     brandId: 15,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Cooking Oils & Fats",
     categorySlug: "cooking-oils-fats",
     description: "Premium quality cooking oil.",
@@ -1566,7 +1566,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Kings",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "2L",
       moq: 6,
       sku: "KINGS-40-OIL-2L",
@@ -1587,8 +1587,8 @@ export const products: Product[] = [
     slug: "kings-vegetable-oil-1l",
     brand: "Kings",
     brandId: 15,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Cooking Oils & Fats",
     categorySlug: "cooking-oils-fats",
     description: "Single liter cooking oil.",
@@ -1603,7 +1603,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Kings",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "1L",
       moq: 12,
       sku: "KINGS-41-OIL-1L",
@@ -1624,8 +1624,8 @@ export const products: Product[] = [
     slug: "kings-vegetable-oil-5l",
     brand: "Kings",
     brandId: 15,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Cooking Oils & Fats",
     categorySlug: "cooking-oils-fats",
     description: "Large size family cooking oil.",
@@ -1640,7 +1640,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Kings",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "5L",
       moq: 3,
       sku: "KINGS-42-OIL-5L",
@@ -1661,8 +1661,8 @@ export const products: Product[] = [
     slug: "kings-vegetable-oil-10l",
     brand: "Kings",
     brandId: 15,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Cooking Oils & Fats",
     categorySlug: "cooking-oils-fats",
     description: "Commercial size cooking oil.",
@@ -1677,7 +1677,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Kings",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "10L",
       moq: 2,
       sku: "KINGS-43-OIL-10L",
@@ -1698,8 +1698,8 @@ export const products: Product[] = [
     slug: "kings-cooking-margarine-250g",
     brand: "Kings",
     brandId: 15,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Cooking Oils & Fats",
     categorySlug: "cooking-oils-fats",
     description: "Premium cooking margarine.",
@@ -1714,7 +1714,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Kings",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "250g",
       moq: 12,
       sku: "KINGS-44-MARGARINE",
@@ -1813,8 +1813,8 @@ export const products: Product[] = [
     slug: "mamador-cooking-oil",
     brand: "Mamador",
     brandId: 16,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Cooking Oils & Fats",
     categorySlug: "cooking-oils-fats",
     description: "Cholesterol-free cooking oil.",
@@ -1829,7 +1829,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Mamador",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "2L",
       moq: 6,
       sku: "MAMADOR-46-OIL",
@@ -1850,8 +1850,8 @@ export const products: Product[] = [
     slug: "mamador-seasoning-chickencube",
     brand: "Mamador",
     brandId: 16,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Seasonings & Flavor",
     categorySlug: "spices-sauces-condiments",
     description: "Tasty chicken seasoning cubes.",
@@ -1867,7 +1867,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Mamador",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "Pack",
       moq: 20,
       sku: "MAMADOR-47-CUBE"
@@ -1887,8 +1887,8 @@ export const products: Product[] = [
     slug: "mamador-spread",
     brand: "Mamador",
     brandId: 16,
-    company: "PZ Cussons",
-    companyId: 11,
+    company: "PZ Wilmar",
+    companyId: 7,
     category: "Cooking Oils & Fats",
     categorySlug: "cooking-oils-fats",
     description: "Creamy low-fat spread.",
@@ -1903,7 +1903,7 @@ export const products: Product[] = [
     ],
     specifications: {
       brand: "Mamador",
-      company: "PZ Cussons",
+      company: "PZ Wilmar",
       unit: "250g",
       moq: 12,
       sku: "MAMADOR-48-SPREAD",
@@ -1918,15 +1918,15 @@ export const products: Product[] = [
     updatedAt: "2025-12-01T00:00:00Z"
   },
 
-  // --- MAMA GOLD (Olam) ---
+  // --- MAMAGOLD (Crown Flour Mills) ---
   {
     id: 49,
     sku: "MG-49-FLOUR",
     name: "Mama Gold Flour (50kg)",
     slug: "mama-gold-flour-50kg",
-    brand: "Mama Gold",
-    brandId: 35,
-    company: "Olam",
+    brand: "Mamagold",
+    brandId: 7,
+    company: "Crown Flour Mills",
     companyId: 3,
     category: "Baking & Confectionery",
     categorySlug: "baking-confectionery",
@@ -1941,8 +1941,8 @@ export const products: Product[] = [
       "https://i.ibb.co/PZ9gxtMB/Mama-Gold-Flour-50kg.webp"
     ],
     specifications: {
-      brand: "Mama Gold",
-      company: "Olam",
+      brand: "Mamagold",
+      company: "Crown Flour Mills",
       unit: "50kg",
       moq: 1,
       sku: "MG-49-FLOUR",
@@ -1998,8 +1998,8 @@ export const products: Product[] = [
 
   // --- MINIMIE (Tolaram) ---
   {
-    id: 47,
-    sku: "MINIMIE-47-CHINCHIN",
+    id: 51,
+    sku: "MINIMIE-51-CHINCHIN",
     name: "Minimie Chinchin Sachet",
     slug: "minimie-chinchin-sachet",
     brand: "Minimie",

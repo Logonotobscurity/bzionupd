@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuoteStore } from '@/lib/quote-store';
+import { useQuoteStore, type QuoteItem } from '@/lib/quote-store';
 import { Button } from '@/components/ui/button';
 import { Section } from '@/components/ui/section';
 import { Breadcrumbs } from '@/components/ui/breadcrumb';
@@ -11,9 +11,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { findImage } from '@/lib/placeholder-images';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { AnimatedDiv } from '@/components/animated-div';
+import { Package, Truck, Shield, CheckCircle } from 'lucide-react';
 
 const checkoutSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -29,9 +30,9 @@ const checkoutSchema = z.object({
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
 export default function CheckoutPage() {
-  const { items, clearQuote } = useQuoteStore(state => ({
-      items: state.items,
-      clearQuote: state.clearQuote,
+  const { items, clearQuote } = useQuoteStore((state) => ({
+    items: state.items as QuoteItem[],
+    clearQuote: state.clearQuote,
   }));
   const { toast } = useToast();
   const router = useRouter();
@@ -99,135 +100,178 @@ export default function CheckoutPage() {
   ];
 
   return (
-    <main className="flex-grow bg-slate-50">
-      <Section className="py-8">
-        <div className="mb-8">
-            <Breadcrumbs items={breadcrumbItems} lightText={false} />
-            <h1 className="text-3xl md:text-4xl font-bold text-primary mt-4">Submit Quote Request</h1>
-        </div>
+    <main className="flex-grow bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen">
+      <Section className="py-12">
+        <AnimatedDiv className="mb-12">
+            <div className="hidden md:block mb-6">
+              <Breadcrumbs items={breadcrumbItems} lightText={false} />
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mt-4 mb-3">Complete Your Quote</h1>
+            <p className="text-xl text-slate-600 max-w-2xl">Review your items and provide your delivery details to get started</p>
+        </AnimatedDiv>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Checkout Form */}
-          <Card>
-            <Form {...form}>
-              <form id="checkout-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <CardHeader>
-                    <CardTitle>Contact Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* --- LEFT: CHECKOUT FORM (Takes 2 columns) --- */}
+          <AnimatedDiv delay={0.1} className="lg:col-span-2">
+            <Card className="shadow-lg border-slate-200/80">
+              <Form {...form}>
+                <form id="checkout-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-0">
+                  {/* Contact Information Section */}
+                  <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100/50 border-b border-slate-200">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <CheckCircle className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-xl">Contact Information</CardTitle>
+                    </div>
+                    <p className="text-sm text-slate-600 ml-13">How we'll reach you about your order</p>
+                  </CardHeader>
+                  <CardContent className="space-y-6 pt-6">
                     <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Email Address</FormLabel>
+                        <FormLabel className="font-bold text-slate-900">Email Address</FormLabel>
                         <FormControl>
-                            <Input placeholder="you@company.com" {...field} />
+                            <Input placeholder="you@company.com" className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
                     )}
                     />
-                </CardContent>
+                  </CardContent>
 
-                <CardHeader>
-                    <CardTitle>Business Information</CardTitle>
-                </CardHeader>
-                 <CardContent className="space-y-4">
-                    <div className="grid sm:grid-cols-2 gap-4">
+                  {/* Business Information Section */}
+                  <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100/50 border-t border-b border-slate-200">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Package className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-xl">Delivery Information</CardTitle>
+                    </div>
+                    <p className="text-sm text-slate-600 ml-13">Where we'll send your products</p>
+                  </CardHeader>
+                  <CardContent className="space-y-6 pt-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
                         <FormField control={form.control} name="firstName" render={({ field }) => (
                             <FormItem>
-                                <FormLabel>First Name</FormLabel>
-                                <FormControl><Input {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900">First Name</FormLabel>
+                                <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                         <FormField control={form.control} name="lastName" render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Last Name</FormLabel>
-                                <FormControl><Input {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900">Last Name</FormLabel>
+                                <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                     </div>
                      <FormField control={form.control} name="company" render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Company (optional)</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
+                            <FormLabel className="font-bold text-slate-900">Company Name <span className="text-slate-500 font-normal">(optional)</span></FormLabel>
+                            <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
                             <FormMessage />
                         </FormItem>
                      )} />
                     <FormField control={form.control} name="address" render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Address</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
+                            <FormLabel className="font-bold text-slate-900">Street Address</FormLabel>
+                            <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
                             <FormMessage />
                         </FormItem>
                     )} />
-                     <div className="grid sm:grid-cols-2 gap-4">
+                     <div className="grid sm:grid-cols-2 gap-6">
                          <FormField control={form.control} name="city" render={({ field }) => (
                             <FormItem>
-                                <FormLabel>City</FormLabel>
-                                <FormControl><Input {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900">City</FormLabel>
+                                <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                          <FormField control={form.control} name="state" render={({ field }) => (
                              <FormItem>
-                                <FormLabel>State</FormLabel>
-                                <FormControl><Input {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900">State/Region</FormLabel>
+                                <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                          )} />
                     </div>
                      <FormField control={form.control} name="phone" render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Phone</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
+                            <FormLabel className="font-bold text-slate-900">Phone Number</FormLabel>
+                            <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
                             <FormMessage />
                         </FormItem>
                      )} />
                 </CardContent>
-              </form>
-            </Form>
-          </Card>
+                </form>
+              </Form>
+            </Card>
+          </AnimatedDiv>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-24">
-             <Card>
-                <CardHeader>
-                    <CardTitle>Request Summary</CardTitle>
+          {/* --- RIGHT: ORDER SUMMARY --- */}
+          <AnimatedDiv delay={0.2} className="lg:col-span-1 space-y-6">
+             {/* Summary Card */}
+             <Card className="shadow-lg border-slate-200/80 sticky top-24">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5 border-b border-primary/10">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">Quote Summary</CardTitle>
+                      <div className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm">{items.length} items</div>
+                    </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                <CardContent className="space-y-4 pt-6">
+                    <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
                         {items.length > 0 ? (
-                            items.map(item => {
-                                const image = findImage(item.imageId);
+                            items.map((item) => {
                                 return (
-                                    <div key={item.id} className="flex justify-between items-center">
-                                        <div className="flex items-center gap-4">
-                                            <div className="relative w-16 h-16 bg-white border border-slate-200 rounded-md overflow-hidden flex-shrink-0">
-                                                <Image src={image.imageUrl} alt={item.name} fill className="object-contain p-1" sizes="64px" />
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold text-sm">{item.name}</p>
-                                                <p className="text-xs text-slate-500">SKU: {item.id}</p>
-                                                <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
-                                            </div>
+                                    <div key={item.id} className="flex items-start gap-3 pb-3 border-b border-slate-200 last:border-0">
+                                        <div className="relative w-14 h-14 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                            <Image src={item.images?.[0] || item.imageUrl || '/images/placeholder.jpg'} alt={item.name || 'Product'} fill className="object-contain p-1" sizes="56px" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-bold text-slate-900 text-sm line-clamp-2">{item.name || 'Product'}</p>
+                                            <p className="text-xs text-slate-600 mt-1">Qty: <span className="font-bold text-primary">{item.quantity}</span></p>
                                         </div>
                                     </div>
                                 )
                             })
                         ) : (
-                            <p className="text-sm text-slate-500 text-center py-4">Your quote request is empty.</p>
+                            <p className="text-sm text-slate-500 text-center py-8">Your quote request is empty.</p>
                         )}
+                    </div>
+
+                    {/* Benefits */}
+                    <div className="space-y-3 pt-4 border-t border-slate-200 mt-4">
+                      <div className="flex items-start gap-2">
+                        <Truck className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-xs font-medium text-slate-700">Fast delivery across Nigeria</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Shield className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-xs font-medium text-slate-700">Quality guaranteed products</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-xs font-medium text-slate-700">Competitive wholesale pricing</span>
+                      </div>
                     </div>
                 </CardContent>
              </Card>
-             <Button type="submit" form="checkout-form" size="lg" className="w-full" disabled={isSubmitting || items.length === 0}>
+
+             {/* Submit Button */}
+             <Button type="submit" form="checkout-form" size="lg" className="w-full rounded-xl bg-gradient-to-r from-primary to-primary/90 text-base font-bold py-3 shadow-lg hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-60 disabled:bg-slate-400 transition-all duration-200 h-12" disabled={isSubmitting || items.length === 0}>
                 {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
              </Button>
-          </div>
+
+             {/* Trust Badge */}
+             <div className="text-center p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <p className="text-xs text-slate-600">🔒 <span className="font-bold">Secure & Confidential</span></p>
+              <p className="text-xs text-slate-500 mt-1">Your information is protected and only used for order processing</p>
+             </div>
+          </AnimatedDiv>
         </div>
       </Section>
     </main>

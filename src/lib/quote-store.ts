@@ -2,10 +2,10 @@
 "use client";
 
 import { create } from 'zustand';
-import { type Product } from '@/lib/data';
+import { type Product } from '@/lib/schema';
 import { toast } from '@/hooks/use-toast';
 
-interface QuoteItem extends Product {
+export interface QuoteItem extends Product {
   quantity: number;
 }
 
@@ -14,8 +14,8 @@ interface QuoteState {
   isOpen: boolean;
   setOpen: (isOpen: boolean) => void;
   addProduct: (product: Product, quantity?: number) => void;
-  removeProduct: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  removeProduct: (productId: string | number) => void;
+  updateQuantity: (productId: string | number, quantity: number) => void;
   clearQuote: () => void;
 }
 

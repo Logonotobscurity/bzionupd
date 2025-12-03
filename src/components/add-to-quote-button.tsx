@@ -25,7 +25,7 @@ export const AddToQuoteButton = ({ product }: AddToQuoteButtonProps) => {
   };
 
   return (
-    <Button onClick={handleAddToQuote} disabled={isAdded} className="w-full">
+    <Button onClick={handleAddToQuote} disabled={isAdded} className="w-full" size="sm" className="md:h-auto md:py-2">
       {isAdded ? 'Added to Quote List' : 'Add to Quote List'}
     </Button>
   );

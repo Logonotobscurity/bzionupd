@@ -42,28 +42,36 @@ export default async function BrandPage({ params: { slug } }: BrandPageProps) {
   return (
     <main className="flex-grow">
       <PageHero 
+        preamble="Premium Brand Collection"
         title={brand.name}
-        description={brand.brand_description || `Browse products from ${brand.name}`}
+        description={brand.brand_description || `Discover the complete range of quality products from ${brand.name}. We're proud to distribute their finest offerings.`}
         imageUrl={brand.imageUrl}
+        breadcrumbs={breadcrumbItems}
         stats={[
-          { label: 'Products', value: productCount },
-          { label: 'Categories', value: categoryCount },
+          { label: 'Quality Products', value: productCount },
+          { label: 'Product Categories', value: categoryCount },
+          { label: 'Customer Rating', value: 48 },
         ]}
+        primaryCta={{
+          text: 'Browse Products',
+          href: `#products`,
+        }}
       />
 
       {/* Products Section */}
-      <Section className="py-12 bg-slate-50/70">
+      <Section className="py-16 bg-white" id="products">
         <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <Breadcrumbs items={breadcrumbItems} />
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4 border-b pb-4">
-              <h2 className="text-2xl font-semibold text-slate-800">Products from {brand.name}</h2>
-              <div className="flex items-center gap-4">
-                <p className="text-sm text-slate-600 whitespace-nowrap">{productCount} products found</p>
-                <ProductSortOptions />
-              </div>
+          <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h2 className="text-4xl font-bold text-slate-900 mb-2">All {brand.name} Products</h2>
+              <p className="text-lg text-slate-600">Browse our complete range of {brand.name} products across all categories</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <p className="text-sm font-semibold text-slate-700 whitespace-nowrap">
+                <span className="text-primary text-lg">{productCount}</span> products found
+              </p>
+              <ProductSortOptions />
+            </div>
           </div>
           
           {brandProducts.length > 0 ? (
@@ -73,10 +81,15 @@ export default async function BrandPage({ params: { slug } }: BrandPageProps) {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 border-2 border-dashed rounded-lg bg-white">
-              <div className="text-5xl mb-4">📦</div>
-              <h3 className="text-xl font-semibold text-primary mb-2">No Products Yet</h3>
-              <p className="text-slate-500 max-w-md mx-auto">Products from {brand.name} will be displayed here once they are available.</p>
+            <div className="text-center py-20 border-2 border-dashed border-slate-300 rounded-2xl bg-slate-50">
+              <div className="text-6xl mb-4">📦</div>
+              <h3 className="text-2xl font-bold text-primary mb-2">No Products Yet</h3>
+              <p className="text-slate-600 max-w-md mx-auto text-lg">Products from {brand.name} will be displayed here once they are available.</p>
+              <Link href="/products/brands">
+                <Button className="mt-6" variant="outline" size="lg">
+                  Browse Other Brands
+                </Button>
+              </Link>
             </div>
           )}
         </div>

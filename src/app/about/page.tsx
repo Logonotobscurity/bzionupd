@@ -1,6 +1,8 @@
 
 import { PageHero } from '@/components/layout/PageHero';
 import AboutContent from '@/components/sections/about/AboutContent';
+import { Section } from '@/components/ui/section';
+import { CTASection } from '@/components/cta-section';
 import { Metadata } from 'next';
 import { WebPage, BreadcrumbList } from 'schema-dts';
 
@@ -50,6 +52,14 @@ export default function AboutPage() {
         />
         <div className="border-b-2 border-slate-200"></div>
         <AboutContent />
+        <Section className="py-16">
+          <CTASection
+            title="Join the BZION Community"
+            description="Whether you're a retail business, wholesaler, or institution, BZION is ready to support your success. Connect with us today and discover the difference reliable partnership makes."
+            ctaText="Start Your Journey"
+            ctaHref="/contact"
+          />
+        </Section>
       </main>
     </>
   );

@@ -67,9 +67,9 @@ export function QuoteRequestForm({ onSubmit }: QuoteRequestFormProps) {
 
   return (
     <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
-      <CardContent className="p-6">
+      <CardContent className="p-6 md:p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-5 md:space-y-6">
             <FormField
               control={form.control}
               name="name"

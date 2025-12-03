@@ -1,12 +1,16 @@
 
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/styles/focus-visible.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { SkipLink } from "@/components/skip-link";
+import { ErrorBoundary } from "@/components/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import { ClientChatWidget } from "@/components/layout/ClientChatWidget";
 import { CookieBanner } from "@/components/cookie-banner";
 import WhatsappWidget from "@/components/layout/WhatsappWidget";
+import { MonitoringProvider } from "@/components/layout/MonitoringProvider";
 
 export const metadata: Metadata = {
   title: "BZION Hub Digital",
@@ -18,6 +22,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en" className="h-full">
       <head>
@@ -33,13 +38,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow pt-0">{children}</main>
-          <Footer />
-          <Toaster />
-          <WhatsappWidget />
-          <ClientChatWidget />
-          <CookieBanner />
+          <MonitoringProvider />
+          <ErrorBoundary>
+            <SkipLink />
+            <Header />
+            <main id="main-content" className="flex-grow pt-0">{children}</main>
+            <Footer />
+            <Toaster />
+            <WhatsappWidget />
+            <ClientChatWidget />
+            <CookieBanner />
+          </ErrorBoundary>
       </body>
     </html>
   );

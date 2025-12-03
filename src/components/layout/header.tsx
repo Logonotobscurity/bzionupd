@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import { SearchBar } from "@/components/search-bar";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -45,11 +46,11 @@ const supplierLinks = [
   { title: "Become a Supplier", href: "/contact" },
 ];
 
-const contactLinks = [
+const resourceLinks = [
   { title: "Our Locations", href: "/contact" },
   { title: "Customer Care", href: "/contact" },
   { title: "FAQ", href: "/faq" },
-  { title: "News & Insights", href: "/news" },
+  { title: "Resources", href: "/resources" },
 ];
 
 export function Header() {
@@ -57,6 +58,7 @@ export function Header() {
   const [productCategories, setProductCategories] = useState<{ title: string, href: string }[]>([]);
   const [productBrands, setProductBrands] = useState<{ title: string, href: string }[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
   const pathname = usePathname();
 
@@ -67,6 +69,14 @@ export function Header() {
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
+      // Handle escape key
+      const handleEscapeKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsMenuOpen(false);
+        }
+      };
+      document.addEventListener("keydown", handleEscapeKey);
+      return () => document.removeEventListener("keydown", handleEscapeKey);
     } else {
       document.body.style.overflow = "";
     }
@@ -82,6 +92,12 @@ export function Header() {
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const toggleExpandMenu = (label: string) => {
+    setExpandedMenus((prev) =>
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+    );
+  };
 
   const navLinks = [
     {
@@ -116,7 +132,7 @@ export function Header() {
       dropdown: supplierLinks,
     },
     { href: "/careers", label: "Careers" },
-    { href: "/contact", label: "Contact", dropdown: contactLinks },
+    { href: "/contact", label: "Contact", dropdown: resourceLinks },
   ];
   
   if (!isClient) {
@@ -146,7 +162,7 @@ export function Header() {
               <React.Fragment key={link.label}>
                 {link.dropdown || link.subMenus ? (
                    <DropdownMenu>
-                    <DropdownMenuTrigger className={cn("flex items-center text-sm font-bold transition-colors hover:text-primary !bg-transparent px-3 py-2 outline-none",
+                    <DropdownMenuTrigger className={cn("flex items-center text-sm font-bold transition-colors hover:text-primary !bg-transparent min-h-11 px-4 py-2 outline-none",
                        pathname.startsWith(link.href) ? "text-primary" : "text-muted-foreground"
                     )}>
                       {link.label}
@@ -190,7 +206,7 @@ export function Header() {
                 ) : (
                   <Link
                     href={link.href}
-                    className={cn("text-sm font-bold transition-colors hover:text-primary px-3 py-2",
+                    className={cn("text-sm font-bold transition-colors hover:text-primary min-h-11 px-4 py-2 inline-flex items-center",
                         pathname === link.href ? 'text-primary' : 'text-muted-foreground'
                     )}
                   >
@@ -202,20 +218,21 @@ export function Header() {
           </nav>
         </div>
         <div className="hidden items-center gap-4 md:flex">
+            <SearchBar />
             <QuoteListIcon />
             <Button asChild>
                 <Link href="/products">Shop now</Link>
             </Button>
             <Button asChild variant="outline">
-                <Link href="/contact">Become a Customer</Link>
+                <Link href="/login">Become a Customer</Link>
             </Button>
         </div>
-        <div className="md:hidden flex items-center gap-4">
+        <div className="md:hidden flex items-center gap-2">
           <QuoteListIcon />
           <button
             onClick={toggleMenu}
             aria-label="Toggle menu"
-            className="w-11 h-11 flex flex-col justify-center items-center gap-1"
+            className="min-w-11 min-h-11 flex flex-col justify-center items-center gap-1 p-1"
           >
             <span
               className={cn(
@@ -256,30 +273,83 @@ export function Header() {
             <button
               onClick={toggleMenu}
               aria-label="Close menu"
-              className="w-11 h-11 flex justify-center items-center"
+              className="min-w-11 min-h-11 flex justify-center items-center p-1"
             >
               <X className="w-6 h-6" />
             </button>
           </div>
-          <nav className="mt-8 overflow-y-auto">
+          <div className="mt-4 mb-6">
+            <SearchBar />
+          </div>
+          <nav className="mt-4 overflow-y-auto">
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => (
                 <React.Fragment key={link.label}>
                   {(link.dropdown || link.subMenus) ? (
-                    <div className="flex flex-col space-y-1 py-2">
-                       <Link
-                          href={link.href}
-                          onClick={toggleMenu}
-                           className="block w-full rounded-md px-3 py-3 text-lg font-bold text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        >
-                          {link.label}
-                        </Link>
+                    <div className="flex flex-col space-y-0">
+                      <button
+                        onClick={() => toggleExpandMenu(link.label)}
+                        className="flex items-center justify-between w-full rounded-md min-h-11 px-3 py-3 text-lg font-bold text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                      >
+                        <span>{link.label}</span>
+                        <ChevronDown
+                          className={cn(
+                            "w-5 h-5 transition-transform duration-300",
+                            expandedMenus.includes(link.label) ? "rotate-180" : ""
+                          )}
+                        />
+                      </button>
+                      {expandedMenus.includes(link.label) && (
+                        <div className="flex flex-col space-y-0 bg-accent/50 rounded-md ml-2">
+                          {link.subMenus ? (
+                            <>
+                              {link.subMenus.map((subMenu) => (
+                                <div key={subMenu.label} className="flex flex-col space-y-0">
+                                  <div className="px-3 py-2 text-sm font-semibold text-muted-foreground">
+                                    {subMenu.label}
+                                  </div>
+                                  {subMenu.items.map((item) => (
+                                    <Link
+                                      key={item.title}
+                                      href={item.href}
+                                      onClick={toggleMenu}
+                                      className="block w-full min-h-10 px-6 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors flex items-center"
+                                    >
+                                      {item.title}
+                                    </Link>
+                                  ))}
+                                  {subMenu.allLink && (
+                                    <Link
+                                      href={subMenu.allLink.href}
+                                      onClick={toggleMenu}
+                                      className="block w-full min-h-10 px-6 py-2 text-sm font-semibold text-primary hover:bg-accent transition-colors border-t flex items-center"
+                                    >
+                                      {subMenu.allLink.title}
+                                    </Link>
+                                  )}
+                                </div>
+                              ))}
+                            </>
+                          ) : (
+                            link.dropdown?.map((item) => (
+                              <Link
+                                key={item.title}
+                                href={item.href}
+                                onClick={toggleMenu}
+                                className="block w-full min-h-10 px-6 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors flex items-center"
+                              >
+                                {item.title}
+                              </Link>
+                            ))
+                          )}
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <Link
                       href={link.href}
                       onClick={toggleMenu}
-                      className="block w-full rounded-md px-3 py-3 text-lg font-bold text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      className="block w-full min-h-11 px-3 py-3 text-lg font-bold text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors flex items-center"
                     >
                       {link.label}
                     </Link>

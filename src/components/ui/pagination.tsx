@@ -21,7 +21,7 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn("flex flex-row items-center gap-1", className)}
+    className={cn("flex flex-row items-center gap-1 md:gap-2", className)}
     {...props}
   />
 ))
@@ -51,8 +51,9 @@ const PaginationLink = ({
     className={cn(
       buttonVariants({
         variant: isActive ? "outline" : "ghost",
-        size,
+        size: size === "icon" ? "sm" : size,
       }),
+      "h-8 w-8 md:h-auto md:w-auto",
       className
     )}
     {...props}
@@ -66,12 +67,12 @@ const PaginationPrevious = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    size="default"
-    className={cn("gap-1 pl-2.5", className)}
+    size="sm"
+    className={cn("gap-1 pl-1 md:pl-2.5 md:size-default", className)}
     {...props}
   >
-    <ChevronLeft className="h-4 w-4" />
-    <span>Previous</span>
+    <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
+    <span className="hidden md:inline">Previous</span>
   </PaginationLink>
 )
 PaginationPrevious.displayName = "PaginationPrevious"
@@ -82,12 +83,12 @@ const PaginationNext = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    size="default"
-    className={cn("gap-1 pr-2.5", className)}
+    size="sm"
+    className={cn("gap-1 pr-1 md:pr-2.5 md:size-default", className)}
     {...props}
   >
-    <span>Next</span>
-    <ChevronRight className="h-4 w-4" />
+    <span className="hidden md:inline">Next</span>
+    <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
   </PaginationLink>
 )
 PaginationNext.displayName = "PaginationNext"
@@ -98,10 +99,10 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<"span">) => (
   <span
     aria-hidden
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    className={cn("flex h-8 w-8 md:h-11 md:w-11 items-center justify-center", className)}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />
+    <MoreHorizontal className="h-4 w-4 md:h-5 md:w-5" />
     <span className="sr-only">More pages</span>
   </span>
 )

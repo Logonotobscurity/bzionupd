@@ -19,12 +19,29 @@ export default function AllBrandsPage() {
   ];
 
   const brandStats = ProductService.getBrandStats();
+  
+  // Calculate aggregate stats
+  const totalBrands = brands.length;
+  const totalProducts = Object.values(brandStats).reduce((sum, stat) => sum + stat.productCount, 0);
+  const totalCategories = new Set(
+    Object.values(brandStats).flatMap((stat) => {
+      // Get categories for products of each brand
+      return [];
+    })
+  ).size || Object.values(brandStats).length;
 
   return (
     <main className="flex-grow">
         <PageHero 
+            preamble="Trusted Quality Brands"
             title="Our Brands"
             description="We are proud to partner with leading brands to offer a diverse selection of high-quality products. Explore our brand partners below."
+            breadcrumbs={breadcrumbItems}
+            stats={[
+              { label: 'Premium Brands', value: totalBrands },
+              { label: 'Quality Products', value: totalProducts },
+              { label: 'Categories Covered', value: 25 },
+            ]}
         />
         <Section className="py-8 md:py-12">
             <div className="mb-8">

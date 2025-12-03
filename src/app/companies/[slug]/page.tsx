@@ -14,6 +14,7 @@ import { BrandGrid } from '@/components/brand-grid';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { GsapScrollTrigger } from '@/components/ui/GsapScrollTrigger';
+import { PageHero } from '@/components/layout/PageHero';
 import type { Brand } from '@/lib/schema';
 
 interface CompanyPageProps {
@@ -60,32 +61,31 @@ export default function CompanyPage(props: CompanyPageProps) {
 
   return (
     <main className="flex-grow">
-      <GsapScrollTrigger>
-        <Section className="bg-gray-50">
-          <div className="container mx-auto py-12 px-4">
-            <Breadcrumbs items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 items-center">
-              <div className="w-48 h-48 relative mx-auto md:mx-0">
-                <Image
-                  src={company.logo || '/images/placeholder.jpg'}
-                  alt={`${company.name} logo`}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <div className="md:col-span-2 text-center md:text-left">
-                <h1 className="text-5xl font-extrabold text-primary tracking-tight">{company.name}</h1>
-                <p className="mt-4 text-xl text-slate-600">{company.description}</p>
-              </div>
-            </div>
-          </div>
-        </Section>
-      </GsapScrollTrigger>
+      <PageHero
+        preamble="Distribution Partner"
+        title={company.name}
+        description={company.description}
+        imageUrl={company.logo}
+        breadcrumbs={breadcrumbItems}
+        stats={[
+          { label: 'Brands Distributed', value: company.brandCount },
+          { label: 'Total Products', value: company.productCount },
+          { label: 'Product Categories', value: company.categories.length },
+        ]}
+        primaryCta={{
+          text: 'View All Products',
+          href: '/products',
+        }}
+        secondaryCta={{
+          text: 'Contact Partner',
+          href: '/contact',
+        }}
+      />
 
-      <Section id="company-brands" className="py-16">
+      <Section id="company-brands" className="py-16 bg-slate-50/50">
         <GsapScrollTrigger>
-          <SectionHeading className="text-center">
-            <SectionTitle>Our Brands</SectionTitle>
+          <SectionHeading className="text-center mb-12">
+            <SectionTitle>Brands from {company.name}</SectionTitle>
             <SectionDescription>Explore the trusted brands we represent from {company.name}.</SectionDescription>
           </SectionHeading>
         </GsapScrollTrigger>
@@ -97,10 +97,10 @@ export default function CompanyPage(props: CompanyPageProps) {
         </div>
       </Section>
 
-      <Section id="company-products" className="py-16 bg-slate-50">
+      <Section id="company-products" className="py-16">
         <GsapScrollTrigger>
-          <SectionHeading className="text-center">
-            <SectionTitle>Our Products</SectionTitle>
+          <SectionHeading className="text-center mb-12">
+            <SectionTitle>Featured Products</SectionTitle>
             <SectionDescription>Discover the quality products we distribute from {company.name}.</SectionDescription>
           </SectionHeading>
         </GsapScrollTrigger>

@@ -50,86 +50,109 @@ export function PageHero({
 
   return (
     <header
-      className="relative flex flex-col justify-center py-24 md:py-32 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground overflow-hidden"
+      className="relative flex flex-col justify-center py-16 md:py-24 bg-gradient-to-br from-primary via-primary to-primary/95 text-primary-foreground overflow-hidden"
       role="banner"
       aria-labelledby="hero-heading"
     >
-      {/* Animated background gradients */}
+      {/* Enhanced Animated background with multiple layers */}
       <div
         aria-hidden="true"
         className="absolute inset-0 z-0"
       >
         {/* Main grid pattern */}
-        <div className="absolute inset-0 bg-grid-slate-100/[0.05] [mask-image:linear-gradient(0deg,transparent,black)]" />
+        <div className="absolute inset-0 bg-grid-slate-100/[0.08] [mask-image:linear-gradient(0deg,transparent,black)]" />
         
-        {/* Animated gradient orbs */}
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-secondary/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-2000" />
+        {/* Large animated gradient orbs */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-secondary/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse animation-delay-2000" />
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-white/10 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse animation-delay-4000" />
         
         {/* Radial gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent" />
       </div>
 
       <div className={containerClasses}>
         {hasImage && (
-          <AnimatedDiv className="relative hidden lg:block w-64 h-64 bg-gradient-to-br from-white to-slate-50 p-6 rounded-2xl flex-shrink-0 shadow-2xl border-4 border-secondary transform hover:scale-105 transition-transform duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent rounded-2xl" />
-            <Image
-              src={imageUrl}
-              alt={`${title} logo`}
-              fill
-              className="object-contain p-4 relative z-10"
-              sizes="256px"
-              priority
-            />
+          <AnimatedDiv className="relative hidden lg:flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-3xl blur-2xl opacity-40" />
+            <div className="relative w-72 h-72 bg-gradient-to-br from-white to-slate-50 p-8 rounded-3xl shadow-2xl border border-white/30 backdrop-blur-md transform hover:scale-105 transition-transform duration-500">
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5 rounded-3xl" />
+              <Image
+                src={imageUrl}
+                alt={`${title} logo`}
+                fill
+                className="object-contain p-8 relative z-10"
+                sizes="288px"
+                priority
+              />
+            </div>
           </AnimatedDiv>
         )}
+        
         <div className={textContainerClasses}>
           <AnimatedDiv>
-            <div className={cn('h-1 bg-gradient-to-r from-accent via-secondary to-accent mb-6 rounded-full', { 'mx-auto w-1/3': !hasImage, 'mx-0 w-20': hasImage })}></div>
+            <div className={cn('h-1.5 bg-gradient-to-r from-secondary via-white to-accent mb-6 rounded-full', { 'mx-auto w-1/3': !hasImage, 'mx-0 w-24': hasImage })}></div>
           </AnimatedDiv>
-          {breadcrumbs && <Breadcrumbs items={breadcrumbs} className={cn('mb-4', { 'justify-center': !hasImage, 'justify-start': hasImage })} lightText={true} />}
+          
+          {breadcrumbs && <Breadcrumbs items={breadcrumbs} className={cn('mb-6', { 'justify-center': !hasImage, 'justify-start': hasImage })} lightText={true} />}
+          
           <AnimatedDiv>
             {preamble && (
-              <p className="text-xs md:text-sm font-bold tracking-widest text-accent uppercase mb-4 bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">
+              <p className="text-xs md:text-sm font-bold tracking-widest text-secondary/90 uppercase mb-4">
                 {preamble}
               </p>
             )}
             <h1
               id="hero-heading"
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight"
             >
               {title}
             </h1>
           </AnimatedDiv>
+          
           <AnimatedDiv delay={0.1}>
-            <p className="text-base md:text-lg text-slate-100 mb-8 leading-relaxed">
+            <p className="text-base md:text-lg text-slate-100 mb-8 leading-relaxed max-w-2xl">
               {description}
             </p>
           </AnimatedDiv>
 
           {stats && stats.length > 0 && (
-            <AnimatedDiv delay={0.15}>
-              <div className={cn('grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8', {'lg:text-left': hasImage})}>
+            <AnimatedDiv delay={0.2}>
+              <div className={cn('grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-10', {'lg:text-left': hasImage})}>
                 {stats.map((stat, index) => (
-                  <div key={index} className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md p-4 md:p-6 rounded-xl border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105">
-                    <p className="text-2xl md:text-3xl font-bold text-white">{stat.value}</p>
-                    <p className="text-xs md:text-sm text-slate-200">{stat.label}</p>
+                  <div 
+                    key={index} 
+                    className="group relative"
+                  >
+                    {/* Background card with gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 rounded-2xl border border-white/30 group-hover:border-white/60 transition-all duration-500 group-hover:bg-gradient-to-br group-hover:from-white/25 group-hover:to-white/10 backdrop-blur-md shadow-lg group-hover:shadow-2xl transform group-hover:scale-110" />
+                    
+                    {/* Content */}
+                    <div className="relative z-10 p-5 md:p-7">
+                      <div className="flex items-baseline gap-2">
+                        <p className="text-3xl md:text-4xl font-bold text-white tracking-tight">{stat.value.toLocaleString()}</p>
+                        <span className="text-xs md:text-sm font-bold text-secondary/70">+</span>
+                      </div>
+                      <p className="text-sm md:text-base text-slate-100 mt-2 font-medium tracking-wide group-hover:text-white transition-colors">{stat.label}</p>
+                    </div>
+                    
+                    {/* Bottom accent line */}
+                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-secondary to-accent group-hover:w-full transition-all duration-500 rounded-br-2xl rounded-bl-2xl" />
                   </div>
                 ))}
               </div>
             </AnimatedDiv>
           )}
           
-          <AnimatedDiv delay={0.2}>
+          <AnimatedDiv delay={0.3}>
             <div className={cn('flex flex-col sm:flex-row gap-4', { 'justify-center': !hasImage, 'justify-start': hasImage })}>
               {primaryCta && (
-                <Button asChild size="lg" variant="secondary" className="hover:shadow-lg hover:shadow-secondary/50 transform hover:scale-105 transition-all duration-300">
+                <Button asChild size="lg" className="bg-white text-primary hover:bg-slate-100 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                   <Link href={primaryCta.href}>{primaryCta.text}</Link>
                 </Button>
               )}
               {secondaryCta && (
-                <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary border-2 hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-2 border-white hover:bg-white/10 hover:border-white font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
                   <Link href={secondaryCta.href}>{secondaryCta.text}</Link>
                 </Button>
               )}

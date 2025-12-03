@@ -21,7 +21,7 @@ export function TraceabilitySection() {
              <h3 className="text-center text-xl sm:text-2xl font-semibold mb-4 text-primary">Traceability Map</h3>
             <div className="aspect-[4/3] relative">
                 <Image
-                  src="/images/traceability-map.png"
+                  src="https://i.ibb.co/cKcvzJrL/traceability-map.png"
                   alt="Traceability Map showing the journey of products from farm to warehouse to business"
                   fill
                   className="object-contain rounded-lg shadow-lg"

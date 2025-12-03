@@ -70,7 +70,8 @@ const HomeCarousel = ({ slides }: HeroCarouselProps) => {
                 fill
                 priority={index === 0}
                 className="object-cover"
-                sizes="100vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                quality={80}
             />
             {/* Enhanced gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/70 to-primary/60" />
@@ -107,17 +108,17 @@ const HomeCarousel = ({ slides }: HeroCarouselProps) => {
       </div>
 
       {/* Navigation Arrows */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 flex justify-between text-white z-20">
+      <div className="absolute top-1/2 -translate-y-1/2 left-3 right-3 md:left-4 md:right-4 flex justify-between text-white z-20">
         <button
           onClick={scrollPrev}
-          className="hidden md:flex p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 border border-white/30"
+          className="hidden md:flex min-h-12 min-w-12 p-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 border border-white/30"
           aria-label="Previous slide"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
         <button
           onClick={scrollNext}
-          className="hidden md:flex p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 border border-white/30"
+          className="hidden md:flex min-h-12 min-w-12 p-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 border border-white/30"
           aria-label="Next slide"
         >
           <ArrowRight className="w-6 h-6" />
@@ -125,16 +126,16 @@ const HomeCarousel = ({ slides }: HeroCarouselProps) => {
       </div>
 
       {/* Dot Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+      <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2 md:gap-3 bg-white/10 backdrop-blur-md px-3 md:px-4 py-2 rounded-full border border-white/20">
         {scrollSnaps.map((_, index) => (
           <button
             key={index}
             onClick={() => scrollTo(index)}
             className={cn(
-              'h-3 rounded-full transition-all duration-300 hover:scale-110',
+              'rounded-full transition-all duration-300 hover:scale-110 min-w-3 min-h-3',
               index === selectedIndex 
-                ? 'w-8 bg-white shadow-lg shadow-white/50' 
-                : 'w-3 bg-white/40 hover:bg-white/70'
+                ? 'w-8 h-3 bg-white shadow-lg shadow-white/50' 
+                : 'w-3 h-3 bg-white/40 hover:bg-white/70'
             )}
             aria-label={`Go to slide ${index + 1}`}
           />

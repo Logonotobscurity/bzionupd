@@ -11,7 +11,7 @@ export const FOOTER_LINKS = {
         { title: 'About Us', href: '/about' },
         { title: 'Careers', href: '/careers' },
         { title: 'Contact', href: '/contact' },
-        { title: 'News & Insights', href: '/news' },
+        { title: 'Resources', href: '/resources' },
     ],
     customers: [
         { title: 'For Schools & Institutions', href: '/customers' },
