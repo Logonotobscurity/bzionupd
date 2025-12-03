@@ -1,6 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { sendQuoteRequestToWhatsApp, sendQuoteConfirmationToCustomer } from '@/lib/send-whatsapp';
 import { z } from 'zod';
 
 const quoteRequestSchema = z.object({
@@ -54,7 +55,22 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json(quoteRequest);
+    // Generate WhatsApp URLs
+    const whatsappResponse = await sendQuoteRequestToWhatsApp({
+      name,
+      email,
+      phone,
+      company,
+      address: message,
+      items,
+    });
+
+    // Return response with WhatsApp URL
+    return NextResponse.json({
+      ...quoteRequest,
+      whatsappUrl: whatsappResponse.whatsappUrl || null,
+      message: 'Quote request submitted successfully. WhatsApp notification queued.'
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new NextResponse(JSON.stringify(error.errors), { status: 400 });

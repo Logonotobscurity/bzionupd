@@ -75,10 +75,19 @@ export default function CheckoutPage() {
         throw new Error('Failed to submit quote request.');
       }
 
+      const result = await response.json();
+
       toast({
         title: 'Quote Request Submitted!',
         description: 'Thank you! We will get back to you shortly.',
       });
+
+      // Open WhatsApp if URL is available
+      if (result.whatsappUrl) {
+        setTimeout(() => {
+          window.open(result.whatsappUrl, '_blank', 'noopener,noreferrer');
+        }, 500);
+      }
       
       clearQuote();
       router.push('/');
