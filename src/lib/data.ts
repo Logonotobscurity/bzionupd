@@ -16,6 +16,9 @@ export interface PDPContext {
   relatedProducts: Product[];
 }
 
+// Export products for use in API routes
+export { products };
+
 // Get products by company slug
 export function getProductsByCompanySlug(slug: string): Product[] {
   const company = getCompanyBySlug(slug);
