@@ -222,7 +222,7 @@ export function Header() {
                           <DropdownMenuItem key={item.title} asChild>
                             <button
                               onClick={() => scrollToSection(item.href)}
-                              className="w-full text-left"
+                              className="w-full text-left text-sm font-medium"
                             >
                               {item.title}
                             </button>
