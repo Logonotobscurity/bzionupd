@@ -11,6 +11,7 @@ import { ClientChatWidget } from "@/components/layout/ClientChatWidget";
 import { CookieBanner } from "@/components/cookie-banner";
 import WhatsappWidget from "@/components/layout/WhatsappWidget";
 import { MonitoringProvider } from "@/components/layout/MonitoringProvider";
+import { PageLoadingProvider } from "@/components/layout/PageLoadingProvider";
 
 export const metadata: Metadata = {
   title: "BZION Hub Digital",
@@ -43,17 +44,19 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased flex flex-col min-h-screen overflow-x-hidden">
-          <MonitoringProvider />
-          <ErrorBoundary>
-            <SkipLink />
-            <Header />
-            <main id="main-content" className="flex-grow pt-0">{children}</main>
-            <Footer />
-            <Toaster />
-            <WhatsappWidget />
-            <ClientChatWidget />
-            <CookieBanner />
-          </ErrorBoundary>
+          <PageLoadingProvider>
+            <MonitoringProvider />
+            <ErrorBoundary>
+              <SkipLink />
+              <Header />
+              <main id="main-content" className="flex-grow pt-0">{children}</main>
+              <Footer />
+              <Toaster />
+              <WhatsappWidget />
+              <ClientChatWidget />
+              <CookieBanner />
+            </ErrorBoundary>
+          </PageLoadingProvider>
       </body>
     </html>
   );

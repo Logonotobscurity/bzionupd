@@ -83,7 +83,7 @@ export function QuoteDrawer() {
                           {/* Quantity Controls */}
                           <div className="flex items-center gap-2 mt-3 bg-slate-100/80 rounded-lg p-1 w-fit border border-slate-200/80">
                             <button 
-                              onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                              onClick={() => handleQuantityChange(String(item.id), item.quantity - 1)}
                               className="h-7 w-7 rounded-md hover:bg-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary active:scale-95 active:shadow-md transition-all duration-200 flex items-center justify-center text-slate-600 hover:text-primary"
                               aria-label="Decrease quantity"
                             >
@@ -93,7 +93,7 @@ export function QuoteDrawer() {
                               {item.quantity}
                             </span>
                             <button 
-                              onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                              onClick={() => handleQuantityChange(String(item.id), item.quantity + 1)}
                               className="h-7 w-7 rounded-md hover:bg-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary active:scale-95 active:shadow-md transition-all duration-200 flex items-center justify-center text-slate-600 hover:text-primary"
                               aria-label="Increase quantity"
                             >

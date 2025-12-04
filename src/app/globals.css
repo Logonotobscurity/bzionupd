@@ -197,6 +197,37 @@
   .transition-bounce {
     transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
+
+  /* Page Loader Animations */
+  @keyframes rotate-loader {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes dash-loader {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 200;
+      stroke-dashoffset: -35px;
+    }
+    100% {
+      stroke-dashoffset: -125px;
+    }
+  }
+
+  .animate-spin-loader {
+    width: 3.25em;
+    transform-origin: center;
+    animation: rotate-loader 2s linear infinite;
+  }
+
+  .animate-dash-loader {
+    animation: dash-loader 1.5s ease-in-out infinite;
+  }
   
   /* Full-Width Container with Proportional Padding */
   .container-full {
