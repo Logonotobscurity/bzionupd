@@ -151,7 +151,7 @@ export function Header() {
     <>
     <header
       className={cn(
-        "sticky top-0 z-40 w-full bg-white shadow-sm transition-all duration-300"
+        "sticky top-0 left-0 right-0 z-50 w-full bg-white shadow-md transition-all duration-300 border-b border-slate-100"
       )}
     >
       <div className="w-full px-[var(--navbar-padding-inline)] py-[var(--navbar-padding-block)] flex items-center justify-between gap-[var(--navbar-gap)]">

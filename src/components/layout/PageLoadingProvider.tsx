@@ -18,6 +18,23 @@ export const PageLoadingProvider = ({ children }: { children: React.ReactNode })
   const [message, setMessage] = useState('Loading...');
   const pathname = usePathname();
   const router = useRouter();
+  const previousPathname = React.useRef(pathname);
+
+  // Show loader on pathname change (client-side navigation)
+  useEffect(() => {
+    if (pathname !== previousPathname.current) {
+      setIsLoading(true);
+      setMessage('Loading page...');
+      previousPathname.current = pathname;
+      
+      // Hide loader after page transition completes
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 800);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [pathname]);
 
   // Auto hide loader after 3 seconds as safety measure
   useEffect(() => {
@@ -28,11 +45,6 @@ export const PageLoadingProvider = ({ children }: { children: React.ReactNode })
       return () => clearTimeout(timer);
     }
   }, [isLoading]);
-
-  // Hide loader when route changes
-  useEffect(() => {
-    setIsLoading(false);
-  }, [pathname]);
 
   const showLoader = (msg?: string) => {
     setMessage(msg || 'Loading...');

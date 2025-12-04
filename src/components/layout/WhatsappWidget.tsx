@@ -16,7 +16,7 @@ export const WhatsappIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 const WhatsappWidget = () => {
     return (
-        <div className="fixed right-3 bottom-6 md:right-4 md:bottom-8 lg:right-6 lg:bottom-12 z-40 safe-area-inset-bottom">
+        <div className="fixed left-3 bottom-6 md:left-4 md:bottom-8 lg:left-6 lg:bottom-12 z-40 safe-area-inset-bottom">
             <Button asChild className="h-14 w-14 sm:h-16 sm:w-16 md:h-16 md:w-16 p-0 rounded-full shadow-lg border-2 border-white bg-green-500 hover:bg-green-600 hover:shadow-xl transition-all duration-300 hover:scale-110" variant="ghost">
                 <Link href="https://wa.me/message/TOVLTP6EMAWNI1" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
                     <WhatsappIcon className={styles.whatsappIcon} />
