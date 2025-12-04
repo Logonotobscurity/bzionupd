@@ -53,9 +53,6 @@ export const ProductCard = ({ product, priority = false }: ProductCardProps) => 
                 <CardContent className="p-3 sm:p-4 flex-grow flex flex-col gap-2">
                     <p className="text-xs text-slate-500 truncate">{product.brand}</p>
                     <h3 className="font-semibold text-primary text-xs sm:text-sm leading-tight flex-grow line-clamp-2 break-words">{product.name}</h3>
-                    <div className="flex items-center gap-2 mt-auto pt-2">
-                        {product.price && <p className="font-bold text-primary text-sm">₦{product.price.toLocaleString()}</p>}
-                    </div>
                 </CardContent>
             </Link>
              <div className="px-3 sm:px-4 pb-3 sm:pb-4 pt-0">

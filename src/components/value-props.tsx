@@ -83,11 +83,6 @@ const ValueProps = () => {
                 </AnimatedDiv>
             ))}
         </div>
-        <AnimatedDiv>
-         <p className="mt-12 text-slate-300 max-w-3xl mx-auto text-center">
-             Our tech-driven logistics ensure transparency, consistency, and a supply you can plan around.
-         </p>
-        </AnimatedDiv>
     </Section>
   );
 }

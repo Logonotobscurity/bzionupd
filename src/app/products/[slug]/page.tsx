@@ -2,7 +2,7 @@
 import React, { use, useState, useEffect } from 'react';
 import { ProductService } from '@/services/productService';
 import { useQuoteStore } from '@/lib/quote-store';
-import { ArrowRight, Check, Package, ShieldCheck, Factory, Share2, Truck, Star } from 'lucide-react';
+import { ArrowRight, Check, Package, ShieldCheck, Factory, Share2, Truck, Star, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -125,6 +125,24 @@ export default function ProductDetailPage(props: PageProps) {
             </div>
 
             <div className="w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full hidden md:block" />
+
+            {/* --- PRICING NOTE --- */}
+            <div className="p-4 md:p-6 rounded-2xl bg-amber-50 border-2 border-amber-200 shadow-sm">
+              <div className="flex gap-3 items-start">
+                <AlertCircle className="h-6 w-6 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="font-bold text-amber-900 text-sm md:text-base mb-2">Estimate Price</p>
+                  {product.price ? (
+                    <p className="text-2xl md:text-3xl font-bold text-primary mb-3">₦{product.price.toLocaleString()}</p>
+                  ) : (
+                    <p className="text-lg font-semibold text-slate-600 mb-3">Contact for pricing</p>
+                  )}
+                  <p className="text-sm text-amber-800 leading-relaxed">
+                    <span className="font-semibold">Important Note:</span> Due to market price volatility and supply chain fluctuations, prices are subject to change. For the most current and accurate pricing, please request a quote. This ensures you get the best rates based on current market conditions.
+                  </p>
+                </div>
+              </div>
+            </div>
 
             <div className="space-y-4 md:space-y-6">
               <p className="text-base md:text-lg text-slate-700 leading-relaxed font-medium">
