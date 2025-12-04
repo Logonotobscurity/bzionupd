@@ -91,27 +91,35 @@ export function PageHero({
         
         <div className={textContainerClasses}>
           <AnimatedDiv>
-            <div className={cn('h-1.5 bg-gradient-to-r from-secondary via-white to-accent mb-6 rounded-full', { 'mx-auto w-1/3': !hasImage, 'mx-0 w-24': hasImage })}></div>
+            <div className={cn('h-1.5 bg-gradient-to-r from-secondary via-white to-accent mb-6 rounded-full', 
+              { 'mx-auto w-1/3': !hasImage, 'mx-0 w-24': hasImage }
+            )}></div>
           </AnimatedDiv>
           
           {breadcrumbs && <Breadcrumbs items={breadcrumbs} className={cn('mb-6', { 'justify-center': !hasImage, 'justify-start': hasImage })} lightText={true} />}
           
           <AnimatedDiv>
             {preamble && (
-              <p className="text-xs md:text-sm font-bold tracking-widest text-secondary/90 uppercase mb-4">
+              <p className={cn("text-xs md:text-sm font-bold tracking-widest text-secondary/90 uppercase mb-4", 
+                { 'text-center': !hasImage, 'text-left': hasImage }
+              )}>
                 {preamble}
               </p>
             )}
             <h1
               id="hero-heading"
-              className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight tracking-tight"
+              className={cn("text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight tracking-tight",
+                { 'text-center': !hasImage, 'text-left': hasImage }
+              )}
             >
               {title}
             </h1>
           </AnimatedDiv>
           
           <AnimatedDiv delay={0.1}>
-            <p className="text-sm sm:text-base md:text-lg text-slate-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl px-2 sm:px-0">
+            <p className={cn('text-sm sm:text-base md:text-lg text-slate-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl', 
+              { 'mx-auto px-2 sm:px-0 text-center': !hasImage, 'mx-0 px-0 text-left': hasImage }
+            )}>
               {description}
             </p>
           </AnimatedDiv>

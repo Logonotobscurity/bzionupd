@@ -107,21 +107,39 @@ export default function CheckoutPage() {
     const name = `${data.firstName} ${data.lastName}`;
 
     try {
+      // Prepare items data ensuring all required fields are present
+      const itemsData = items.map(item => ({
+        id: item.id,
+        quantity: item.quantity,
+        name: item.name,
+      }));
+
+      const payload = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        company: data.company || '',
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        name,
+        message,
+        items: itemsData,
+      };
+
       const response = await fetch('/api/quote-requests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...data,
-          name,
-          message,
-          items,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit quote request.');
+        const errorData = await response.text();
+        console.error('API Error Response:', errorData);
+        throw new Error(`Failed to submit quote request: ${response.status} ${response.statusText}`);
       }
 
       toast({
@@ -139,10 +157,11 @@ export default function CheckoutPage() {
       }, 1000);
 
     } catch (error) {
-      console.error(error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Submission Error:', errorMessage);
       toast({
         title: 'Submission Error',
-        description: 'There was a problem submitting your request. Please try again.',
+        description: errorMessage || 'There was a problem submitting your request. Please try again.',
         variant: 'destructive',
       });
     }

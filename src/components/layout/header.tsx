@@ -26,6 +26,29 @@ import { getBrands } from "@/services/brandService";
 import { type Category, type Brand } from "@/lib/schema";
 import { QuoteDrawer } from "./quote-drawer";
 
+// Smooth scroll to section utility
+const scrollToSection = (href: string) => {
+  if (typeof window === 'undefined') return;
+  
+  const [path, hash] = href.split('#');
+  if (!hash) {
+    window.location.href = href;
+    return;
+  }
+
+  // Check if we're already on the target page
+  if (path && window.location.pathname !== path) {
+    window.location.href = href;
+    return;
+  }
+
+  // Smooth scroll to the element
+  const element = document.getElementById(hash);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
+
 const aboutLinks = [
   { title: "Our Story", href: "/about" },
   { title: "Mission & Vision", href: "/about#mission-vision" },
@@ -197,7 +220,12 @@ export function Header() {
                       ) : (
                         link.dropdown?.map((item) => (
                           <DropdownMenuItem key={item.title} asChild>
-                            <Link href={item.href}>{item.title}</Link>
+                            <button
+                              onClick={() => scrollToSection(item.href)}
+                              className="w-full text-left"
+                            >
+                              {item.title}
+                            </button>
                           </DropdownMenuItem>
                         ))
                       )}
@@ -337,14 +365,16 @@ export function Header() {
                             </>
                           ) : (
                             link.dropdown?.map((item) => (
-                              <Link
+                              <button
                                 key={item.title}
-                                href={item.href}
-                                onClick={toggleMenu}
-                                className="w-full px-4 py-2.5 text-sm text-muted-foreground hover:bg-slate-200 hover:text-foreground transition-colors flex items-center"
+                                onClick={() => {
+                                  scrollToSection(item.href);
+                                  toggleMenu();
+                                }}
+                                className="w-full px-4 py-2.5 text-sm text-muted-foreground hover:bg-slate-200 hover:text-foreground transition-colors flex items-center text-left"
                               >
                                 {item.title}
-                              </Link>
+                              </button>
                             ))
                           )}
                         </div>

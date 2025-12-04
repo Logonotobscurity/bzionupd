@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         requestor_name: name,
         requestor_email: email,
         requestor_phone: phone,
-        company_name: company,
+        company_name: company || null,
         delivery_address: message,
         requested_products: items as any,
         total_items: totalItems,
@@ -55,28 +55,40 @@ export async function POST(req: Request) {
       },
     });
 
-    // Generate WhatsApp URLs
-    const whatsappResponse = await sendQuoteRequestToWhatsApp({
-      name,
-      email,
-      phone,
-      company,
-      address: message,
-      items,
-    });
+    // Generate WhatsApp URLs (non-blocking)
+    try {
+      await sendQuoteRequestToWhatsApp({
+        name,
+        email,
+        phone,
+        company,
+        address: message,
+        items,
+      });
+    } catch (whatsappError) {
+      console.warn('[WHATSAPP_NOTIFICATION_ERROR]', whatsappError);
+      // Don't fail the request if WhatsApp notification fails
+    }
 
-    // Return response with WhatsApp URL
+    // Return response with quote details
     return NextResponse.json({
-      ...quoteRequest,
-      whatsappUrl: whatsappResponse.whatsappUrl || null,
-      message: 'Quote request submitted successfully. WhatsApp notification queued.'
-    });
+      id: quoteRequest.id,
+      quote_reference: quoteRequest.quote_reference,
+      message: 'Quote request submitted successfully.'
+    }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
+      console.error('[QUOTE_REQUESTS_VALIDATION_ERROR]', error.errors);
+      return NextResponse.json(
+        { error: 'Invalid request data', details: error.errors },
+        { status: 400 }
+      );
     }
     console.error('[QUOTE_REQUESTS_POST]', error);
-    return new NextResponse('Internal error', { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
 
