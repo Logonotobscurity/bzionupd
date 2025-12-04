@@ -85,7 +85,21 @@ export default function CheckoutPage() {
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/message/TOVLTP6EMAWNI1?text=${encodedMessage}`;
 
-    window.open(whatsappUrl, "_blank");
+    // Open WhatsApp with responsive handling
+    if (typeof window !== 'undefined') {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isAndroid = userAgent.includes('android');
+      const isIOS = /iphone|ipad|ipod/.test(userAgent);
+      const isDesktop = !isAndroid && !isIOS;
+
+      if (isAndroid || isIOS) {
+        // Mobile: Use wa.me link which opens WhatsApp directly
+        window.location.href = whatsappUrl;
+      } else {
+        // Desktop: Open in new tab
+        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      }
+    }
   };
 
   const onSubmit = async (data: CheckoutFormValues) => {
@@ -110,25 +124,19 @@ export default function CheckoutPage() {
         throw new Error('Failed to submit quote request.');
       }
 
-      const result = await response.json();
-
       toast({
         title: 'Quote Request Submitted!',
-        description: 'Thank you! We will get back to you shortly.',
+        description: 'Redirecting to WhatsApp...',
       });
 
       // Send to WhatsApp
       handleWhatsAppSubmit(data);
       
-      // Open WhatsApp if URL is available
-      if (result.whatsappUrl) {
-        setTimeout(() => {
-          window.open(result.whatsappUrl, '_blank', 'noopener,noreferrer');
-        }, 500);
-      }
-      
-      clearQuote();
-      router.push('/');
+      // Clear quote and redirect after a short delay
+      setTimeout(() => {
+        clearQuote();
+        router.push('/');
+      }, 1000);
 
     } catch (error) {
       console.error(error);
