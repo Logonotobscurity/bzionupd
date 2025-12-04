@@ -5,14 +5,8 @@ import { ShieldCheck, Target, Eye, Goal, Handshake } from "lucide-react";
 import { Section, SectionDescription, SectionTitle, SectionHeading } from "@/components/ui/section";
 import { findImage } from "@/lib/placeholder-images";
 import Image from "next/image";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import CompanyStats from "./CompanyStats";
 import Link from "next/link";
+import CompanyStats from "./CompanyStats";
 import { GsapScrollTrigger } from "@/components/ui/GsapScrollTrigger";
 import { Button } from "@/components/ui/button";
 
@@ -25,21 +19,6 @@ const ValueCard = ({ icon: Icon, title, description }: { icon: React.ElementType
         <p className="text-card-foreground font-light text-center flex-grow">{description}</p>
     </div>
 );
-
-const faqs = [
-    {
-        q: "What are Bzion’s minimum order quantities (MOQ)?",
-        a: "Our MOQs are structured for your operational reality. We work with you to define order quantities that fit your business needs and maximize your profit."
-    },
-    {
-        q: "Can I access real-time stock visibility?",
-        a: "Yes. Our partners get clear, real-time communication on stock levels and delivery schedules, eliminating the uncertainty common in the supply chain."
-    },
-    {
-        q: "What payment and credit terms are available?",
-        a: "We offer competitive and flexible payment solutions designed to support your cash flow. Discuss your specific needs with our team during onboarding."
-    }
-];
 
 
 const AboutContent = () => {
@@ -210,33 +189,6 @@ const AboutContent = () => {
       </Section>
 
       <GsapScrollTrigger><CompanyStats /></GsapScrollTrigger>
-
-      {/* Solving Challenges */}
-      <Section>
-        <GsapScrollTrigger>
-        <SectionHeading className="text-center">
-            <p className="text-sm font-bold tracking-widest text-secondary uppercase mx-auto mb-space-sm">Partner FAQs</p>
-            <SectionTitle className="mx-auto">Your Questions, Answered</SectionTitle>
-             <SectionDescription>We believe in transparency. Here are answers to some common questions from our partners.</SectionDescription>
-        </SectionHeading>
-        </GsapScrollTrigger>
-        <GsapScrollTrigger>
-          <div className="max-w-3xl mx-auto">
-             <Accordion type="single" collapsible className="w-full">
-                {faqs.map((item, index) => (
-                    <AccordionItem value={`item-${index}`} key={index}>
-                        <AccordionTrigger className="text-left text-lg font-medium text-primary hover:no-underline">
-                           {item.q}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-base font-normal text-slate-600">
-                           <p className="max-w-prose">{item.a}</p>
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
-          </div>
-        </GsapScrollTrigger>
-      </Section>
     </article>
   );
 };

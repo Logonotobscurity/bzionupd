@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { Section, SectionHeading, SectionTitle, SectionDescription } from "@/components/ui/section";
 import { Mail, Phone, MapPin } from 'lucide-react';
 import Image from "next/image";
+import Link from "next/link";
 import { findImage } from "@/lib/placeholder-images";
 import { GsapScrollTrigger } from "@/components/ui/GsapScrollTrigger";
 
@@ -24,24 +25,6 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
-const standards = [
-    {
-        title: "Customer Obsession",
-        description: "We place our partners at the center of everything we do, anticipating needs and exceeding expectations with every delivery.",
-        cta: "Learn More"
-    },
-    {
-        title: "Operational Excellence",
-        description: "24-hour delivery, damage-free packaging, and efficient logistics that keep your business running smoothly.",
-        cta: "View Our Process"
-    },
-    {
-        title: "Acting with Integrity",
-        description: "Transparent pricing, genuine products, and honest dealings in every transaction and interaction.",
-        cta: "Report a Grievance"
-    }
-];
-
 const PageHero = () => {
     return (
         <Section className="bg-primary">
@@ -54,8 +37,12 @@ const PageHero = () => {
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">Get in Touch with BZION</h1>
                     <p className="text-lg text-slate-300 mb-8">We're here to help. Whether you're a potential partner, a customer with a question, or just want to learn more about our services, we'd love to hear from you.</p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">View Open Positions</Button>
-                        <Button size="lg" variant="secondary">Become a Partner</Button>
+                        <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">
+                            <Link href="/careers">View Open Positions</Link>
+                        </Button>
+                        <Button asChild size="lg" variant="secondary">
+                            <Link href="/contact">Become a Partner</Link>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -285,21 +272,6 @@ export default function ContactPage() {
             <div className="border-b-2 border-slate-200"></div>
             <ContactDetails />
             <ContactForm />
-            
-            <Section className="bg-slate-100/50">
-                <SectionHeading>
-                    <SectionTitle>How We Keep Our Standards High</SectionTitle>
-                </SectionHeading>
-                <div className="grid md:grid-cols-3 gap-8 mt-12">
-                    {standards.map((standard, index) => (
-                        <div key={index} className="bg-white p-8 rounded-xl shadow-sm border border-slate-200/80 flex flex-col items-center text-center">
-                            <h3 className="text-xl font-semibold text-primary mb-4">{standard.title}</h3>
-                            <p className="text-slate-600 mb-6 flex-grow">{standard.description}</p>
-                            <Button variant="outline" size="lg">{standard.cta}</Button>
-                        </div>
-                    ))}
-                </div>
-            </Section>
         </>
     )
 }

@@ -117,8 +117,8 @@ export function PageHero({
           </AnimatedDiv>
           
           <AnimatedDiv delay={0.1}>
-            <p className={cn('text-sm sm:text-base md:text-lg text-slate-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl', 
-              { 'mx-auto px-2 sm:px-0 text-center': !hasImage, 'mx-0 px-0 text-left': hasImage }
+            <p className={cn('text-sm sm:text-base md:text-lg text-slate-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl text-justify', 
+              { 'mx-auto px-2 sm:px-0': !hasImage, 'mx-0 px-0': hasImage }
             )}>
               {description}
             </p>
