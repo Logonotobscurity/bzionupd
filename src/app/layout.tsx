@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   title: "BZION Hub Digital",
   description: "Your one-stop B2B platform for Fast-Moving Consumer Goods.",
   icons: {
-    icon: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: "https://i.ibb.co/tp7n1sG7/faicon.png",
+    apple: "https://i.ibb.co/tp7n1sG7/faicon.png",
   },
   manifest: "/manifest.json",
 };

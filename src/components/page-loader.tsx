@@ -54,7 +54,7 @@ export const PageLoader = ({
         {/* BZION Logo in center */}
         <div className="relative w-20 h-20 flex items-center justify-center">
           <Image
-            src="/favicon.svg"
+            src="https://i.ibb.co/tp7n1sG7/faicon.png"
             alt="BZION"
             width={80}
             height={80}
