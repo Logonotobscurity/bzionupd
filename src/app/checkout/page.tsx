@@ -53,6 +53,41 @@ export default function CheckoutPage() {
 
   const { formState: { isSubmitting } } = form;
 
+  const handleWhatsAppSubmit = (data: CheckoutFormValues) => {
+    if (items.length === 0) return;
+
+    // Create organized message with customer details
+    const messageLines = [
+      "🛍️ *BZION Quote Request*",
+      "",
+      "*Customer Details:*",
+      `Name: ${data.firstName} ${data.lastName}`,
+      `Email: ${data.email}`,
+      `Phone: ${data.phone}`,
+      `Company: ${data.company || "N/A"}`,
+      `Address: ${data.address}, ${data.city}, ${data.state}`,
+      "",
+      "*Items Requested:*"
+    ];
+
+    items.forEach((item, index) => {
+      messageLines.push(`${index + 1}. ${item.name}`);
+      messageLines.push(`   SKU: ${item.id}`);
+      messageLines.push(`   Quantity: ${item.quantity}`);
+    });
+
+    messageLines.push("");
+    messageLines.push(`*Total Items: ${items.reduce((sum, item) => sum + item.quantity, 0)}*`);
+    messageLines.push("");
+    messageLines.push("Please confirm availability and provide pricing details.");
+
+    const message = messageLines.join("\n");
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/message/TOVLTP6EMAWNI1?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, "_blank");
+  };
+
   const onSubmit = async (data: CheckoutFormValues) => {
     const message = `Address: ${data.address}, ${data.city}, ${data.state}`;
     const name = `${data.firstName} ${data.lastName}`;
@@ -82,6 +117,9 @@ export default function CheckoutPage() {
         description: 'Thank you! We will get back to you shortly.',
       });
 
+      // Send to WhatsApp
+      handleWhatsAppSubmit(data);
+      
       // Open WhatsApp if URL is available
       if (result.whatsappUrl) {
         setTimeout(() => {
@@ -269,7 +307,7 @@ export default function CheckoutPage() {
 
              {/* Submit Button */}
              <Button type="submit" form="checkout-form" size="lg" className="w-full rounded-lg md:rounded-xl bg-gradient-to-r from-primary to-primary/90 text-white text-sm md:text-base font-bold py-2 md:py-3 shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-60 disabled:bg-slate-400 transition-all duration-200 h-10 md:h-12 flex-shrink-0" disabled={isSubmitting || items.length === 0}>
-                {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
+                {isSubmitting ? 'Submitting...' : '📱 Submit & Send to WhatsApp'}
              </Button>
 
              {/* Trust Badge */}
