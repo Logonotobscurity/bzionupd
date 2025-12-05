@@ -8,6 +8,7 @@ import { Section, SectionDescription, SectionPreamble, SectionTitle, SectionHead
 import { cn } from '@/lib/utils';
 import { Warehouse } from 'lucide-react';
 import { AnimatedDiv } from '@/components/animated-div';
+import { GsapScrollTrigger } from '@/components/ui/GsapScrollTrigger';
 
 const advantages = [
     {
@@ -55,7 +56,8 @@ const ValueProps = () => {
         aria-labelledby="bzion-advantage-heading"
     >
        <div className="text-center">
-         <SectionHeading className="!text-center">
+         <GsapScrollTrigger>
+           <SectionHeading className="!text-center">
           <AnimatedDiv>
             <p className="text-sm font-bold tracking-widest text-accent uppercase">Why BZION</p>
             <SectionTitle id="bzion-advantage-heading" className="!text-white mb-4 text-3xl sm:text-4xl">The BZION Advantage</SectionTitle>
@@ -63,24 +65,25 @@ const ValueProps = () => {
               At BZION, we move beyond the transactional. We provide the operational backbone that transforms scarcity into reliable abundance, empowering businesses across Nigeria to scale with confidence. Here’s how we deliver.
             </SectionDescription>
           </AnimatedDiv>
-         </SectionHeading>
-         <AnimatedDiv delay={0.2}>
+           </SectionHeading>
+         </GsapScrollTrigger>
+         <GsapScrollTrigger delay={0.15}>
            <div className="mt-8 text-center">
              <Button asChild variant="secondary" size="lg">
                <a href="/about">Discover the Difference</a>
              </Button>
            </div>
-         </AnimatedDiv>
+         </GsapScrollTrigger>
        </div>
          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {advantages.map((advantage, index) => (
-                <AnimatedDiv key={index} delay={0.1 * (index + 1)}>
+                <GsapScrollTrigger key={index} delay={0.1 * (index + 1)}>
                     <AdvantageCard
                         icon={advantage.icon}
                         title={advantage.title}
                         description={advantage.description}
                     />
-                </AnimatedDiv>
+                </GsapScrollTrigger>
             ))}
         </div>
     </Section>

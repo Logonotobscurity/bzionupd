@@ -7,12 +7,8 @@ const nextConfig = {
       };
       return config;
     },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-   ignoreDuringBuilds: true,
-  },
+  // TypeScript and ESLint errors MUST be fixed - no ignoring in production
+  // Strict mode enabled for zero-tolerance build pipeline
   async redirects() {
     return [
       {
