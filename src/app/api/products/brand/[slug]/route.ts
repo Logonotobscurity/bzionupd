@@ -4,9 +4,9 @@ import { getBrands } from '@/services/brandService';
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = params;
+  const { slug } = await params;
   const allBrands = await getBrands();
   const brand = allBrands.find((b) => b.slug === slug);
 

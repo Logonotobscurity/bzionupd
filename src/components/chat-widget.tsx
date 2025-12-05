@@ -149,7 +149,7 @@ export function ChatWidget() {
   return (
     <>
       {/* Chat Button */}
-      <div className="fixed right-3 bottom-20 md:right-4 md:bottom-24 lg:right-6 lg:bottom-28 z-50 safe-area-inset-bottom">
+      <div className="fixed right-3 bottom-4 md:right-4 md:bottom-6 lg:right-6 lg:bottom-8 z-50 safe-area-inset-bottom">
         <Button
           onClick={() => setChatOpen(!isChatOpen)}
           className="h-14 w-14 sm:h-16 sm:w-16 md:h-16 md:w-16 p-0 rounded-full shadow-lg border-2 border-white bg-primary text-white hover:bg-primary/90 hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center"

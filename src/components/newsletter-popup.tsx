@@ -16,6 +16,13 @@ export const NewsletterPopup = ({ delay = 3000 }: NewsletterPopupProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect((): (() => void) | undefined => {
+    // Check for reset parameter in URL (for testing)
+    const params = new URLSearchParams(window.location.search);
+    const shouldReset = params.has('reset-newsletter');
+    if (shouldReset) {
+      localStorage.removeItem('bzion-newsletter-dismissed');
+    }
+
     // Check if user has already dismissed this popup
     const hasDismissed = localStorage.getItem('bzion-newsletter-dismissed');
     if (!hasDismissed) {

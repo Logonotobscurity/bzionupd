@@ -36,7 +36,7 @@ const PageHero = () => {
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">Get in Touch with BZION</h1>
                     <p className="text-lg text-slate-300 mb-8">We're here to help. Whether you're a potential partner, a customer with a question, or just want to learn more about our services, we'd love to hear from you.</p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-primary">
+                        <Button asChild size="lg" variant="secondary">
                             <Link href="/careers">View Open Positions</Link>
                         </Button>
                         <Button asChild size="lg" variant="secondary">
@@ -79,9 +79,10 @@ const ContactForm = () => {
                 </SectionHeading>
                 
                 <Form {...form}>
-                    <div className="relative mt-8 p-8 rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden">
-                        {/* Grid border pattern */}
-                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-40 pointer-events-none bg-origin-content"></div>
+                    <div className="relative mt-8 p-8 md:p-12 rounded-3xl bg-gradient-to-br from-white via-slate-50 to-white border border-slate-200/50 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                        {/* Modern gradient accent */}
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-secondary/5 to-transparent rounded-full -mr-48 -mt-48 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-primary/5 to-transparent rounded-full -ml-40 -mb-40 pointer-events-none"></div>
                         
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                         <div className="grid sm:grid-cols-2 gap-6">
@@ -90,9 +91,9 @@ const ContactForm = () => {
                                 name="firstName"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>First Name</FormLabel>
+                                        <FormLabel className="text-sm font-semibold text-slate-700">First Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="John" {...field} />
+                                            <Input placeholder="John" className="h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-secondary focus:ring-secondary/20 rounded-lg transition-all" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -103,9 +104,9 @@ const ContactForm = () => {
                                 name="lastName"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Last Name</FormLabel>
+                                        <FormLabel className="text-sm font-semibold text-slate-700">Last Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Doe" {...field} />
+                                            <Input placeholder="Doe" className="h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-secondary focus:ring-secondary/20 rounded-lg transition-all" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -118,9 +119,9 @@ const ContactForm = () => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email Address</FormLabel>
+                                    <FormLabel className="text-sm font-semibold text-slate-700">Email Address</FormLabel>
                                     <FormControl>
-                                        <Input type="email" placeholder="john@example.com" {...field} />
+                                        <Input type="email" placeholder="john@example.com" className="h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-secondary focus:ring-secondary/20 rounded-lg transition-all" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -132,9 +133,9 @@ const ContactForm = () => {
                             name="phone"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Phone Number (Optional)</FormLabel>
+                                    <FormLabel className="text-sm font-semibold text-slate-700">Phone Number (Optional)</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="+234 1 234 5678" {...field} />
+                                        <Input placeholder="+234 1 234 5678" className="h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-secondary focus:ring-secondary/20 rounded-lg transition-all" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -146,9 +147,9 @@ const ContactForm = () => {
                             name="subject"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Subject</FormLabel>
+                                    <FormLabel className="text-sm font-semibold text-slate-700">Subject</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="How can we help?" {...field} />
+                                        <Input placeholder="How can we help?" className="h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-secondary focus:ring-secondary/20 rounded-lg transition-all" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -160,16 +161,16 @@ const ContactForm = () => {
                             name="message"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Message</FormLabel>
+                                    <FormLabel className="text-sm font-semibold text-slate-700">Message</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="Tell us more about your inquiry..." className="min-h-32" {...field} />
+                                        <Textarea placeholder="Tell us more about your inquiry..." className="min-h-32 bg-slate-50 border-slate-200 focus:bg-white focus:border-secondary focus:ring-secondary/20 rounded-lg transition-all resize-none" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80">
+                        <Button type="submit" variant="secondary" size="lg" className="w-full">
                             Send Message
                         </Button>
                     </form>
