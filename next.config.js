@@ -1,12 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    webpack(config) {
-      config.resolve.alias = {
-        ...(config.resolve.alias || {}),
-        '@': require('path').resolve(__dirname, 'src'),
-      };
-      return config;
-    },
   // TypeScript and ESLint errors MUST be fixed - no ignoring in production
   // Strict mode enabled for zero-tolerance build pipeline
   async redirects() {
@@ -71,6 +64,8 @@ const nextConfig = {
            pathname: '/**',
       },
     ],
+    qualities: [75, 80],
+    dangerouslyAllowSVG: true,
   },
 };
 

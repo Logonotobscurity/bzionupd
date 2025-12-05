@@ -14,15 +14,32 @@ interface PageLoadingContextType {
 const PageLoadingContext = createContext<PageLoadingContextType | undefined>(undefined);
 
 export const PageLoadingProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('Loading...');
+  const [isLoading, setIsLoading] = useState(true);
+  const [message, setMessage] = useState('Loading BZION...');
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
   const previousPathname = React.useRef(pathname);
 
+  // Show loader on initial page load
+  useEffect(() => {
+    if (isInitialLoad) {
+      setIsLoading(true);
+      setMessage('Loading BZION...');
+      
+      // Hide loader after initial page load
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        setIsInitialLoad(false);
+      }, 1200);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isInitialLoad]);
+
   // Show loader on pathname change (client-side navigation)
   useEffect(() => {
-    if (pathname !== previousPathname.current) {
+    if (!isInitialLoad && pathname !== previousPathname.current) {
       setIsLoading(true);
       setMessage('Loading page...');
       previousPathname.current = pathname;
@@ -34,7 +51,7 @@ export const PageLoadingProvider = ({ children }: { children: React.ReactNode })
       
       return () => clearTimeout(timer);
     }
-  }, [pathname]);
+  }, [pathname, isInitialLoad]);
 
   // Auto hide loader after 3 seconds as safety measure
   useEffect(() => {

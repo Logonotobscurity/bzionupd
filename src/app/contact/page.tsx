@@ -12,7 +12,6 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 import Image from "next/image";
 import Link from "next/link";
 import { findImage } from "@/lib/placeholder-images";
-import { GsapScrollTrigger } from "@/components/ui/GsapScrollTrigger";
 
 const contactFormSchema = z.object({
   firstName: z.string().min(1, "First name is required."),
@@ -63,7 +62,7 @@ const ContactForm = () => {
         }
     });
 
-    const onSubmit = (data: ContactFormValues) => {
+    const onSubmit = (_data: ContactFormValues) => {
         toast({
             title: "Message Sent!",
             description: "Thanks for reaching out. We'll get back to you shortly.",
@@ -82,7 +81,7 @@ const ContactForm = () => {
                 <Form {...form}>
                     <div className="relative mt-8 p-8 rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden">
                         {/* Grid border pattern */}
-                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-40 pointer-events-none" style={{backgroundPosition: '0 0'}}></div>
+                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-40 pointer-events-none bg-origin-content"></div>
                         
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                         <div className="grid sm:grid-cols-2 gap-6">
