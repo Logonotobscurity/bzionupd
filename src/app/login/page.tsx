@@ -355,9 +355,9 @@ export default function LoginPage() {
         <div className="form">
           {/* Header */}
           <div className="flex-column">
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <div className="text-center mb-5">
               <div className="icon-box">
-                <Lock style={{ width: '24px', height: '24px', color: 'white' }} />
+                <Lock className="w-6 h-6 text-white" />
               </div>
               <h1 className="title">Welcome Back</h1>
               <p className="subtitle">Sign in to your BZION account</p>
@@ -370,7 +370,7 @@ export default function LoginPage() {
             <div className="flex-column">
               <label htmlFor="email">Email Address</label>
               <div className="inputForm">
-                <Mail style={{ width: '18px', height: '18px', color: 'hsl(var(--secondary))', flexShrink: 0 }} />
+                <Mail className="w-4.5 h-4.5 text-secondary shrink-0" />
                 <input
                   id="email"
                   type="email"
@@ -392,7 +392,7 @@ export default function LoginPage() {
                 </Link>
               </div>
               <div className="inputForm password-input-wrapper">
-                <Lock style={{ width: '18px', height: '18px', color: 'hsl(var(--secondary))', flexShrink: 0 }} />
+                <Lock className="w-4.5 h-4.5 text-secondary shrink-0" />
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -408,9 +408,9 @@ export default function LoginPage() {
                   className="password-toggle"
                 >
                   {showPassword ? (
-                    <EyeOff style={{ width: '18px', height: '18px' }} />
+                    <EyeOff className="w-4.5 h-4.5" />
                   ) : (
-                    <Eye style={{ width: '18px', height: '18px' }} />
+                    <Eye className="w-4.5 h-4.5" />
                   )}
                 </button>
               </div>
@@ -423,14 +423,14 @@ export default function LoginPage() {
               disabled={isLoading}
             >
               {isLoading ? (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Loader2 style={{ width: '16px', height: '16px', animation: 'spin 1s linear infinite' }} />
+                <span className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   Signing in...
                 </span>
               ) : (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="flex items-center gap-2">
                   Sign In
-                  <ArrowRight style={{ width: '16px', height: '16px' }} />
+                  <ArrowRight className="w-4 h-4" />
                 </span>
               )}
             </button>
@@ -471,7 +471,7 @@ export default function LoginPage() {
               By signing in, you agree to our <span className="span link-inline">Terms</span> and <span className="span link-inline">Privacy</span>
             </p>
             <p className="p footer-text-large">
-              Don't have an account? <Link href="/contact" className="span" style={{ margin: '0', fontWeight: '600' }}>Contact us</Link>
+              Don't have an account? <Link href="/contact" className="font-semibold">Contact us</Link>
             </p>
           </div>
         </div>

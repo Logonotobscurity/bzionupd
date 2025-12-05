@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 interface NewsletterPopupProps {
   delay?: number; // Delay before showing popup in ms
@@ -16,7 +15,7 @@ export const NewsletterPopup = ({ delay = 3000 }: NewsletterPopupProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
+  useEffect((): (() => void) | undefined => {
     // Check if user has already dismissed this popup
     const hasDismissed = localStorage.getItem('bzion-newsletter-dismissed');
     if (!hasDismissed) {

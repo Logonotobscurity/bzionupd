@@ -116,8 +116,6 @@ export async function GET(request: NextRequest) {
 
     // Query parameters for filtering
     const { searchParams } = new URL(request.url)
-    const severity = searchParams.get('severity')
-    const sessionId = searchParams.get('sessionId')
     const limit = parseInt(searchParams.get('limit') || '50', 10)
 
     // Retrieve error logs from storage

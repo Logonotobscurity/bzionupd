@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import { Logo } from "@/components/logo";
@@ -23,7 +23,6 @@ import React from "react";
 import { QuoteListIcon } from "./quote-list-icon";
 import { getCategories } from "@/services/categoryService";
 import { getBrands } from "@/services/brandService";
-import { type Category, type Brand } from "@/lib/schema";
 import { QuoteDrawer } from "./quote-drawer";
 
 // Smooth scroll to section utility

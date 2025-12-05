@@ -26,6 +26,25 @@ export const PageLoader = ({
           : 'relative w-full h-96'
       )}
     >
+      <style>{`
+        @keyframes stroke-dash {
+          0% {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+          }
+          50% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -35px;
+          }
+          100% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -124px;
+          }
+        }
+        .stroke-dash-animation {
+          animation: stroke-dash 1.5s ease-in-out infinite;
+        }
+      `}</style>
       {/* Animated SVG Spinner with Logo */}
       <div className="relative flex items-center justify-center">
         {/* Animated spinner circle */}
@@ -39,15 +58,10 @@ export const PageLoader = ({
             r="20"
             cy="50"
             cx="50"
-            className="stroke-primary"
+            className="stroke-primary stroke-dash-animation"
             fill="none"
             strokeWidth="2"
             strokeLinecap="round"
-            style={{
-              strokeDasharray: '1, 200',
-              strokeDashoffset: 0,
-              animation: 'dash4 1.5s ease-in-out infinite'
-            }}
           />
         </svg>
 
@@ -68,9 +82,9 @@ export const PageLoader = ({
         <div className="mt-8 text-center">
           <p className="text-lg font-semibold text-foreground mb-2">{message}</p>
           <div className="flex justify-center gap-1">
-            <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-            <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-            <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+            <span className="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-0" />
+            <span className="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-200" />
+            <span className="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-400" />
           </div>
         </div>
       )}
@@ -102,6 +116,18 @@ export const PageLoader = ({
           width: 3.25em;
           transform-origin: center;
           animation: rotate4 2s linear infinite;
+        }
+
+        .animation-delay-0 {
+          animation-delay: 0s;
+        }
+
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+        }
+
+        .animation-delay-400 {
+          animation-delay: 0.4s;
         }
       `}</style>
     </div>
