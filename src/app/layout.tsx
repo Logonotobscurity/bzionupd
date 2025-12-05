@@ -12,6 +12,7 @@ import { CookieBanner } from "@/components/cookie-banner";
 import WhatsappWidget from "@/components/layout/WhatsappWidget";
 import { MonitoringProvider } from "@/components/layout/MonitoringProvider";
 import { PageLoadingProvider } from "@/components/layout/PageLoadingProvider";
+import NewsletterPopup from "@/components/newsletter-popup";
 
 export const metadata: Metadata = {
   title: "BZION Hub Digital",
@@ -30,7 +31,7 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en" className="h-full overflow-x-hidden">
+    <html lang="en" className="h-full">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -43,7 +44,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans antialiased flex flex-col min-h-screen overflow-x-hidden">
+      <body className="font-sans antialiased flex flex-col min-h-screen overflow-x-hidden bg-white">
           <PageLoadingProvider>
             <MonitoringProvider />
             <ErrorBoundary>
@@ -55,6 +56,7 @@ export default function RootLayout({
               <WhatsappWidget />
               <ClientChatWidget />
               <CookieBanner />
+              <NewsletterPopup delay={4000} />
             </ErrorBoundary>
           </PageLoadingProvider>
       </body>
