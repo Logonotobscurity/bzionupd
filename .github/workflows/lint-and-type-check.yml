@@ -1,0 +1,77 @@
+name: Lint & Type Check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    name: Code Quality & Type Safety
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+        timeout-minutes: 10
+      
+      - name: Run ESLint
+        run: |
+          echo "🔎 Running ESLint..."
+          npm run lint -- --format=json > eslint-report.json || true
+          npx eslint src --ext .ts,.tsx --max-warnings 0
+        continue-on-error: false
+      
+      - name: Run TypeScript compiler
+        run: |
+          echo "📦 Running TypeScript compiler..."
+          npm run type-check
+        continue-on-error: false
+      
+      - name: Build project
+        run: |
+          echo "🔨 Building project..."
+          npm run build
+        continue-on-error: false
+      
+      - name: Upload ESLint report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: eslint-report-${{ matrix.node-version }}
+          path: eslint-report.json
+          retention-days: 7
+      
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const eslintReport = JSON.parse(fs.readFileSync('eslint-report.json', 'utf8'));
+            const totalErrors = eslintReport.reduce((sum, f) => sum + f.messages.filter(m => m.severity === 2).length, 0);
+            const totalWarnings = eslintReport.reduce((sum, f) => sum + f.messages.filter(m => m.severity === 1).length, 0);
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Code Quality Report\n- ❌ ESLint Errors: ${totalErrors}\n- ⚠️ ESLint Warnings: ${totalWarnings}\n\nAll checks must pass before merge.`
+            });

@@ -1,0 +1,94 @@
+
+# .github/workflows/deploy.yml
+
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Run Unit Tests
+      - name: Run Unit Tests
+        run: |
+          npm install
+          npm run test:unit
+          
+      # Run Integration Tests
+      - name: Run Integration Tests
+        run: npm run test:integration
+        
+      # Code Quality Check
+      - name: SonarQube Analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Build Docker Image
+      - name: Build Docker Image
+        run: |
+          docker build -t registry.bzion.com/app:${{ github.sha }} .
+          docker tag registry.bzion.com/app:${{ github.sha }} registry.bzion.com/app:latest
+          
+      # Push to Registry
+      - name: Push to Docker Registry
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USER }}" --password-stdin registry.bzion.com
+          docker push registry.bzion.com/app:${{ github.sha }}
+          docker push registry.bzion.com/app:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == \'refs/heads/main\'
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Deploy to Kubernetes
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/app app=registry.bzion.com/app:${{ github.sha }} \
+            --record --namespace=production
+          kubectl rollout status deployment/app --namespace=production
+          
+      # Verify Deployment
+      - name: Verify Deployment
+        run: |
+          kubectl get pods --namespace=production
+          kubectl logs -l app=app --namespace=production --tail=50
+          
+      # Run Smoke Tests
+      - name: Run Smoke Tests
+        run: npm run test:smoke:production
+        
+      # Notify Slack
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "✅ Deployment Successful",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production Deployment* | Version: ${{ github.sha }}\\n*Status:* ✅ Successful"
+                  }
+                }
+              ]
+            }
