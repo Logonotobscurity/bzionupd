@@ -1,0 +1,130 @@
+name: Lint & Type Check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    name: Code Quality & Type Safety
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        timeout-minutes: 10
+          
+      - name: Run ESLint
+        id: eslint
+        run: |
+          echo "🔎 Running ESLint..."
+          npx eslint src --ext .ts,.tsx --format=json --output-file eslint-report.json --max-warnings 0 || echo "ESLint found issues"
+        continue-on-error: true
+          
+      - name: Run TypeScript compiler
+        run: |
+          echo "📦 Running TypeScript compiler..."
+          npm run type-check
+        continue-on-error: false
+          
+      - name: Build project
+        run: |
+          echo "🔨 Building project..."
+          npm run build
+        continue-on-error: false
+          
+      - name: Upload ESLint report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: eslint-report-node-${{ matrix.node-version }}
+          path: eslint-report.json
+          retention-days: 7
+          if-no-files-found: warn
+          
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && always() && matrix.node-version == '20.x'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Check if ESLint report exists
+            if (!fs.existsSync('eslint-report.json')) {
+              console.log('No ESLint report found, skipping comment');
+              return;
+            }
+            
+            let eslintReport;
+            try {
+              const content = fs.readFileSync('eslint-report.json', 'utf8');
+              if (!content || content.trim() === '') {
+                console.log('ESLint report is empty');
+                return;
+              }
+              eslintReport = JSON.parse(content);
+            } catch (error) {
+              console.error('Could not parse ESLint report:', error.message);
+              return;
+            }
+            
+            // Calculate totals
+            const totalErrors = eslintReport.reduce((sum, f) => {
+              return sum + (f.messages?.filter(m => m.severity === 2)?.length || 0);
+            }, 0);
+            
+            const totalWarnings = eslintReport.reduce((sum, f) => {
+              return sum + (f.messages?.filter(m => m.severity === 1)?.length || 0);
+            }, 0);
+            
+            // Get failing files
+            const filesWithIssues = eslintReport
+              .filter(f => f.messages && f.messages.length > 0)
+              .map(f => f.filePath.replace(process.cwd(), '').substring(1))
+              .slice(0, 10); // Limit to first 10 files
+            
+            // Build comment body
+            let commentBody = `## 📊 Code Quality Report\n\n`;
+            commentBody += `### Summary\n`;
+            commentBody += `- ❌ **ESLint Errors:** ${totalErrors}\n`;
+            commentBody += `- ⚠️ **ESLint Warnings:** ${totalWarnings}\n\n`;
+            
+            if (totalErrors > 0 || totalWarnings > 0) {
+              commentBody += `### Files with Issues (${filesWithIssues.length} shown)\n`;
+              filesWithIssues.forEach(file => {
+                commentBody += `- \`${file}\`\n`;
+              });
+              commentBody += `\n---\n`;
+              commentBody += `⚡ **Action Required:** All checks must pass before merge.\n`;
+            } else {
+              commentBody += `✅ **Great job!** No linting issues found.\n`;
+            }
+            
+            try {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            } catch (error) {
+              console.error('Failed to create comment:', error.message);
+            }

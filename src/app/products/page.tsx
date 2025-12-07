@@ -6,8 +6,10 @@ import { FmcgBanner } from '@/components/fmcg-banner';
 import { SpicesBanner } from '@/components/spices-banner';
 import ProductsView from '@/components/products-view';
 import { TraceabilitySection } from '@/components/traceability-section';
+import { getAllProducts } from '@/repositories/db/productRepository';
 
-const ProductsPage = () => {
+const ProductsPage = async () => {
+  const products = await getAllProducts();
 
   return (
     <div className="bg-white">
@@ -17,7 +19,7 @@ const ProductsPage = () => {
 
       />
 
-      <ProductsView title="Featured Products" />
+      <ProductsView title="Featured Products" products={products} />
 
       <TraceabilitySection />
 
