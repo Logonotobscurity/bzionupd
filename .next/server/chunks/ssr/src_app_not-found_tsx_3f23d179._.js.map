@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///home/user/bzionupd/src/app/not-found.tsx"],"sourcesContent":["\nimport { Section } from '@/components/ui/section';\nimport Link from 'next/link';\n\nexport default function NotFound() {\n  return (\n    <main className=\"flex-grow bg-slate-50\">\n        <Section className=\"py-20 text-center\">\n            <h1 className=\"text-4xl font-bold text-primary\">404 - Page Not Found</h1>\n            <p className=\"mt-4 text-lg text-slate-600\">\n                Sorry, the page you are looking for does not exist.\n            </p>\n            <div className=\"mt-8\">\n                <Link href=\"/\" className=\"inline-block rounded-md bg-primary px-6 py-3 text-lg font-semibold text-white hover:bg-primary/90\">\n                    Go back home\n                </Link>\n            </div>\n        </Section>\n    </main>\n  );\n}\n"],"names":[],"mappings":";;;;;AACA;AACA;;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAK,WAAU;kBACZ,cAAA,8OAAC,8IAAO;YAAC,WAAU;;8BACf,8OAAC;oBAAG,WAAU;8BAAkC;;;;;;8BAChD,8OAAC;oBAAE,WAAU;8BAA8B;;;;;;8BAG3C,8OAAC;oBAAI,WAAU;8BACX,cAAA,8OAAC,uKAAI;wBAAC,MAAK;wBAAI,WAAU;kCAAoG;;;;;;;;;;;;;;;;;;;;;;AAO7I","debugId":null}}]
+}

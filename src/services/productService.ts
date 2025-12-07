@@ -1,93 +1,84 @@
 
-import { products } from '@/lib/all-products-data';
-import { type Product, type Brand, type Category, type Company } from '@/lib/schema';
-import { brands } from '@/lib/brand-data';
-import { categories } from '@/lib/category-data';
-import { companies } from '@/lib/company-data';
+import * as staticRepo from '@/repositories/static/productRepository';
+import * as brandRepo from '@/repositories/static/brandRepository';
+import * as categoryRepo from '@/repositories/static/categoryRepository';
+import * as companyRepo from '@/repositories/static/companyRepository';
+// import * as dbRepo from '@/repositories/db/productRepository';
+import { featureFlags } from '@/lib/featureFlags';
 
-export class ProductService {
-    private static products: Product[] = products.map(p => ({...p, imageUrl: p.images[0] ?? ''}));
-    private static brands: Brand[] = brands;
-    private static categories: Category[] = categories;
-    private static companies: Company[] = companies;
+const repo = featureFlags.DATA_SOURCE === 'db' ? null : staticRepo;
 
-    public static getAllProducts(): Product[] {
-        return this.products;
+export const getAllProducts = async () => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.all();
+};
+
+export const getProductBySku = async (sku: string) => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.findBySku(sku);
+};
+
+export const getProductBySlug = async (slug: string) => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.findBySlug(slug);
+};
+
+export const getProductsByBrand = async (brandSlug: string) => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.findByBrand(brandSlug);
+};
+
+export const getProductsByCategory = async (categorySlug: string) => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.findByCategory(categorySlug);
+};
+
+export const searchProducts = async (query: string) => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.search(query);
+};
+
+export const getBrandStats = async () => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.getBrandStats();
+};
+
+export const getCategoryStats = async () => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    return repo.getCategoryStats();
+};
+
+export const getBrands = async () => {
+    return brandRepo.all();
+};
+
+export const getCategories = async () => {
+    return categoryRepo.all();
+};
+
+export const getCompanies = async () => {
+    return companyRepo.all();
+};
+
+export const getProductPageData = async (slug: string) => {
+    if (!repo) throw new Error('Database repository not implemented yet');
+    const product = await repo.findBySlug(slug);
+    if (!product) {
+        return null;
     }
 
-    public static getProductBySlug(slug: string): Product | undefined {
-        return this.products.find(p => p.slug === slug);
-    }
+    const [brand, category, company, relatedProducts] = await Promise.all([
+        brandRepo.findById(product.brandId),
+        categoryRepo.findBySlug(product.categorySlug),
+        companyRepo.findById(product.companyId),
+        repo.findByCategory(product.categorySlug).then(products => products.filter(p => p.id !== product.id)),
+    ]);
 
-    public static getProductsByCategory(categorySlug: string): Product[] {
-        return this.products.filter(p => p.categorySlug === categorySlug);
-    }
-
-    public static getProductsByBrand(brandSlug: string): Product[] {
-        return this.products.filter(p => p.brand.toLowerCase().replace(/ /g, '-') === brandSlug);
-    }
-
-    public static getBrandStats() {
-        const brandStats: { [key: string]: { productCount: number, categoryCount: number } } = {};
-
-        this.products.forEach(product => {
-            if (!brandStats[product.brand]) {
-                brandStats[product.brand] = { productCount: 0, categoryCount: 0 };
-            }
-            brandStats[product.brand].productCount++;
-        });
-
-        Object.keys(brandStats).forEach(brand => {
-            const categorySlugs = new Set(this.products.filter(p => p.brand === brand).map(p => p.categorySlug));
-            brandStats[brand].categoryCount = categorySlugs.size;
-        });
-
-        return brandStats;
-    }
-
-    public static getCategoryStats() {
-        const categoryStats: { [key: string]: { productCount: number, brandCount: number } } = {};
-
-        this.products.forEach(product => {
-            if (!categoryStats[product.categorySlug]) {
-                categoryStats[product.categorySlug] = { productCount: 0, brandCount: 0 };
-            }
-            categoryStats[product.categorySlug].productCount++;
-        });
-
-        Object.keys(categoryStats).forEach(categorySlug => {
-            const brandNames = new Set(this.products.filter(p => p.categorySlug === categorySlug).map(p => p.brand));
-            categoryStats[categorySlug].brandCount = brandNames.size;
-        });
-
-        return categoryStats;
-    }
-
-    public static getProductPageData(slug: string) {
-        const product = this.getProductBySlug(slug);
-        if (!product) {
-            return undefined;
-        }
-
-        const brand = this.brands.find(b => b.slug === product.brand.toLowerCase().replace(/ /g, '-'));
-        const company = this.companies.find(c => c.id === product.companyId);
-        const category = this.categories.find(c => c.slug === product.categorySlug);
-
-        if (!brand || !category) {
-            return undefined;
-        }
-
-        // Get related products from the same brand (expert recommendation)
-        const relatedProducts = this.products
-            .filter(p => p.brand === product.brand && p.slug !== slug)
-            .slice(0, 4);
-
-        return {
-            product,
-            brand,
-            company,
-            category,
-            relatedProducts,
-        };
-    }
-}
+    return {
+        product,
+        brand,
+        category,
+        company,
+        relatedProducts,
+    };
+};

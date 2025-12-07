@@ -1,9 +1,7 @@
 
 'use client';
-import { useState } from 'react';
-import { ProductService } from '@/services/productService';
-import { categories } from '@/lib/category-data';
-import { brands } from '@/lib/brand-data';
+import { useState, useEffect } from 'react';
+import { getAllProducts, getBrandStats, getCategoryStats, getBrands, getCategories } from '@/services/productService';
 import { ProductCard } from '@/components/product-card';
 import { BrandCard } from '@/components/ui/brand-card';
 import { CategoryCard } from '@/components/ui/category-card';
@@ -18,10 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-
-const allProducts = ProductService.getAllProducts();
-const brandStats = ProductService.getBrandStats();
-const categoryStats = ProductService.getCategoryStats();
+import { Product, Brand, Category } from '@/lib/schema';
 
 interface ProductsViewProps {
   title?: string;
@@ -32,6 +27,29 @@ const PRODUCTS_PER_PAGE = 12;
 export default function ProductsView({ title = 'All Products' }: ProductsViewProps) {
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [brandStats, setBrandStats] = useState<any>({});
+  const [categoryStats, setCategoryStats] = useState<any>({});
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [products, brandStats, categoryStats, brandData, categoryData] = await Promise.all([
+        getAllProducts(),
+        getBrandStats(),
+        getCategoryStats(),
+        getBrands(),
+        getCategories(),
+      ]);
+      setAllProducts(products);
+      setBrandStats(brandStats);
+      setCategoryStats(categoryStats);
+      setBrands(brandData);
+      setCategories(categoryData);
+    };
+    fetchData();
+  }, []);
 
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
@@ -119,7 +137,7 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
                 return <BrandCard key={brand.id} brand={brand} productCount={stats.productCount} categoryCount={stats.categoryCount} />;
             })}
             {activeFilter === 'category' && categories.map(category => {
-                const stats = categoryStats[category.slug] || { productCount: 0, brandCount: 0 };
+                const stats = categoryStats[category.name] || { productCount: 0, brandCount: 0 };
                 return <CategoryCard key={category.id} category={category} productCount={stats.productCount} brandCount={stats.brandCount} />;
             })}
         </div>

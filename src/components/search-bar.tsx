@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useUIStore } from '@/stores/uiStore';
-import { SearchService, type SearchResult } from '@/services/searchService';
+import { searchProducts, getSuggestions, type SearchResult } from '@/services/searchService';
 import { Search, X, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -28,11 +28,11 @@ export function SearchBar() {
 
   // Search handler
   const handleSearch = useCallback(
-    (query: string) => {
+    async (query: string) => {
       setSearchQuery(query);
 
       if (query.length >= MIN_CHARS) {
-        const searchResults = SearchService.searchProducts(query, MIN_CHARS);
+        const searchResults = await searchProducts(query, MIN_CHARS);
         setResults(searchResults);
       } else {
         setResults([]);
@@ -40,7 +40,7 @@ export function SearchBar() {
 
       // Get suggestions for autocomplete
       if (query.length >= 2) {
-        const sug = SearchService.getSuggestions(query);
+        const sug = await getSuggestions(query);
         setSuggestions(sug);
       } else {
         setSuggestions([]);

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,8 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import React from "react";
 import { QuoteListIcon } from "./quote-list-icon";
-import { getCategories } from "@/services/categoryService";
-import { getBrands } from "@/services/brandService";
+import { getCategories, getBrands } from "@/services/productService";
 import { QuoteDrawer } from "./quote-drawer";
 
 // Smooth scroll to section utility
@@ -105,12 +104,15 @@ export function Header() {
   }, [isMenuOpen]);
 
   useEffect(() => {
-    const categories = getCategories();
-    setProductCategories(categories.map(c => ({ title: c.name, href: `/products/category/${c.slug}` })));
-    
-    getBrands().then(brands => {
-      setProductBrands(brands.filter(b => b.isFeatured).map(b => ({ title: b.name, href: `/products/brand/${b.slug}` })));
-    });
+    const fetchData = async () => {
+      const categoriesData = await getCategories();
+      setProductCategories(categoriesData.map(c => ({ title: c.name, href: `/products/category/${c.slug}` })));
+      
+      const brandsData = await getBrands();
+      setProductBrands(brandsData.filter(b => b.isFeatured).map(b => ({ title: b.name, href: `/products/brand/${b.slug}` })));
+    };
+
+    fetchData();
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);

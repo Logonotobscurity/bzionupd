@@ -1,37 +1,58 @@
+'use client';
 
-import { notFound } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { notFound, useParams } from 'next/navigation';
 import { Section } from '@/components/ui/section';
-import { Breadcrumbs } from '@/components/ui/breadcrumb';
 import { ProductCard } from '@/components/product-card';
-import { ProductService } from '@/services/productService';
-import { brands } from '@/lib/brand-data';
-import Image from 'next/image';
+import { getBrands, getProductsByBrand, getBrandStats } from '@/services/productService';
 import { ProductSortOptions } from '@/components/product-sort-options';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PageHero } from '@/components/layout/PageHero';
 import { CTASection } from '@/components/cta-section';
+import { Brand, Product } from '@/lib/schema';
 
-interface BrandPageProps {
-  params: {
-    slug: string;
-  };
+interface BrandStats {
+  [key: string]: { productCount: number; categoryCount: number };
 }
 
-async function getBrandBySlug(slug: string) {
+async function getBrandBySlug(slug: string): Promise<Brand | undefined> {
+  const brands = await getBrands();
   return brands.find(b => b.slug === slug);
 }
 
-export default async function BrandPage({ params: { slug } }: BrandPageProps) {
-  const brand = await getBrandBySlug(slug);
+export default function BrandPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [brand, setBrand] = useState<Brand | null>(null);
+  const [brandProducts, setBrandProducts] = useState<Product[]>([]);
+  const [brandStats, setBrandStats] = useState<BrandStats>({});
+
+  useEffect(() => {
+    if (!slug) return;
+    const fetchData = async () => {
+      const brandData = await getBrandBySlug(slug);
+      if (!brandData) {
+        notFound();
+        return;
+      }
+      setBrand(brandData);
+
+      const [products, stats] = await Promise.all([
+        getProductsByBrand(brandData.name),
+        getBrandStats(),
+      ]);
+      setBrandProducts(products);
+      setBrandStats(stats);
+    };
+    fetchData();
+  }, [slug]);
 
   if (!brand) {
-    notFound();
+    return null; // Or a loading indicator
   }
 
-  const brandProducts = ProductService.getProductsByBrand(slug);
-  const brandStats = ProductService.getBrandStats();
-  const { productCount, categoryCount } = brandStats[brand.name] || { productCount: 0, categoryCount: 0 };
+  const stats = brandStats[brand.name] || { productCount: 0, categoryCount: 0 };
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
@@ -49,8 +70,8 @@ export default async function BrandPage({ params: { slug } }: BrandPageProps) {
         imageUrl={brand.imageUrl}
         breadcrumbs={breadcrumbItems}
         stats={[
-          { label: 'Quality Products', value: productCount },
-          { label: 'Product Categories', value: categoryCount },
+          { label: 'Quality Products', value: stats.productCount },
+          { label: 'Product Categories', value: stats.categoryCount },
           { label: 'Customer Rating', value: 48 },
         ]}
         primaryCta={{
@@ -69,7 +90,7 @@ export default async function BrandPage({ params: { slug } }: BrandPageProps) {
             </div>
             <div className="flex items-center gap-4">
               <p className="text-sm font-semibold text-slate-700 whitespace-nowrap">
-                <span className="text-primary text-lg">{productCount}</span> products found
+                <span className="text-primary text-lg">{stats.productCount}</span> products found
               </p>
               <ProductSortOptions />
             </div>

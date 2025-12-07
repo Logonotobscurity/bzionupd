@@ -1,39 +1,70 @@
+'use client';
 
-import { notFound } from 'next/navigation';
-import { use } from 'react';
+import { useState, useEffect } from 'react';
+import { notFound, useParams } from 'next/navigation';
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/section";
-import { categories } from "@/lib/category-data";
-import { ProductService } from "@/services/productService";
+import { getCategories, getProductsByCategory, getCategoryStats } from "@/services/productService";
 import { ProductCard } from '@/components/product-card';
-import { Breadcrumbs } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ProductSortOptions } from '@/components/product-sort-options';
 import { CTASection } from '@/components/cta-section';
+import { Category, Product } from '@/lib/schema';
 
-export default function CategoryPage(props: { params: Promise<{ slug: string }> }) {
-    const params = use(props.params);
-    const slug = params.slug;
-    const category = categories.find(c => c.slug === slug);
+interface CategoryStats {
+    [key: string]: { productCount: number; brandCount: number };
+}
+
+async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
+    const categories = await getCategories();
+    return categories.find(c => c.slug === slug);
+}
+
+export default function CategoryPage() {
+    const params = useParams();
+    const slug = params.slug as string;
+    const [category, setCategory] = useState<Category | null>(null);
+    const [categoryProducts, setCategoryProducts] = useState<Product[]>([]);
+    const [categoryStats, setCategoryStats] = useState<CategoryStats>({});
+
+    useEffect(() => {
+        if (!slug) return;
+        const fetchData = async () => {
+            const categoryData = await getCategoryBySlug(slug);
+
+            if (!categoryData) {
+                notFound();
+                return;
+            }
+            setCategory(categoryData);
+
+            const [products, stats] = await Promise.all([
+                getProductsByCategory(slug),
+                getCategoryStats(),
+            ]);
+            setCategoryProducts(products);
+            setCategoryStats(stats);
+        };
+
+        fetchData();
+    }, [slug]);
 
     if (!category) {
-        notFound();
+        return null; // Or a loading indicator
     }
 
-    const categoryProducts = ProductService.getProductsByCategory(slug);
-    const categoryStats = ProductService.getCategoryStats();
-    const { productCount, brandCount } = categoryStats[slug] || { productCount: 0, brandCount: 0 };
+    const stats = categoryStats[slug] || { productCount: 0, brandCount: 0 };
 
     return (
         <main className="flex-grow">
-            <PageHero 
+            <PageHero
                 preamble="Shop by Category"
                 title={category.name}
                 description={category.description || "Browse our complete selection of high-quality products in this category. Find exactly what your business needs."}
                 stats={[
-                    { label: 'Products Available', value: productCount },
-                    { label: 'Trusted Brands', value: brandCount },
+                    { label: 'Products Available', value: stats.productCount },
+                    { label: 'Trusted Brands', value: stats.brandCount },
                     { label: 'Quality Assured', value: 100 },
                 ]}
                 primaryCta={{
@@ -51,7 +82,7 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
                         </div>
                         <div className="flex items-center gap-4">
                             <p className="text-sm font-semibold text-slate-700 whitespace-nowrap">
-                                <span className="text-primary text-lg">{productCount}</span> products found
+                                <span className="text-primary text-lg">{stats.productCount}</span> products found
                             </p>
                             <ProductSortOptions />
                         </div>

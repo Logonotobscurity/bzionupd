@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///home/user/bzionupd/src/components/chat-widget.module.css"],"sourcesContent":["/* Chat Widget SVG and animation styles */\n.chatIconSvg {\n  width: 32px;\n  height: 32px;\n}\n\n@media (min-width: 640px) {\n  .chatIconSvg {\n    width: 40px;\n    height: 40px;\n  }\n}\n\n@media (min-width: 768px) {\n  .chatIconSvg {\n    width: 44px;\n    height: 44px;\n  }\n}\n\n.typingBubbleBase {\n  animation-delay: 0ms;\n}\n\n.typingBubbleDelay1 {\n  animation-delay: 150ms;\n}\n\n.typingBubbleDelay2 {\n  animation-delay: 300ms;\n}\n\n.chatIconPath {\n  fill: #008ad0;\n}\n"],"names":[],"mappings":"AACA;;;;;AAKA;EACE;;;;;;AAMF;EACE;;;;;;AAMF;;;;AAIA;;;;AAIA;;;;AAIA","debugId":null}}]
+}
