@@ -1,9 +1,8 @@
 import { prisma } from '@/lib/db';
-import { Prisma } from '@prisma/client';
 
 export const productRepo = {
   async getAll(options: { brandSlug?: string; categorySlug?: string } = {}) {
-    const where: Prisma.ProductWhereInput = {};
+    const where: any = {}; // Prisma.ProductWhereInput
     if (options.brandSlug) {
       where.brand = { slug: options.brandSlug };
     }

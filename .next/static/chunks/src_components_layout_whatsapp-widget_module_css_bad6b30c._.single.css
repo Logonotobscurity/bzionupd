@@ -1,0 +1,37 @@
+/* [project]/src/components/layout/whatsapp-widget.module.css [app-client] (css) */
+.whatsapp-widget-module__AzAEJW__fill-green {
+  fill: #20a83e;
+}
+
+.whatsapp-widget-module__AzAEJW__fill-light-gray {
+  fill: #e5e5e5;
+}
+
+.whatsapp-widget-module__AzAEJW__fill-white {
+  fill: #fff;
+}
+
+.whatsapp-widget-module__AzAEJW__fill-dark-green {
+  fill: #189433;
+}
+
+.whatsapp-widget-module__AzAEJW__whatsappIcon {
+  width: 28px;
+  height: 28px;
+}
+
+@media (min-width: 641px) {
+  .whatsapp-widget-module__AzAEJW__whatsappIcon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (min-width: 768px) {
+  .whatsapp-widget-module__AzAEJW__whatsappIcon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/*# sourceMappingURL=src_components_layout_whatsapp-widget_module_css_bad6b30c._.single.css.map*/

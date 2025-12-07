@@ -204,7 +204,7 @@ export default function ProductDetailClient(data: ProductPageData) {
             <p className="text-lg text-slate-600">More products from {brand?.name}</p>
           </div>
           
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3">
             {relatedProducts.length > 0 ? (
               relatedProducts.map((relProduct) => (
                 <Link 
