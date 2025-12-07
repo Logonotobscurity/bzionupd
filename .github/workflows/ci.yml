@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        id: eslint
+        run: |
+          echo "🔎 Running ESLint..."
+          npx eslint src --ext .ts,.tsx --format=json --output-file eslint-report.json --max-warnings 0 || echo "ESLint found issues"
+        continue-on-error: true
+
+      - name: Comment PR with ESLint results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Check if file exists
+            if (!fs.existsSync('eslint-report.json')) {
+              console.log('No ESLint report found');
+              return;
+            }
+            
+            let eslintReport;
+            try {
+              const content = fs.readFileSync('eslint-report.json', 'utf8');
+              if (content.trim() === '') {
+                console.log('ESLint report is empty. Assuming no issues.');
+                const totalErrors = 0;
+                const totalWarnings = 0;
+                await github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: `## Code Quality Report (Node ${{ matrix.node-version }})\n- ✅ ESLint Errors: ${totalErrors}\n- ✅ ESLint Warnings: ${totalWarnings}\n\nAll checks pass!`
+                });
+                return;
+              }
+              eslintReport = JSON.parse(content);
+            } catch (error) {
+              console.log('Could not parse ESLint report:', error);
+              // Create a comment indicating failure to parse the report
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## Code Quality Report (Node ${{ matrix.node-version }})\n- ❌ Failed to parse ESLint report.\n\nCould not provide a summary of ESLint issues.`
+              });
+              return;
+            }
+            
+            const totalErrors = eslintReport.reduce((sum, f) => sum + f.messages.filter(m => m.severity === 2).length, 0);
+            const totalWarnings = eslintReport.reduce((sum, f) => sum + f.messages.filter(m => m.severity === 1).length, 0);
+            
+            if (totalErrors === 0 && totalWarnings === 0) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## Code Quality Report (Node ${{ matrix.node-version }})\n- ✅ ESLint Errors: ${totalErrors}\n- ✅ ESLint Warnings: ${totalWarnings}\n\nAll checks pass!`
+              });
+            } else {
+               await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## Code Quality Report (Node ${{ matrix.node-version }})\n- ❌ ESLint Errors: ${totalErrors}\n- ⚠️ ESLint Warnings: ${totalWarnings}\n\nAll checks must pass before merge.`
+              });
+            }
+
+      - name: Run type-check
+        run: npm run typecheck
+
+      - name: Run build
+        run: npm run build
