@@ -1277,8 +1277,8 @@ function ShopByCategorySection() {
                 (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$productService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getCategories"])(),
                 (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$productService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getCategoryStats"])()
             ]);
-            setCategories(fetchedCategories);
-            setCategoryStats(fetchedStats);
+            setCategories(fetchedCategories || []);
+            setCategoryStats(fetchedStats || {});
             setIsLoading(false);
         };
         fetchData();

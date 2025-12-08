@@ -14,6 +14,6 @@ export function normalizeProduct(product: Product): Product {
 /**
  * Normalizes an array of products
  */
-export function normalizeProducts(products: Product[]): Product[] {
+export function normalizeProducts(products: Product[] = []): Product[] {
   return products.map(normalizeProduct);
 }

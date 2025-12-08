@@ -1,11 +1,11 @@
-import { brands } from '@/lib/brand-data';
+import brands from '@/lib/brand-data.json';
 import { Brand } from '@/lib/schema';
 
 export const findBySlug = async (slug: string): Promise<Brand | undefined> => {
   return brands.find((b) => b.slug === slug);
 };
 
-export const findById = async (id: number): Promise<Brand | undefined> => {
+export const findById = async (id: string): Promise<Brand | undefined> => {
     return brands.find((b) => b.id === id);
   };
 

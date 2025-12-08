@@ -6,10 +6,10 @@ import { FmcgBanner } from '@/components/fmcg-banner';
 import { SpicesBanner } from '@/components/spices-banner';
 import ProductsView from '@/components/products-view';
 import { TraceabilitySection } from '@/components/traceability-section';
-import { productRepo } from '@/repositories/db/productRepository';
+import { getAllProducts } from '@/services/productService';
 
 const ProductsPage = async () => {
-  const products = await productRepo.getAll();
+  const products = await getAllProducts();
 
   return (
     <div className="bg-white">

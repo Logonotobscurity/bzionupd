@@ -64,7 +64,7 @@ const nextConfig = {
            pathname: '/**',
       },
     ],
-    qualities: [75, 80],
+    qualities: [75, 80, 85],
     dangerouslyAllowSVG: true,
   },
 };

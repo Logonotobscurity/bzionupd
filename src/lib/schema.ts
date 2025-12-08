@@ -19,6 +19,8 @@ export type Brand = {
   isFeatured: boolean;
   brand_description?: string;
   companyId?: number;
+  productCount?: number;
+  categoryCount?: number;
 };
 
 export type Category = {
@@ -27,6 +29,8 @@ export type Category = {
   slug: string;
   description: string;
   imageUrl: string;
+  productCount?: number;
+  brandCount?: number;
 };
 
 export type Product = {

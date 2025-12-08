@@ -42,11 +42,11 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
         getBrands(),
         getCategories(),
       ]);
-      setAllProducts(products);
-      setBrandStats(brandStats);
-      setCategoryStats(categoryStats);
-      setBrands(brandData);
-      setCategories(categoryData);
+      setAllProducts(products || []);
+      setBrandStats(brandStats || {});
+      setCategoryStats(categoryStats || {});
+      setBrands(brandData || []);
+      setCategories(categoryData || []);
     };
     fetchData();
   }, []);

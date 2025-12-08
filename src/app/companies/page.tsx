@@ -1,17 +1,17 @@
 
 import { PageHero } from '@/components/layout/PageHero';
 import { Section, SectionHeading, SectionTitle, SectionDescription } from '@/components/ui/section';
-import { getCompanies } from '@/lib/company-data';
+import { getCompanies } from '@/services/productService';
 import { CompanyCard } from '@/components/company-card';
 import { CTASection } from '@/components/cta-section';
 
-export default function CompaniesPage() {
-  const companies = getCompanies();
+export default async function CompaniesPage() {
+  const companies = await getCompanies();
   
   // Calculate aggregate stats
   const totalCompanies = companies.length;
-  const totalBrands = companies.reduce((sum, c) => sum + c.brandCount, 0);
-  const totalProducts = companies.reduce((sum, c) => sum + c.productCount, 0);
+  const totalBrands = companies.reduce((sum, c) => sum + (c.brandCount || 0), 0);
+  const totalProducts = companies.reduce((sum, c) => sum + (c.productCount || 0), 0);
 
   return (
     <>

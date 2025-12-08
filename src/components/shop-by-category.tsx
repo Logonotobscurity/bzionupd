@@ -24,8 +24,8 @@ export function ShopByCategorySection() {
                 getCategories(),
                 getCategoryStats()
             ]);
-            setCategories(fetchedCategories);
-            setCategoryStats(fetchedStats);
+            setCategories(fetchedCategories || []);
+            setCategoryStats(fetchedStats || {});
             setIsLoading(false);
         };
         fetchData();

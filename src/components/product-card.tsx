@@ -16,7 +16,6 @@ interface ProductCardProps {
     variant?: 'default' | 'compact' | 'featured';
 }
 
-// Extracted styles for reusability
 const cardStyles = {
     container: "group h-full flex flex-col overflow-hidden rounded-xl sm:rounded-2xl shadow-sm hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 relative bg-white border border-slate-200/50 will-change-transform",
     imageContainer: "relative bg-gradient-to-br from-slate-50 via-slate-50 to-slate-100 overflow-hidden flex items-center justify-center transition-all duration-300 group-hover:from-slate-100 group-hover:to-slate-200",
@@ -53,7 +52,6 @@ export const ProductCard = ({
     const fallbackImage = findImage('fallback');
     const currentVariant = variantStyles[variant];
     
-    // Get image URL
     const getProductImage = () => {
         if (product.imageUrl && product.imageUrl !== '/images/placeholder.jpg') {
             return product.imageUrl;
@@ -72,11 +70,10 @@ export const ProductCard = ({
         <Link 
             href={href} 
             className="group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-xl sm:rounded-2xl transition-all"
-            aria-label={`View ${product.name} by ${product.company}`}
+            aria-label={`View ${product.name} by ${product.brand}`}
         >
             <Card className={cardStyles.container}>
                 
-                {/* Image Container */}
                 <div className={`${cardStyles.imageContainer} ${currentVariant.imageContainerHeight}`}>
                     <div className={cardStyles.imageWrapper}>
                         <Image 
@@ -96,7 +93,6 @@ export const ProductCard = ({
                     </div>
                     <div className={cardStyles.overlayGradient} />
                     
-                    {/* Status Badges */}
                     {(isFeatured || isNew) && (
                         <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
                             {isFeatured && (
@@ -115,24 +111,21 @@ export const ProductCard = ({
                     )}
                 </div>
                 
-                {/* Content */}
                 <div className={cardStyles.contentWrapper}>
                     <div>
-                        <p className={cardStyles.brand}>{product.company}</p>
+                        <p className={cardStyles.brand}>{product.brand}</p>
                         <h3 className={cardStyles.title}>{product.name}</h3>
                     </div>
                     
-                    {/* Category Badge */}
-                    {product.category && (
+                    {product.categorySlug && (
                         <div className={cardStyles.badgeContainer}>
                             <Badge variant="outline" className="text-xs rounded-full border-slate-300 text-slate-600 bg-slate-50/50 hover:bg-slate-100 transition-colors">
-                                {product.category}
+                                {product.categorySlug}
                             </Badge>
                         </div>
                     )}
                 </div>
                 
-                {/* Button */}
                 <div className={cardStyles.buttonWrapper}>
                     <AddToQuoteButton product={product} />
                 </div>

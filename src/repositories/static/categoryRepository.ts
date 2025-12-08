@@ -1,11 +1,11 @@
-import { categories } from '@/lib/category-data';
+import categories from '@/lib/category-data.json';
 import { Category } from '@/lib/schema';
 
 export const findBySlug = async (slug: string): Promise<Category | undefined> => {
   return categories.find((c) => c.slug === slug);
 };
 
-export const findById = async (id: number): Promise<Category | undefined> => {
+export const findById = async (id: string): Promise<Category | undefined> => {
     return categories.find((c) => c.id === id);
     };
 

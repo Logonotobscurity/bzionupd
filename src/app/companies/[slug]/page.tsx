@@ -1,57 +1,45 @@
 
-'use client';
-
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { useEffect, useState, use } from 'react';
-import { getCompanyBySlug } from '@/lib/company-data';
-import { getProductsByCompanySlug } from '@/lib/data';
-import { getBrandsByCompanyId } from '@/services/brandService';
+import { getCompanyBySlug, getProductsByCompanySlug, getBrandsByCompanyId, getCategoriesByCompanyId } from '@/services/productService';
 import { Section, SectionHeading, SectionTitle, SectionDescription } from '@/components/ui/section';
 import { Breadcrumbs } from '@/components/ui/breadcrumb';
 import { ProductGrid } from '@/components/product-grid';
 import { BrandGrid } from '@/components/brand-grid';
+import { CategoryGrid } from '@/components/category-grid';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { GsapScrollTrigger } from '@/components/ui/GsapScrollTrigger';
 import { PageHero } from '@/components/layout/PageHero';
-import type { Brand } from '@/lib/schema';
 
 interface CompanyPageProps {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
+  };
 }
 
-export default function CompanyPage(props: CompanyPageProps) {
-  const params = use(props.params);
-  const slug = params.slug;
-  
-  const [companyBrands, setCompanyBrands] = useState<Brand[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export default async function CompanyPage({ params }: CompanyPageProps) {
+  const { slug } = params;
 
-  const company = getCompanyBySlug(slug);
-
+  const company = await getCompanyBySlug(slug);
   if (!company) {
     notFound();
   }
 
-  useEffect(() => {
-    const fetchBrands = async () => {
-      try {
-        const brands = await getBrandsByCompanyId(company.id);
-        setCompanyBrands(brands.slice(0, 4));
-      } catch (error) {
-        console.error('Failed to fetch brands:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Fetch all data in parallel
+  const [allCompanyBrands, allCompanyCategories, allCompanyProducts] = await Promise.all([
+    getBrandsByCompanyId(company.id),
+    getCategoriesByCompanyId(company.id),
+    getProductsByCompanySlug(slug)
+  ]);
 
-    fetchBrands();
-  }, [company.id]);
+  // Get counts
+  const brandCount = allCompanyBrands.length;
+  const categoryCount = allCompanyCategories.length;
+  const productCount = allCompanyProducts.length;
 
-  const companyProducts = getProductsByCompanySlug(slug).slice(0, 4);
+  // Slice data for grids
+  const companyBrandsForGrid = allCompanyBrands.slice(0, 4);
+  const companyCategoriesForGrid = allCompanyCategories.slice(0, 4);
+  const companyProductsForGrid = allCompanyProducts.slice(0, 4);
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
@@ -68,9 +56,9 @@ export default function CompanyPage(props: CompanyPageProps) {
         imageUrl={company.logo}
         breadcrumbs={breadcrumbItems}
         stats={[
-          { label: 'Brands Distributed', value: company.brandCount },
-          { label: 'Total Products', value: company.productCount },
-          { label: 'Product Categories', value: company.categories.length },
+          { label: 'Brands Distributed', value: brandCount },
+          { label: 'Total Products', value: productCount },
+          { label: 'Product Categories', value: categoryCount },
         ]}
         primaryCta={{
           text: 'View All Products',
@@ -83,13 +71,11 @@ export default function CompanyPage(props: CompanyPageProps) {
       />
 
       <Section id="company-brands" className="py-16 bg-slate-50/50">
-        <GsapScrollTrigger>
           <SectionHeading className="text-center mb-12">
             <SectionTitle>Brands from {company.name}</SectionTitle>
             <SectionDescription>Explore the trusted brands we represent from {company.name}.</SectionDescription>
           </SectionHeading>
-        </GsapScrollTrigger>
-        <BrandGrid brands={companyBrands} isLoading={isLoading} columns={4} />
+        <BrandGrid brands={companyBrandsForGrid} isLoading={false} columns={4} />
         <div className="text-center mt-12">
             <Link href="/brands" passHref>
                 <Button size="lg" variant="outline">View All Brands</Button>
@@ -97,14 +83,25 @@ export default function CompanyPage(props: CompanyPageProps) {
         </div>
       </Section>
 
-      <Section id="company-products" className="py-16">
-        <GsapScrollTrigger>
+      <Section id="company-categories" className="py-16">
+          <SectionHeading className="text-center mb-12">
+            <SectionTitle>Product Categories</SectionTitle>
+            <SectionDescription>Discover the range of product categories we distribute for {company.name}.</SectionDescription>
+          </SectionHeading>
+        <CategoryGrid categories={companyCategoriesForGrid} isLoading={false} columns={4} />
+        <div className="text-center mt-12">
+            <Link href="/categories" passHref>
+                <Button size="lg">View All Categories</Button>
+            </Link>
+        </div>
+      </Section>
+
+      <Section id="company-products" className="py-16 bg-slate-50/50">
           <SectionHeading className="text-center mb-12">
             <SectionTitle>Featured Products</SectionTitle>
             <SectionDescription>Discover the quality products we distribute from {company.name}.</SectionDescription>
           </SectionHeading>
-        </GsapScrollTrigger>
-        <ProductGrid products={companyProducts} columns={4} />
+        <ProductGrid products={companyProductsForGrid} columns={4} />
         <div className="text-center mt-12">
             <Link href="/products" passHref>
                 <Button size="lg">View All Products</Button>
