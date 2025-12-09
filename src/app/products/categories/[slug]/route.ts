@@ -10,9 +10,9 @@ interface RouteParams {
  */
 export async function GET(
   request: Request,
-  { params }: { params: RouteParams }
+  { params }: { params: Promise<RouteParams> }
 ) {
-  const { slug } = params;
+  const { slug } = await params;
   
   // Redirect /products/categories/[slug] to /products/category/[slug]
   redirect(`/products/category/${slug}`);

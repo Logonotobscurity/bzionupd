@@ -1,4 +1,4 @@
-import companies from '@/lib/company-data.json';
+import companies from '@/lib/data/companies.json';
 import { Company } from '@/lib/schema';
 
 export const findById = async (id: number): Promise<Company | undefined> => {

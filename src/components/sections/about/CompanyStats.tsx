@@ -119,47 +119,31 @@ const StatCard: React.FC<StatCardProps> = ({ stat, delay = 0 }) => {
 
   return (
     <GsapScrollTrigger delay={delay}>
-      <div className="group flex h-full flex-col items-center text-center">
-        {/* Card Container */}
-        <div className="relative w-full overflow-hidden rounded-2xl bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-2xl sm:p-7 md:p-8 lg:p-10">
-          {/* Top accent bar */}
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary to-secondary" />
-
-          {/* Decorative background circle */}
-          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-primary/5 to-secondary/5 transition-opacity duration-500 group-hover:from-primary/10 group-hover:to-secondary/10" />
-
-          {/* Content */}
-          <div className="relative flex flex-col">
-            {/* Icon Circle */}
-            <div className="mb-6 inline-flex w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary transition-transform duration-300 group-hover:scale-110 sm:mb-7 md:mb-8 md:h-14 md:w-14 lg:h-16 lg:w-16">
-              <Icon className="h-6 w-6 text-white sm:h-7 sm:w-7 md:h-8 md:w-8" />
-            </div>
-
-            {/* Divider */}
-            <div className="mb-5 h-1 w-10 rounded-full bg-gradient-to-r from-primary to-secondary sm:mb-6 md:mb-8 group-hover:w-12" />
-
-            {/* Stat Number */}
-            <div className="mb-4 sm:mb-5 md:mb-6">
-              <p className="text-5xl font-black leading-none text-transparent xs:text-6xl sm:text-7xl md:text-8xl lg:text-9xl bg-clip-text bg-gradient-to-r from-primary to-secondary">
-                <CountUpNumber value={stat.value} suffix={stat.suffix} />
-              </p>
-            </div>
-
-            {/* Label */}
-            <p className="text-sm font-bold text-primary transition-colors duration-300 sm:text-base md:text-lg group-hover:text-secondary">
-              {stat.label}
-            </p>
-
-            {/* Bottom accent bar on hover */}
-            <div className="absolute inset-x-0 bottom-0 h-1 rounded-b-2xl bg-gradient-to-r from-primary to-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="group relative">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-slate-50 p-8 border-2 border-slate-200 transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
+          {/* Icon */}
+          <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10">
+            <Icon className="h-7 w-7 text-primary" />
           </div>
+
+          {/* Number */}
+          <div className="mb-3">
+            <span className="text-6xl font-black text-slate-900">
+              <CountUpNumber value={stat.value} suffix={stat.suffix} />
+            </span>
+          </div>
+
+          {/* Label */}
+          <p className="text-lg font-semibold text-slate-600">
+            {stat.label}
+          </p>
         </div>
       </div>
     </GsapScrollTrigger>
   );
 };
 
-// Stats data
+// Secondary stats data
 const statsData: StatItem[] = [
   {
     id: 'experience',
@@ -186,50 +170,49 @@ const statsData: StatItem[] = [
 
 // Secondary stats data
 const secondaryStatsData = [
-  { label: '100%', value: 'Authentic Products' },
-  { label: '24/7', value: 'Customer Support' },
+  { label: '20+', value: 'Years in Business' },
+  { label: '3,000+', value: 'Happy Customers' },
   { label: 'Nationwide', value: 'Delivery Coverage' },
-  { label: '99.8%', value: 'Delivery Success' },
+  { label: '50+', value: 'Partner Brands' },
 ];
 
 // Main component
 const CompanyStats: React.FC = () => {
   return (
-    <Section className="bg-gradient-to-b from-slate-50 to-white py-16 sm:py-20 md:py-24 lg:py-32">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <Section className="bg-slate-50 py-20">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <GsapScrollTrigger>
-          <div className="mb-12 text-center sm:mb-14 md:mb-16 lg:mb-20">
-            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-secondary sm:mb-3">
+          <div className="mb-16 text-center">
+            <p className="mb-3 text-sm font-bold uppercase tracking-widest text-secondary">
               Our Achievement
             </p>
-            <h2 className="mb-3 text-3xl font-bold text-primary sm:text-4xl md:text-5xl lg:text-6xl">
+            <h2 className="mb-4 text-4xl md:text-5xl font-bold text-slate-900">
               BZION by the Numbers
             </h2>
-            <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base md:text-lg">
-              Trusted by thousands of businesses across Nigeria with proven
-              results and consistent growth
+            <p className="mx-auto max-w-2xl text-lg text-slate-600">
+              Trusted by thousands of businesses across Nigeria with proven results and consistent growth
             </p>
           </div>
         </GsapScrollTrigger>
 
         {/* Stats Grid */}
-        <div className="mb-16 grid grid-cols-1 gap-6 sm:gap-7 md:mb-20 md:gap-8 md:grid-cols-2 lg:mb-24 lg:grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {statsData.map((stat, index) => (
             <StatCard key={stat.id} stat={stat} delay={index * 0.15} />
           ))}
         </div>
 
-        {/* Secondary Stats Section */}
+        {/* Secondary Stats */}
         <GsapScrollTrigger delay={0.45}>
-          <div className="border-t border-slate-200 pt-12 sm:pt-14 md:pt-16 lg:pt-20">
-            <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
+          <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {secondaryStatsData.map((stat, index) => (
                 <div key={`${stat.label}-${index}`} className="text-center">
-                  <p className="mb-2 text-2xl font-bold text-primary sm:text-3xl md:text-4xl">
+                  <p className="mb-2 text-5xl font-black text-primary">
                     {stat.label}
                   </p>
-                  <p className="text-xs text-slate-600 sm:text-sm">
+                  <p className="text-base text-slate-600 font-semibold">
                     {stat.value}
                   </p>
                 </div>

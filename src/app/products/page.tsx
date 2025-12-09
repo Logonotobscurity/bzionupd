@@ -2,14 +2,13 @@
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from '@/components/ui/section';
 import { CTASection } from '@/components/cta-section';
-import { FmcgBanner } from '@/components/fmcg-banner';
-import { SpicesBanner } from '@/components/spices-banner';
-import ProductsView from '@/components/products-view';
+import { FmcgBanner } from '@/components/products/FmcgBanner';
+import { SpicesBanner } from '@/components/products/SpicesBanner';
 import { TraceabilitySection } from '@/components/traceability-section';
-import { getAllProducts } from '@/services/productService';
+import ProductsView from "@/components/products-view";
+import  {FeaturedBulkPackages}  from "@/components/featured-bulk-packages";
 
 const ProductsPage = async () => {
-  const products = await getAllProducts();
 
   return (
     <div className="bg-white">
@@ -19,7 +18,9 @@ const ProductsPage = async () => {
 
       />
 
-      <ProductsView title="Featured Products" products={products} />
+      <ProductsView title="Explore Our Products" />
+
+      <FeaturedBulkPackages />
 
       <TraceabilitySection />
 
@@ -27,7 +28,7 @@ const ProductsPage = async () => {
 
       <SpicesBanner />
       
-      <Section className="py-16">
+      <Section className="section-padding-md">
         <CTASection
           title="Need a Product That's Not Listed?"
           description="We're constantly expanding our catalog to meet your needs. If you're looking for a specific product, let our team know. We'll help source it for you at competitive prices."

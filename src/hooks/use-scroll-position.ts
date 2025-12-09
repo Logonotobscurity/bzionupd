@@ -44,7 +44,7 @@ export function useScrollPosition(
   }, [element])
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
+    let timeoutId: ReturnType<typeof setTimeout>
 
     const throttledScroll = () => {
       if (throttle > 0) {

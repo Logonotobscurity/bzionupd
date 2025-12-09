@@ -1,3 +1,4 @@
+
 [
   {
     "id": 1,
@@ -8,7 +9,9 @@
     "categories": ["Cooking Oils & Fats", "Beverages & Mixes"],
     "description": "Apple and Pears is a leading FMCG manufacturer known for its quality products like Laziz oil and chocolate drinks.",
     "logo": "https://i.ibb.co/Kxg0hSL9/apple-and-pear-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Leading FMCG manufacturer of oils and chocolate beverages",
+    "buyerSegments": ["Retail", "Foodservice", "Wholesale"]
   },
   {
     "id": 2,
@@ -19,7 +22,9 @@
     "categories": ["Baking & Confectionery", "Pasta, Rice & Grains"],
     "description": "BUA Foods is a major player in the Nigerian food industry, offering essential products like IRS flour and pasta.",
     "logo": "https://i.ibb.co/r2h64ZhQ/bua-foods-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Major Nigerian food player with flour, pasta, and sugar products",
+    "buyerSegments": ["Retail", "Wholesale", "Institutions"]
   },
   {
     "id": 3,
@@ -30,7 +35,9 @@
     "categories": ["Baking & Confectionery", "Pasta, Rice & Grains"],
     "description": "A subsidiary of Olam, Crown Flour Mills is a top producer of wheat-based products including Mamagold and Mama's Pride.",
     "logo": "https://i.ibb.co/zhkPMqhT/crown-flour-mill.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Olam subsidiary specializing in wheat-based baking products",
+    "buyerSegments": ["Retail", "Wholesale", "Baking"]
   },
   {
     "id": 4,
@@ -41,7 +48,9 @@
     "categories": ["Baking & Confectionery"],
     "description": "Dangote Group is one of Nigeria's most diversified business conglomerates, renowned for its excellent business practices and quality sugar.",
     "logo": "https://i.ibb.co/23ZwpQp2/Dangote.jpg",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Nigeria's most diversified business conglomerate with a strong presence in sugar.",
+    "buyerSegments": ["Retail", "Institutional", "Wholesale"]
   },
   {
     "id": 6,
@@ -52,7 +61,9 @@
     "categories": ["Dairy", "Beverages & Mixes", "Pasta, Rice & Grains", "Cooking Oils & Fats"],
     "description": "Multipro Consumer Products Limited is a leading distributor for top brands like Indomie, Dano, Power Oil, and Minimie.",
     "logo": "https://i.ibb.co/vCq3HQZB/multipro-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Leading distributor for top brands like Indomie, Dano, Power Oil, and Minimie.",
+    "buyerSegments": ["Retail", "Wholesale"]
   },
   {
     "id": 7,
@@ -63,7 +74,9 @@
     "categories": ["Cooking Oils & Fats", "Seasonings & Flavor Enhancers"],
     "description": "PZ Wilmar is a joint venture producing and refining top edible oil brands like Kings and Mamador.",
     "logo": "https://i.ibb.co/NdvSKyDL/PZ-wilmar.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Joint venture producing premium edible oils and seasonings",
+    "buyerSegments": ["Retail", "Foodservice"]
   },
   {
     "id": 8,
@@ -74,7 +87,9 @@
     "categories": ["Cooking Oils & Fats", "Seasonings & Flavor Enhancers"],
     "description": "SNF Foods Limited is a manufacturer of quality food products, including Activa cooking oils and Whippy mayonnaise.",
     "logo": "https://i.ibb.co/PZCJ2Xxt/snf-foods-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Manufacturer of quality food products, including Activa cooking oils and Whippy mayonnaise.",
+    "buyerSegments": ["Retail", "Foodservice"]
   },
   {
     "id": 11,
@@ -85,7 +100,9 @@
     "categories": ["Cooking Oils & Fats", "Seasonings & Flavor Enhancers"],
     "description": "PZ Cussons Nigeria Plc is a leading manufacturer of personal and home care products, including Kings and Mamador cooking oils.",
     "logo": "https://i.ibb.co/jPyVKWMt/PZ-Cussons-Logo-wine.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Leading manufacturer of personal and home care products, with a food division for cooking oils.",
+    "buyerSegments": ["Retail", "Wholesale"]
   },
   {
     "id": 9,
@@ -96,7 +113,9 @@
     "categories": ["Seasonings & Flavor Enhancers"],
     "description": "Sonia Foods Industries Limited is a leading manufacturer of tomato paste and seasonings in Nigeria.",
     "logo": "https://i.ibb.co/Kp6CP2hy/Sonia.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Leading manufacturer of tomato paste and seasonings in Nigeria.",
+    "buyerSegments": ["Bulk Buyers", "Institutional"]
   },
   {
     "id": 20,
@@ -107,7 +126,9 @@
     "categories": ["Seasonings & Flavor Enhancers", "Cooking Oils & Fats"],
     "description": "Tropical General Investments (TGI) Group is a global conglomerate that owns the popular Terra brand of seasoning and oil.",
     "logo": "https://i.ibb.co/ZpDbfrSH/TGI-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Global conglomerate with Terra brand seasoning and oil solutions",
+    "buyerSegments": ["Export", "Wholesale", "Retail"]
   },
   {
     "id": 22,
@@ -118,7 +139,9 @@
     "categories": ["Pasta, Rice & Grains"],
     "description": "Honeywell Flour Mills is a leading producer of high-quality flour, pasta, and grains in Nigeria.",
     "logo": "https://i.ibb.co/xSyMM4Nx/Honeywell-Flour-Mills-logo.jpg",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "A leading producer of high-quality flour, pasta, and grains in Nigeria.",
+    "buyerSegments": ["Retail", "Baking", "Wholesale"]
   },
   {
     "id": 23,
@@ -129,7 +152,9 @@
     "categories": ["Baking & Confectionery", "Pasta, Rice & Grains"],
     "description": "A leader in the Nigerian food industry and owner of iconic brands like Golden Penny, Honeywell, and Auntie B.",
     "logo": "https://i.ibb.co/TDy5PkhG/fmn-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Nigeria's largest diversified food manufacturer",
+    "buyerSegments": ["Retail", "Foodservice", "Wholesale", "Export"]
   },
   {
     "id": 24,
@@ -140,7 +165,9 @@
     "categories": ["Cooking Oils & Fats", "Snacks & Beverages"],
     "description": "Vital Products PLC is a manufacturer of fruit juices, drinks, and sauces, including Vitali Margarine and Laziz Chocolate Drink.",
     "logo": "https://i.ibb.co/q3GHJcnX/Vital.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "Manufacturer of fruit juices, drinks, and sauces.",
+    "buyerSegments": ["Retail", "Foodservice"]
   },
   {
     "id": 25,
@@ -151,7 +178,9 @@
     "categories": ["Dairy"],
     "description": "Arla is a global dairy company that produces high-quality milk and dairy products, known for the Dano brand in Nigeria.",
     "logo": "https://i.ibb.co/KpVVg9jJ/arla-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "A global dairy company that produces high-quality milk and dairy products.",
+    "buyerSegments": ["Retail", "Foodservice"]
   },
   {
     "id": 26,
@@ -162,6 +191,8 @@
     "categories": ["Pasta, Rice & Grains"],
     "description": "Dufil Prima Foods is a leading food manufacturing company in Nigeria, known for instant noodles and food products including the Mimee brand.",
     "logo": "https://i.ibb.co/XxDbmwyL/dufil-logo.png",
-    "isActive": true
+    "isActive": true,
+    "positioningStatement": "A leading food manufacturing company in Nigeria, known for instant noodles.",
+    "buyerSegments": ["Retail", "Wholesale"]
   }
 ]

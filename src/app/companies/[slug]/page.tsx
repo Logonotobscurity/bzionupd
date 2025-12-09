@@ -11,13 +11,13 @@ import { Button } from '@/components/ui/button';
 import { PageHero } from '@/components/layout/PageHero';
 
 interface CompanyPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function CompanyPage({ params }: CompanyPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const company = await getCompanyBySlug(slug);
   if (!company) {

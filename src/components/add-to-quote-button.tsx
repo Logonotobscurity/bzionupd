@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useQuoteStore } from '@/lib/quote-store';
+import { useQuoteStore } from '@/lib/store/quote';
 import { Button } from '@/components/ui/button';
 import { SuccessNotification } from '@/components/success-notification';
 import { type Product } from '@/lib/data';

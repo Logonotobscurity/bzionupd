@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { sendQuoteRequestToWhatsApp, sendQuoteConfirmationToCustomer } from '@/lib/send-whatsapp';
+import { prisma } from '@/lib/db';
+import { generateQuoteRequestWhatsAppURL } from '@/lib/api/whatsapp';
 import { z } from 'zod';
 
 const quoteRequestSchema = z.object({
@@ -29,35 +29,30 @@ export async function POST(req: Request) {
       items,
     } = quoteRequestSchema.parse(json);
 
-    const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
-
-    // Create a new user if one doesn't exist
-    let user = await db.user.findUnique({
-      where: { email },
-    });
-    if (!user) {
-      user = await db.user.create({
-        data: { email, name },
-      });
-    }
-
-    const quoteRequest = await db.quoteRequest.create({
+    // Create quote directly without user lookup for now
+    const quoteRequest = await prisma.quote.create({
       data: {
-        userId: user.id,
-        requestor_name: name,
-        requestor_email: email,
-        requestor_phone: phone,
-        company_name: company || null,
-        delivery_address: message,
-        requested_products: items as any,
-        total_items: totalItems,
-        quote_reference: `QR-${Date.now()}`,
+        reference: `QR-${Date.now()}`,
+        buyerContactEmail: email,
+        buyerContactPhone: phone,
+        buyerCompanyId: company || null,
+        status: 'draft',
+        lines: {
+          create: items.map(item => ({
+            productId: item.id,
+            productName: item.name,
+            qty: item.quantity,
+          })),
+        },
+      },
+      include: {
+        lines: true,
       },
     });
 
     // Generate WhatsApp URLs (non-blocking)
     try {
-      await sendQuoteRequestToWhatsApp({
+      generateQuoteRequestWhatsAppURL({
         name,
         email,
         phone,
@@ -73,7 +68,7 @@ export async function POST(req: Request) {
     // Return response with quote details
     return NextResponse.json({
       id: quoteRequest.id,
-      quote_reference: quoteRequest.quote_reference,
+      quote_reference: quoteRequest.reference,
       message: 'Quote request submitted successfully.'
     }, { status: 201 });
   } catch (error) {
@@ -94,9 +89,9 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const quoteRequests = await db.quoteRequest.findMany({
+    const quoteRequests = await prisma.quote.findMany({
       include: {
-        user: true,
+        lines: true,
       },
       orderBy: {
         createdAt: 'desc',

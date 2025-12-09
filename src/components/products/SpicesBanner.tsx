@@ -15,6 +15,7 @@ export const SpicesBanner = () => {
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
             data-ai-hint="colorful spices"
+            unoptimized
           />
         </div>
         <div className="flex items-center justify-center p-8 md:p-12">

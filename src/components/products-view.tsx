@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getAllProducts, getBrandStats, getCategoryStats, getBrands, getCategories } from '@/services/productService';
 import { ProductCard } from '@/components/product-card';
 import { BrandCard } from '@/components/ui/brand-card';
-import { CategoryCard } from '@/components/ui/category-card';
+import { SimplifiedCategoryCard } from '@/components/ui/simplified-category-card'; // Import the new card
 import { Section, SectionTitle, SectionHeading, SectionDescription } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +17,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { Product, Brand, Category } from '@/lib/schema';
+import FeaturedContent from '@/components/ui/featured-content';
 
 interface ProductsViewProps {
   title?: string;
@@ -98,99 +99,83 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
   };
 
   return (
-    <Section id="all-products" className="py-12 md:py-16">
-        <SectionHeading className="text-center">
-            <SectionTitle>{title}</SectionTitle>
-            <SectionDescription>Browse our extensive catalog of quality products.</SectionDescription>
-        </SectionHeading>
+    <>
+      <Section id="all-products" className="section-padding-md">
+          <SectionHeading className="text-center">
+              <SectionTitle>{title}</SectionTitle>
+              <SectionDescription>Browse our extensive catalog of quality products.</SectionDescription>
+          </SectionHeading>
 
-        <div className="flex justify-center gap-1.5 sm:gap-2 md:gap-3 my-6 md:my-8 flex-wrap px-3 sm:px-4 md:px-0">
-            <Button 
-                variant={activeFilter === 'all' ? 'default' : 'outline'}
-                onClick={() => handleFilterClick('all')}
-                size="sm" className="text-xs sm:text-sm min-h-10 sm:min-h-11 px-2.5 sm:px-4"
-            >
-                All Products
-            </Button>
-            <Button 
-                variant={activeFilter === 'brand' ? 'default' : 'outline'}
-                onClick={() => handleFilterClick('brand')}
-                size="sm" className="text-xs sm:text-sm min-h-10 sm:min-h-11 px-2.5 sm:px-4"
-            >
-                Shop by Brand
-            </Button>
-            <Button 
-                variant={activeFilter === 'category' ? 'default' : 'outline'}
-                onClick={() => handleFilterClick('category')}
-                size="sm" className="text-xs sm:text-sm min-h-10 sm:min-h-11 px-2.5 sm:px-4"
-            >
-                Shop by Category
-            </Button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 px-3 sm:px-4 md:px-0">
-            {activeFilter === 'all' && paginatedProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-            ))}
-            {activeFilter === 'brand' && brands.map(brand => {
-                const stats = brandStats[brand.name] || { productCount: 0, categoryCount: 0 };
-                return <BrandCard key={brand.id} brand={brand} productCount={stats.productCount} categoryCount={stats.categoryCount} />;
-            })}
-            {activeFilter === 'category' && categories.map(category => {
-                const stats = categoryStats[category.name] || { productCount: 0, brandCount: 0 };
-                return <CategoryCard key={category.id} category={category} productCount={stats.productCount} brandCount={stats.brandCount} />;
-            })}
-        </div>
-
-        {/* Pagination Controls - Only show for products view */}
-        {activeFilter === 'all' && totalPages > 1 && (
-          <div className="mt-12">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage > 1) setCurrentPage(currentPage - 1);
-                    }}
-                    className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-                  />
-                </PaginationItem>
-
-                {getPageNumbers().map((page, index) => (
-                  <PaginationItem key={index}>
-                    {page === 'ellipsis' ? (
-                      <PaginationEllipsis />
-                    ) : (
-                      <PaginationLink
-                        href="#"
-                        isActive={currentPage === page}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(page as number);
-                        }}
-                      >
-                        {page}
-                      </PaginationLink>
-                    )}
-                  </PaginationItem>
-                ))}
-
-                <PaginationItem>
-                  <PaginationNext 
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-                    }}
-                    className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+          <div className="flex justify-center py-4">
+              <Button onClick={() => handleFilterClick('all')} variant={activeFilter === 'all' ? 'default' : 'outline'} className='mx-2'>All</Button>
+              <Button onClick={() => handleFilterClick('brand')} variant={activeFilter === 'brand' ? 'default' : 'outline'} className='mx-2'>Shop by Brand</Button>
+              <Button onClick={() => handleFilterClick('category')} variant={activeFilter === 'category' ? 'default' : 'outline'} className='mx-2'>Shop by Category</Button>
           </div>
-        )}
-    </Section>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-fluid-sm">
+              {activeFilter === 'all' && paginatedProducts.map(product => (
+                  <ProductCard key={product.id} product={product} />
+              ))}
+              {activeFilter === 'brand' && brands.map(brand => {
+                  const stats = brandStats[brand.name] || { productCount: 0, categoryCount: 0 };
+                  return <BrandCard key={brand.id} brand={brand} productCount={stats.productCount} categoryCount={stats.categoryCount} />;
+              })}
+              {activeFilter === 'category' && categories.map(category => (
+                  <SimplifiedCategoryCard key={category.id} category={category} />
+              ))}
+          </div>
+
+          {/* Pagination Controls - Only show for products view */}
+          {activeFilter === 'all' && totalPages > 1 && (
+            <div className="mt-12">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage > 1) setCurrentPage(currentPage - 1);
+                      }}
+                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+
+                  {getPageNumbers().map((page, index) => (
+                    <PaginationItem key={index}>
+                      {page === 'ellipsis' ? (
+                        <PaginationEllipsis />
+                      ) : (
+                        <PaginationLink
+                          href="#"
+                          isActive={currentPage === page}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(page as number);
+                          }}
+                        >
+                          {page}
+                        </PaginationLink>
+                      )}
+                    </PaginationItem>
+                  ))}
+
+                  <PaginationItem>
+                    <PaginationNext 
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+                      }}
+                      className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+      </Section>
+      <FeaturedContent />
+    </>
   );
 }

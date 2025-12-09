@@ -39,17 +39,17 @@ export function CTASection({
         customContent
       ) : (
         <>
-          <h3 className={cn('text-2xl font-bold mb-3', textColor)}>
+          <h3 className={cn('text-3xl sm:text-4xl font-bold mb-3', textColor)}>
             {title}
           </h3>
-          <p className={cn('max-w-2xl mx-auto mb-6', descriptionColor)}>
+          <p className={cn('max-w-2xl mx-auto mb-6 text-lg sm:text-xl', descriptionColor)}>
             {description}
           </p>
           <Button
             asChild
             size="lg"
             variant={variant === 'dark' ? 'secondary' : 'default'}
-            className="font-semibold"
+            className="font-bold rounded-2xl h-12 px-8 shadow-lg hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
           >
             <Link href={ctaHref}>{ctaText}</Link>
           </Button>

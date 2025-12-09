@@ -1,5 +1,5 @@
 import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
-import { validateEmail as validateEmailUtil } from '@/lib/validators';
+import { validateEmail as validateEmailUtil } from '@/lib/validations';
 
 export interface FormErrors {
   [key: string]: string;

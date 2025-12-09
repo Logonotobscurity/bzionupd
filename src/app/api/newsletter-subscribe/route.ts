@@ -1,52 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { prisma } from '@/lib/db';
 
-interface SubscriptionRequest {
-  email: string;
-}
+const subscriptionSchema = z.object({
+  email: z.string().email('Invalid email address'),
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json() as SubscriptionRequest;
-    const { email } = body;
+    const body = await request.json();
+    const { email } = subscriptionSchema.parse(body);
 
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
+    // Check if database is available
+    if (!process.env.DATABASE_URL) {
+      console.log('Newsletter subscription (no DB):', email);
       return NextResponse.json(
-        { error: 'Invalid email address' },
-        { status: 400 }
+        { 
+          success: true, 
+          message: 'Successfully subscribed to newsletter',
+        },
+        { status: 200 }
       );
     }
 
-    // TODO: Add your newsletter service integration here
-    // Examples:
-    // - Mailchimp
-    // - Brevo (Sendinblue)
-    // - ConvertKit
-    // - Your own database
-
-    // For now, we'll just log it (replace with your service)
-    console.log('Newsletter subscription:', email);
-
-    // Simulate sending to newsletter service
-    // const response = await fetch('https://your-newsletter-service.com/api/subscribe', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email }),
-    // });
+    // Save to database (upsert to handle duplicates)
+    await prisma.$executeRaw`
+      INSERT INTO newsletter_subscribers (email, status, created_at)
+      VALUES (${email}, 'active', NOW())
+      ON CONFLICT (email) DO UPDATE SET status = 'active', updated_at = NOW()
+    `;
 
     return NextResponse.json(
       { 
         success: true, 
         message: 'Successfully subscribed to newsletter',
-        email 
       },
       { status: 200 }
     );
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid email address' },
+        { status: 400 }
+      );
+    }
+
     console.error('Newsletter subscription error:', error);
     return NextResponse.json(
-      { error: 'Failed to subscribe to newsletter' },
+      { success: false, error: 'Failed to subscribe to newsletter' },
       { status: 500 }
     );
   }

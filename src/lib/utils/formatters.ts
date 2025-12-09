@@ -54,6 +54,24 @@ export function formatCurrency(
 }
 
 /**
+ * Format a number as a price in NGN (Nigerian Naira)
+ * @param amount - Number to format
+ * @returns Formatted price string (e.g., "₦1,234.56")
+ */
+export function formatPrice(amount: number): string {
+  if (typeof amount !== 'number') {
+    return '';
+  }
+  return new Intl.NumberFormat('en-NG', {
+    style: 'currency',
+    currency: 'NGN',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+
+/**
  * Format a number with thousand separators
  * @param number - Number to format
  * @param decimals - Number of decimal places (default: 0)

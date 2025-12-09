@@ -56,6 +56,7 @@ export const CustomerSegments = () => {
                                     className="object-cover rounded-xl"
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     data-ai-hint={image.imageHint}
+                                    unoptimized
                                 />
                             </div>
                         </div>

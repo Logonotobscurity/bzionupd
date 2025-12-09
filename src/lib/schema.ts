@@ -44,15 +44,15 @@ export type Product = {
   companyId: number;
   category: string;
   categorySlug: string;
-  description: string;
-  detailedDescription: string;
-  price: number;
-  moq: number;
-  unit: string;
-  inStock: boolean;
-  quantity: number;
+  description?: string;
+  detailedDescription?: string;
+  price?: number;
+  moq?: number;
+  unit?: string;
+  inStock?: boolean;
+  quantity?: number;
   images: string[];
-  specifications: {
+  specifications?: {
     brand: string;
     company: string;
     unit: string;
@@ -60,12 +60,12 @@ export type Product = {
     sku: string;
     size?: string;
   };
-  rating: number;
-  reviewCount: number;
+  rating?: number;
+  reviewCount?: number;
   tags?: string[];
-  isActive: boolean;
-  isFeatured: boolean;
-  createdAt: string;
-  updatedAt: string;
+  isActive?: boolean;
+  isFeatured?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
   imageUrl: string; // Added to satisfy other components, will be mapped
 };

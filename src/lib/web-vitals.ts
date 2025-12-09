@@ -204,7 +204,7 @@ class WebVitalsTracker {
     if (!('PerformanceObserver' in window)) return
 
     let clsValue = 0
-    let clsEntries: PerformanceEntry[] = []
+    const clsEntries: PerformanceEntry[] = []
 
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {

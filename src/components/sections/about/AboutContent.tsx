@@ -47,6 +47,7 @@ const AboutContent = () => {
                         className="w-full h-full object-cover"
                         sizes="(max-width: 768px) 100vw, 33vw"
                         data-ai-hint={storyImage.imageHint}
+                        unoptimized
                     />
                 </div>
             </div>
@@ -133,6 +134,7 @@ const AboutContent = () => {
                       className="object-cover object-top"
                       sizes="(max-width: 768px) 100vw, 33vw"
                       data-ai-hint={founderImage.imageHint}
+                      unoptimized
                     />
                 </div>
             </div>

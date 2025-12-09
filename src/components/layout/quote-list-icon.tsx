@@ -1,22 +1,26 @@
+'use client';
 
-"use client";
-
-import { useQuoteStore } from "@/lib/quote-store";
+import { useQuoteStore } from "@/lib/store/quote";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "../ui/button";
 
 export const QuoteListIcon = () => {
-  const { items, setOpen } = useQuoteStore();
+    const { items, toggleDrawer } = useQuoteStore();
+    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  return (
-    <Button onClick={() => setOpen(true)} variant="ghost" className="relative">
-      <ShoppingBag />
-      {items.length > 0 && (
-        <span className="absolute -top-1 -right-1 bg-primary text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
-          {items.length}
-        </span>
-      )}
-      <span className="sr-only">Open quote request drawer</span>
-    </Button>
-  );
+    return (
+        <Button
+            variant="ghost"
+            className="relative"
+            onClick={toggleDrawer}
+            aria-label="Quote list"
+        >
+            <ShoppingBag className="h-6 w-6" />
+            {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 block h-5 w-5 rounded-full bg-primary text-white text-xs flex items-center justify-center font-semibold">
+                    {itemCount}
+                </span>
+            )}
+        </Button>
+    );
 };

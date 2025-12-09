@@ -2,6 +2,7 @@
 "use client";
 
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { type Product } from '@/lib/schema';
 import { toast } from '@/hooks/use-toast';
 
@@ -13,16 +14,20 @@ interface QuoteState {
   items: QuoteItem[];
   isOpen: boolean;
   setOpen: (isOpen: boolean) => void;
+  toggleDrawer: () => void;
   addProduct: (product: Product, quantity?: number) => void;
   removeProduct: (productId: string | number) => void;
   updateQuantity: (productId: string | number, quantity: number) => void;
   clearQuote: () => void;
+  getItemCount: () => number;
 }
 
-export const useQuoteStore = create<QuoteState>((set, get) => ({
+export const useQuoteStore = create<QuoteState>()(persist((set, get) => ({
   items: [],
   isOpen: false,
   setOpen: (isOpen) => set({ isOpen }),
+  toggleDrawer: () => set((state) => ({ isOpen: !state.isOpen })),
+  getItemCount: () => get().items.reduce((sum, item) => sum + item.quantity, 0),
   addProduct: (product, quantity = 1) => {
     const { items } = get();
     const existingItem = items.find((item) => item.id === product.id);
@@ -59,4 +64,7 @@ export const useQuoteStore = create<QuoteState>((set, get) => ({
   clearQuote: () => {
     set({ items: [] });
   },
+}), {
+  name: 'quote-storage',
+  partialize: (state) => ({ items: state.items }),
 }));

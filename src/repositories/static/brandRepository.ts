@@ -1,4 +1,4 @@
-import brands from '@/lib/brand-data.json';
+import brands from '@/lib/data/brands.json';
 import { Brand } from '@/lib/schema';
 
 export const findBySlug = async (slug: string): Promise<Brand | undefined> => {

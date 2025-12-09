@@ -8,10 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { findImage } from '@/lib/placeholder-images';
-import { useAuthStore } from '@/lib/auth-store';
+import { useAuthStore } from '@/stores/authStore';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
-import { initializeMockActivities } from '@/lib/activity-store';
+import { initializeMockActivities } from '@/stores/activity';
 
 const loginImage = findImage('login-bg');
 
@@ -24,7 +24,6 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Demo credentials info
   const demoCredentials = [
     { email: 'demo@bzion.com', password: 'demo123', name: 'John Doe' },
     { email: 'test@bzion.com', password: 'test123', name: 'Jane Smith' },
@@ -33,12 +32,11 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       await login(email, password);
-      // Initialize mock activities on successful login
       initializeMockActivities();
-      
+
       toast({
         title: 'Login Successful',
         description: `Welcome back, ${email}!`,
@@ -62,431 +60,123 @@ export default function LoginPage() {
 
   return (
     <div className="w-full lg:grid lg:min-h-[calc(100vh-10rem)] lg:grid-cols-2">
-      {/* Left Side - Form */}
       <div className="flex items-center justify-center py-12 px-4 sm:px-6 bg-gradient-to-br from-white via-white to-primary/5">
-        <style jsx>{`
-          .form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: linear-gradient(45deg, hsl(var(--primary)), hsl(220.5 100% 8.8%));
-            padding: 30px;
-            width: 100%;
-            max-width: 450px;
-            border-radius: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-            transition: background 0.3s ease;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(4px);
-          }
-
-          .form:hover {
-            background: linear-gradient(45deg, hsl(220.5 100% 8.8%), hsl(var(--primary)));
-            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
-          }
-
-          ::placeholder {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-          }
-
-          .form button {
-            align-self: flex-end;
-          }
-
-          .flex-column > label {
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-          }
-
-          .inputForm {
-            border: 1.5px solid #ecedec;
-            border-radius: 10em;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            transition: 0.2s ease-in-out;
-            background-color: white;
-          }
-
-          .input {
-            margin-left: 10px;
-            border-radius: 10rem;
-            border: none;
-            width: 100%;
-            height: 100%;
-            font-size: 14px;
-          }
-
-          .input:focus {
-            outline: none;
-          }
-
-          .inputForm:focus-within {
-            border: 1.5px solid hsl(var(--secondary));
-            box-shadow: 0 0 8px rgba(var(--secondary-rgb), 0.3);
-          }
-
-          .flex-row {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            justify-content: space-between;
-          }
-
-          .flex-row > div > label {
-            font-size: 14px;
-            color: white;
-            font-weight: 500;
-          }
-
-          .span {
-            font-size: 14px;
-            margin-left: 5px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: color 0.2s ease;
-          }
-
-          .span:hover {
-            color: hsl(var(--secondary));
-          }
-
-          .button-submit {
-            position: relative;
-            display: inline-block;
-            padding: 15px 30px;
-            text-align: center;
-            letter-spacing: 1px;
-            text-decoration: none;
-            background: transparent;
-            transition: ease-out 0.5s;
-            border: 2px solid hsl(var(--secondary));
-            border-radius: 10em;
-            box-shadow: inset 0 0 0 0 hsl(var(--secondary));
-            margin: 20px 0 10px 0;
-            color: white;
-            font-size: 15px;
-            font-weight: 500;
-            height: 50px;
-            width: 100%;
-            cursor: pointer;
-          }
-
-          .button-submit:hover {
-            color: white;
-            box-shadow: inset 0 -100px 0 0 hsl(var(--secondary));
-          }
-
-          .button-submit:active {
-            transform: scale(0.9);
-          }
-
-          .p {
-            text-align: center;
-            color: white;
-            font-size: 14px;
-            margin: 5px 0;
-          }
-
-          .btn {
-            margin-top: 10px;
-            width: 100%;
-            height: 50px;
-            border-radius: 10em;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 500;
-            gap: 10px;
-            border: 1px solid #ededef;
-            background-color: white;
-            cursor: pointer;
-            transition: 0.2s ease-in-out;
-            font-size: 15px;
-          }
-
-          .btn:hover {
-            border: 1px solid hsl(var(--secondary));
-            background-color: #fafafa;
-          }
-
-          .demo-btn {
-            margin-top: 10px;
-            width: 100%;
-            height: 50px;
-            border-radius: 10em;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 500;
-            gap: 10px;
-            border: 2px dashed hsl(var(--secondary) / 0.6);
-            background-color: transparent;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            font-size: 14px;
-            color: white;
-          }
-
-          .demo-btn:hover {
-            border: 2px dashed hsl(var(--secondary));
-            background-color: hsl(var(--secondary) / 0.1);
-          }
-
-          .password-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            transition: color 0.2s ease;
-          }
-
-          .password-toggle:hover {
-            color: hsl(var(--secondary));
-          }
-
-          .header-container {
-            gap: 0;
-            margin-bottom: 20px;
-            text-align: center;
-          }
-
-          .icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary) / 0.8));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-          }
-
-          .title {
-            font-size: 28px;
-            font-weight: bold;
-            color: white;
-            margin: 0 0 8px 0;
-          }
-
-          .subtitle {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            margin: 0;
-          }
-
-          .form-section {
-            gap: 15px;
-          }
-
-          .password-input-wrapper {
-            padding-right: 10px;
-          }
-
-          .button-content {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-          }
-
-          .divider-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 15px 0 10px 0;
-            opacity: 0.6;
-          }
-
-          .divider-line {
-            flex: 1;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-          }
-
-          .divider-text {
-            margin: 0;
-          }
-
-          .demo-credentials {
-            gap: 8px;
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-          }
-
-          .demo-cred-name {
-            font-size: 14px;
-            font-weight: 600;
-          }
-
-          .footer-section {
-            margin-top: 15px;
-            gap: 8px;
-            display: flex;
-            flex-direction: column;
-          }
-
-          .footer-text-small {
-            font-size: 12px;
-          }
-
-          .footer-text-large {
-            font-size: 13px;
-          }
-
-          .link-inline {
-            margin: 0;
-          }
-
-          .pulse-element {
-            animation-delay: 1s;
-          }
-        `}</style>
-
-        <div className="form">
-          {/* Header */}
-          <div className="flex-column">
-            <div className="text-center mb-5">
-              <div className="icon-box">
-                <Lock className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="title">Welcome Back</h1>
-              <p className="subtitle">Sign in to your BZION account</p>
+        <div className="mx-auto grid w-[450px] gap-6 p-8 rounded-2xl bg-gradient-to-br from-primary to-primary/90 text-white shadow-2xl shadow-primary/30">
+          <div className="grid gap-2 text-center">
+            <div className="mx-auto mb-2 w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-secondary/80 flex items-center justify-center">
+                <Lock className="w-8 h-8 text-white" />
             </div>
+            <h1 className="text-3xl font-bold">Welcome Back</h1>
+            <p className="text-white/80">Sign in to your BZION account</p>
           </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="flex-column form-section">
-            {/* Email Field */}
-            <div className="flex-column">
-              <label htmlFor="email">Email Address</label>
-              <div className="inputForm">
-                <Mail className="w-4.5 h-4.5 text-secondary shrink-0" />
-                <input
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email Address</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
                   id="email"
                   type="email"
                   placeholder="you@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input"
                   required
+                  className="pl-10 text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
                 />
               </div>
             </div>
-
-            {/* Password Field */}
-            <div className="flex-column">
-              <div className="flex-row">
-                <label htmlFor="password">Password</label>
-                <Link href="#" className="span">
-                  Forgot?
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+                <Link
+                  href="#"
+                  className="ml-auto inline-block text-sm underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+                >
+                  Forgot your password?
                 </Link>
               </div>
-              <div className="inputForm password-input-wrapper">
-                <Lock className="w-4.5 h-4.5 text-secondary shrink-0" />
-                <input
+              <div className="relative">
+                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input"
                   required
+                  className="pl-10 pr-12 text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
                 />
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-11 w-11 text-muted-foreground hover:bg-transparent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="password-toggle"
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-4.5 h-4.5" />
-                  ) : (
-                    <Eye className="w-4.5 h-4.5" />
-                  )}
-                </button>
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </Button>
               </div>
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="button-submit"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary" size="lg" disabled={isLoading}>
               {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   Signing in...
-                </span>
+                </>
               ) : (
-                <span className="flex items-center gap-2">
-                  Sign In
-                  <ArrowRight className="w-4 h-4" />
-                </span>
+                <>
+                  Sign In <ArrowRight className="ml-2 h-5 w-5" />
+                </>
               )}
-            </button>
-
-            {/* Google Button */}
-            <button type="button" className="btn" disabled>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032 c0-3.331,2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.461,2.268,15.365,0.903,12.545,0.903 c-6.256,0-11.321,5.064-11.321,11.322c0,6.258,5.065,11.322,11.321,11.322c6.256,0,11.322-5.064,11.322-11.322 c0-0.755-0.084-1.491-0.239-2.220H12.545z" />
-              </svg>
+            </Button>
+            <Button variant="outline" className="w-full text-black focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary" size="lg" disabled>
+                <svg width="18" height="18" viewBox="0 0 24 24" className="mr-2">
+                    <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032 c0-3.331,2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.461,2.268,15.365,0.903,12.545,0.903 c-6.256,0-11.321,5.064-11.321,11.322c0,6.258,5.065,11.322,11.321,11.322c6.256,0,11.322-5.064,11.322-11.322 c0-0.755-0.084-1.491-0.239-2.220H12.545z" fill="currentColor" />
+                </svg>
               Continue with Google
-            </button>
+            </Button>
           </form>
 
-          {/* Divider */}
-          <div className="divider-container">
-            <div className="divider-line"></div>
-            <span className="p divider-text">Demo Accounts</span>
-            <div className="divider-line"></div>
+          <div className="relative my-2">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-white/30" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-primary px-2 text-white/80 rounded-md">Demo Accounts</span>
+            </div>
           </div>
-
-          {/* Demo Credentials */}
-          <div className="demo-credentials">
+          
+          <div className="grid grid-cols-2 gap-2">
             {demoCredentials.map((cred) => (
-              <button
-                key={cred.email}
-                type="button"
-                onClick={() => fillDemoCredentials(cred.email, cred.password)}
-                className="demo-btn"
-              >
-                <span className="demo-cred-name">{cred.name}</span>
-              </button>
+                <Button
+                    key={cred.email}
+                    type="button"
+                    variant="secondary"
+                    className="w-full bg-secondary/80 hover:bg-secondary/90 text-white font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+                    onClick={() => fillDemoCredentials(cred.email, cred.password)}
+                >
+                    {cred.name}
+                </Button>
             ))}
-          </div>
+           </div>
 
-          {/* Footer */}
-          <div className="footer-section">
-            <p className="p footer-text-small">
-              By signing in, you agree to our <span className="span link-inline">Terms</span> and <span className="span link-inline">Privacy</span>
-            </p>
-            <p className="p footer-text-large">
-              Don't have an account? <Link href="/contact" className="font-semibold">Contact us</Link>
+          <div className="mt-4 text-center text-sm text-white/80">
+            By signing in, you agree to our{" "}
+            <Link href="#" className="underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
+              Terms and Privacy
+            </Link>
+             <p className="text-center text-large">
+              Don't have an account? <Link href="/contact" className="font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">Contact us</Link>
             </p>
           </div>
         </div>
       </div>
-
-      {/* Right Side - Hero */}
       <div className="hidden bg-muted lg:block relative overflow-hidden">
-        {/* Gradient Overlay Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/95 to-primary/90"></div>
         
-        {/* Animated Background Elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 animate-pulse"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 animate-pulse pulse-element"></div>
 
-        {/* Background Image */}
         {loginImage && (
           <Image
             src={loginImage.imageUrl}
@@ -497,9 +187,7 @@ export default function LoginPage() {
           />
         )}
 
-        {/* Content */}
         <div className="absolute inset-0 flex flex-col justify-between p-8 sm:p-12">
-          {/* Top Brand */}
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/20 border border-secondary/30 backdrop-blur-sm">
               <div className="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
@@ -507,7 +195,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="relative z-10 space-y-8">
             <div className="space-y-4">
               <h2 className="text-4xl sm:text-5xl font-bold text-white leading-tight">
@@ -518,7 +205,6 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* Stats */}
             <div className="grid grid-cols-2 gap-4 max-w-md">
               <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
                 <p className="text-2xl sm:text-3xl font-bold text-white">500+</p>
@@ -530,7 +216,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Testimonial */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 max-w-md">
               <p className="text-sm sm:text-base text-white/90 mb-4">
                 "BZION Hub transformed how we source. Response times dropped by 70% and we discovered amazing new suppliers."

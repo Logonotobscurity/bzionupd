@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuoteStore, type QuoteItem } from '@/lib/quote-store';
+import { useQuoteStore, type QuoteItem } from '@/lib/store/quote';
 import { Button } from '@/components/ui/button';
 import { Section } from '@/components/ui/section';
 import { Breadcrumbs } from '@/components/ui/breadcrumb';
@@ -14,7 +14,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { AnimatedDiv } from '@/components/animated-div';
-import { Package, Truck, Shield, CheckCircle } from 'lucide-react';
+import { CTASection } from '@/components/cta-section';
+import { Package, Truck, Shield, CheckCircle, User, FileText } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 const checkoutSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -29,7 +32,56 @@ const checkoutSchema = z.object({
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
+type CheckoutStep = 'Review' | 'Details' | 'Submit';
+
+const CheckoutProgress = ({ currentStep }: { currentStep: CheckoutStep }) => {
+    const steps: {name: CheckoutStep, icon: React.ElementType}[] = [
+        { name: 'Review', icon: FileText },
+        { name: 'Details', icon: User },
+        { name: 'Submit', icon: CheckCircle },
+    ];
+
+    const currentStepIndex = steps.findIndex(step => step.name === currentStep);
+
+    return (
+        <div className="w-full max-w-3xl mx-auto mb-8 md:mb-12">
+            <div className="flex items-center justify-between relative">
+                {steps.map((step, index) => {
+                    const isActive = index === currentStepIndex;
+                    const isCompleted = index < currentStepIndex;
+                    const Icon = step.icon;
+
+                    return (
+                        <div key={step.name} className="flex flex-col items-center gap-2 md:gap-3 relative z-10">
+                           <div className={cn(
+                               "w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-300 border-2",
+                               isActive ? "bg-gradient-to-br from-primary to-primary/80 text-white border-primary scale-110 shadow-lg shadow-primary/40" : 
+                               isCompleted ? "bg-gradient-to-br from-green-500 to-green-600 text-white border-green-500 shadow-md" : "bg-white text-slate-400 border-slate-300"
+                           )}>
+                               <Icon className="w-5 h-5 md:w-6 md:h-6" />
+                           </div>
+                           <p className={cn(
+                               "text-xs md:text-sm font-bold transition-colors duration-300 text-center",
+                               isActive ? "text-primary" : isCompleted ? "text-green-600" : "text-slate-500"
+                           )}>
+                               {step.name}
+                           </p>
+                           {index < steps.length - 1 && (
+                                <div className={cn(
+                                    "absolute top-5 md:top-7 left-1/2 h-0.5 transition-all duration-300",
+                                    isCompleted ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-slate-300'
+                                )} style={{ width: 'calc(100vw / 3 - 3rem)', transform: 'translateX(0)' }}/>
+                           )}
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+    )
+}
+
 export default function CheckoutPage() {
+  const [step, setStep] = useState<CheckoutStep>('Review');
   const { items, clearQuote } = useQuoteStore((state) => ({
     items: state.items as QuoteItem[],
     clearQuote: state.clearQuote,
@@ -39,6 +91,7 @@ export default function CheckoutPage() {
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
+    mode: 'onTouched',
     defaultValues: {
       email: '',
       firstName: '',
@@ -51,7 +104,21 @@ export default function CheckoutPage() {
     }
   });
 
-  const { formState: { isSubmitting } } = form;
+  useEffect(() => {
+    const savedData = localStorage.getItem('checkoutForm');
+    if (savedData) {
+      form.reset(JSON.parse(savedData));
+    }
+  }, [form]);
+
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      localStorage.setItem('checkoutForm', JSON.stringify(value));
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+  const { formState: { isSubmitting, isValid } } = form;
 
   const handleWhatsAppSubmit = (data: CheckoutFormValues) => {
     if (items.length === 0) return;
@@ -72,7 +139,7 @@ export default function CheckoutPage() {
 
     items.forEach((item, index) => {
       messageLines.push(`${index + 1}. ${item.name}`);
-      messageLines.push(`   SKU: ${item.id}`);
+      messageLines.push(`   SKU: ${item.sku || item.id}`);
       messageLines.push(`   Quantity: ${item.quantity}`);
     });
 
@@ -109,7 +176,7 @@ export default function CheckoutPage() {
     try {
       // Prepare items data ensuring all required fields are present
       const itemsData = items.map(item => ({
-        id: item.id,
+        id: String(item.id),
         quantity: item.quantity,
         name: item.name,
       }));
@@ -142,6 +209,8 @@ export default function CheckoutPage() {
         throw new Error(`Failed to submit quote request: ${response.status} ${response.statusText}`);
       }
 
+      setStep('Submit');
+
       toast({
         title: 'Quote Request Submitted!',
         description: 'Redirecting to WhatsApp...',
@@ -153,8 +222,9 @@ export default function CheckoutPage() {
       // Clear quote and redirect after a short delay
       setTimeout(() => {
         clearQuote();
+        localStorage.removeItem('checkoutForm');
         router.push('/');
-      }, 1000);
+      }, 3000);
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -167,45 +237,108 @@ export default function CheckoutPage() {
     }
   };
 
-  const breadcrumbItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Products', href: '/products' },
-    { label: 'Submit Request', href: '/checkout' },
-  ];
-
   return (
-    <main className="flex-grow bg-white md:bg-gradient-to-b md:from-slate-50 md:via-white md:to-slate-50 min-h-screen">
-      <Section className="py-6 md:py-12 px-4 md:px-0">
-        <div className="mb-8 md:mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 mt-2 md:mt-4 mb-2 md:mb-3">Complete Your Quote</h1>
-            <p className="text-base md:text-lg xl:text-xl text-slate-600 max-w-2xl">Review your items and provide your delivery details to get started</p>
+    <main className="flex-grow bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen">
+      <Section className="py-8 md:py-16">
+        <div className="mb-10 md:mb-16 text-center">
+            <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-3 md:mb-4">Complete Your Quote</h1>
+            <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">Review your items and provide your delivery details to get started</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
-          {/* --- LEFT: CHECKOUT FORM (Takes 2 columns) --- */}
-          <div className="lg:col-span-2 order-2 lg:order-1 will-change-auto">
-            <Card className="shadow-sm md:shadow-lg border border-slate-200/50 md:border-slate-200/80 rounded-xl md:rounded-2xl">
+        <CheckoutProgress currentStep={step} />
+
+        <div className="max-w-5xl mx-auto">
+            {step === 'Review' && (
+                 <div className="space-y-6">
+                 {/* Summary Card */}
+                 <Card className="shadow-lg border-2 border-slate-200 rounded-2xl overflow-hidden">
+                    <CardHeader className="bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 border-b-2 border-slate-200 p-6 md:p-8">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-xl md:text-2xl font-bold">Quote Summary</CardTitle>
+                          <div className="px-4 py-2 rounded-full bg-gradient-to-r from-primary to-primary/90 text-white font-bold text-sm shadow-md">{items.length} {items.length === 1 ? 'item' : 'items'}</div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-6 md:p-8">
+                        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+                            {items.length > 0 ? (
+                                items.map((item) => {
+                                    return (
+                                        <div key={item.id} className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-slate-50 to-slate-100/50 border border-slate-200 hover:shadow-md transition-shadow">
+                                            <div className="relative w-16 h-16 md:w-20 md:h-20 bg-white border-2 border-slate-200 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm">
+                                                <Image src={item.imageUrl || '/images/placeholder.jpg'} alt={item.name} fill className="object-contain p-2" sizes="80px" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-bold text-slate-900 text-sm md:text-base line-clamp-2 mb-2">{item.name}</p>
+                                                <div className="flex items-center gap-2">
+                                                  <span className="text-xs text-slate-600">Quantity:</span>
+                                                  <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs">{item.quantity}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            ) : (
+                                <p className="text-sm text-slate-500 text-center py-12">Your quote request is empty.</p>
+                            )}
+                        </div>
+    
+                        {/* Benefits */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-6 border-t-2 border-slate-200 mt-6">
+                          <div className="flex items-center gap-3 p-3 rounded-xl bg-green-50 border border-green-200">
+                            <div className="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                              <Truck className="h-5 w-5 text-white" />
+                            </div>
+                            <span className="text-xs md:text-sm font-bold text-slate-700">Fast Delivery</span>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-200">
+                            <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                              <Shield className="h-5 w-5 text-white" />
+                            </div>
+                            <span className="text-xs md:text-sm font-bold text-slate-700">Quality Assured</span>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 rounded-xl bg-amber-50 border border-amber-200">
+                            <div className="h-10 w-10 rounded-full bg-amber-500 flex items-center justify-center flex-shrink-0">
+                              <CheckCircle className="h-5 w-5 text-white" />
+                            </div>
+                            <span className="text-xs md:text-sm font-bold text-slate-700">Best Pricing</span>
+                          </div>
+                        </div>
+                    </CardContent>
+                 </Card>
+    
+                 {/* Submit Button */}
+                 <Button onClick={() => setStep('Details')} size="lg" className="w-full rounded-2xl bg-gradient-to-r from-primary to-primary/90 text-white text-base font-bold h-12 px-8 shadow-lg hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:bg-slate-400 transition-all duration-200" disabled={items.length === 0}>
+                    Proceed to Details →
+                 </Button>
+                 </div>
+            )}
+
+          {step === 'Details' && (
+          <div className="space-y-6">
+            <Card className="shadow-lg border-2 border-slate-200 rounded-2xl overflow-hidden">
               <Form {...form}>
                 <form id="checkout-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-0">
                   {/* Contact Information Section */}
-                  <CardHeader className="bg-slate-50 md:bg-gradient-to-r md:from-slate-50 md:to-slate-100/50 border-b border-slate-200/50 p-4 md:p-6">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                  <CardHeader className="bg-gradient-to-r from-blue-50 via-blue-50/50 to-transparent border-b-2 border-slate-200 p-5 md:p-6">
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 md:h-14 md:w-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <User className="h-6 w-6 md:h-7 md:w-7 text-white" />
                       </div>
-                      <CardTitle className="text-base md:text-xl">Contact Information</CardTitle>
+                      <div>
+                        <CardTitle className="text-lg md:text-2xl font-bold mb-1">Contact Information</CardTitle>
+                        <p className="text-sm text-slate-600">How we'll reach you about your order</p>
+                      </div>
                     </div>
-                    <p className="text-xs md:text-sm text-slate-600 ml-11 md:ml-13">How we'll reach you about your order</p>
                   </CardHeader>
-                  <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6">
+                  <CardContent className="space-y-6 p-5 md:p-6">
                     <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel className="font-bold text-slate-900 text-sm md:text-base">Email Address</FormLabel>
+                        <FormLabel className="font-bold text-slate-900 text-base">Email Address</FormLabel>
                         <FormControl>
-                            <Input placeholder="you@company.com" className="rounded-lg md:rounded-xl border-slate-300 focus:border-primary h-9 md:h-11 text-sm md:text-base" {...field} />
+                            <Input placeholder="you@company.com" className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
@@ -214,66 +347,68 @@ export default function CheckoutPage() {
                   </CardContent>
 
                   {/* Business Information Section */}
-                  <CardHeader className="bg-slate-50 md:bg-gradient-to-r md:from-slate-50 md:to-slate-100/50 border-t md:border-t border-b border-slate-200/50 p-4 md:p-6">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Package className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                  <CardHeader className="bg-gradient-to-r from-green-50 via-green-50/50 to-transparent border-t-2 border-b-2 border-slate-200 p-5 md:p-6">
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 md:h-14 md:w-14 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <Package className="h-6 w-6 md:h-7 md:w-7 text-white" />
                       </div>
-                      <CardTitle className="text-base md:text-xl">Delivery Information</CardTitle>
+                      <div>
+                        <CardTitle className="text-lg md:text-2xl font-bold mb-1">Delivery Information</CardTitle>
+                        <p className="text-sm text-slate-600">Where we'll send your products</p>
+                      </div>
                     </div>
-                    <p className="text-xs md:text-sm text-slate-600 ml-11 md:ml-13">Where we'll send your products</p>
                   </CardHeader>
-                  <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6">
-                    <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
+                  <CardContent className="space-y-6 p-5 md:p-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
                         <FormField control={form.control} name="firstName" render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900 text-sm md:text-base">First Name</FormLabel>
-                                <FormControl><Input className="rounded-lg md:rounded-xl border-slate-300 focus:border-primary h-9 md:h-11 text-sm md:text-base" {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900 text-base">First Name</FormLabel>
+                                <FormControl><Input className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                         <FormField control={form.control} name="lastName" render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900 text-sm md:text-base">Last Name</FormLabel>
-                                <FormControl><Input className="rounded-lg md:rounded-xl border-slate-300 focus:border-primary h-9 md:h-11 text-sm md:text-base" {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900 text-base">Last Name</FormLabel>
+                                <FormControl><Input className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                     </div>
                      <FormField control={form.control} name="company" render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="font-bold text-slate-900">Company Name <span className="text-slate-500 font-normal">(optional)</span></FormLabel>
-                            <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
+                            <FormLabel className="font-bold text-slate-900 text-base">Company Name <span className="text-slate-500 font-normal">(optional)</span></FormLabel>
+                            <FormControl><Input className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} /></FormControl>
                             <FormMessage />
                         </FormItem>
                      )} />
                     <FormField control={form.control} name="address" render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="font-bold text-slate-900">Street Address</FormLabel>
-                            <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
+                            <FormLabel className="font-bold text-slate-900 text-base">Street Address</FormLabel>
+                            <FormControl><Input className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} /></FormControl>
                             <FormMessage />
                         </FormItem>
                     )} />
                      <div className="grid sm:grid-cols-2 gap-6">
                          <FormField control={form.control} name="city" render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900">City</FormLabel>
-                                <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900 text-base">City</FormLabel>
+                                <FormControl><Input className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                          <FormField control={form.control} name="state" render={({ field }) => (
                              <FormItem>
-                                <FormLabel className="font-bold text-slate-900">State/Region</FormLabel>
-                                <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
+                                <FormLabel className="font-bold text-slate-900 text-base">State/Region</FormLabel>
+                                <FormControl><Input className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                          )} />
                     </div>
                      <FormField control={form.control} name="phone" render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="font-bold text-slate-900">Phone Number</FormLabel>
-                            <FormControl><Input className="rounded-xl border-slate-300 focus:border-primary h-11 text-base" {...field} /></FormControl>
+                            <FormLabel className="font-bold text-slate-900 text-base">Phone Number</FormLabel>
+                            <FormControl><Input className="rounded-xl border-2 border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 text-base" {...field} /></FormControl>
                             <FormMessage />
                         </FormItem>
                      )} />
@@ -281,69 +416,39 @@ export default function CheckoutPage() {
                 </form>
               </Form>
             </Card>
+             <div className="flex flex-col sm:flex-row gap-4 justify-between">
+                <Button onClick={() => setStep('Review')} variant="outline" size="lg" className="rounded-2xl border-2 font-bold h-12 px-8 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 sm:w-auto w-full">← Back to Review</Button>
+                <Button type="submit" form="checkout-form" size="lg" className="flex-1 sm:max-w-md rounded-2xl bg-gradient-to-r from-primary to-primary/90 text-white text-base font-bold h-12 px-8 shadow-lg hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:bg-slate-400 transition-all duration-200" disabled={isSubmitting || !isValid || items.length === 0}>
+                    {isSubmitting ? 'Submitting...' : '📱 Submit & Send to WhatsApp'}
+                </Button>
+            </div>
           </div>
+        )}
 
-          {/* --- RIGHT: ORDER SUMMARY --- */}
-          <div className="lg:col-span-1 order-1 lg:order-2 space-y-4 md:space-y-6">
-             {/* Summary Card */}
-             <Card className="shadow-sm md:shadow-lg border border-slate-200/50 md:border-slate-200/80 md:sticky md:top-24 md:max-h-[calc(100vh-7rem)] flex flex-col">
-                <CardHeader className="bg-slate-50 md:bg-gradient-to-r md:from-primary/5 md:to-secondary/5 border-b border-slate-200/50 md:border-primary/10 p-4 md:p-6 flex-shrink-0">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-base md:text-lg">Quote Summary</CardTitle>
-                      <div className="px-2 md:px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs md:text-sm">{items.length} items</div>
+        {step === 'Submit' && (
+            <div className="text-center py-20">
+                <AnimatedDiv>
+                    <div className="inline-flex items-center justify-center h-24 w-24 rounded-full bg-gradient-to-br from-green-500 to-green-600 shadow-2xl mb-6">
+                      <CheckCircle className="h-14 w-14 text-white" />
                     </div>
-                </CardHeader>
-                <CardContent className="space-y-4 pt-4 md:pt-6 flex-1 flex flex-col overflow-hidden">
-                    <div className="space-y-3 max-h-[300px] md:max-h-[400px] overflow-y-auto pr-2 flex-1">
-                        {items.length > 0 ? (
-                            items.map((item) => {
-                                return (
-                                    <div key={item.id} className="flex items-start gap-3 pb-3 border-b border-slate-200/50 last:border-0">
-                                        <div className="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200/50 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
-                                            <Image src={item.images?.[0] || item.imageUrl || '/images/placeholder.jpg'} alt={item.name || 'Product'} fill className="object-contain p-1" sizes="56px" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="font-bold text-slate-900 text-xs md:text-sm line-clamp-2">{item.name || 'Product'}</p>
-                                            <p className="text-xs text-slate-600 mt-1">Qty: <span className="font-bold text-primary">{item.quantity}</span></p>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        ) : (
-                            <p className="text-sm text-slate-500 text-center py-8">Your quote request is empty.</p>
-                        )}
-                    </div>
-
-                    {/* Benefits */}
-                    <div className="space-y-2 md:space-y-3 pt-3 md:pt-4 border-t border-slate-200/50 mt-3 md:mt-4 flex-shrink-0">
-                      <div className="flex items-start gap-2">
-                        <Truck className="h-3 w-3 md:h-4 md:w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs font-medium text-slate-700">Fast delivery across Nigeria</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Shield className="h-3 w-3 md:h-4 md:w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs font-medium text-slate-700">Quality guaranteed products</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <CheckCircle className="h-3 w-3 md:h-4 md:w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs font-medium text-slate-700">Competitive wholesale pricing</span>
-                      </div>
-                    </div>
-                </CardContent>
-             </Card>
-
-             {/* Submit Button */}
-             <Button type="submit" form="checkout-form" size="lg" className="w-full rounded-lg md:rounded-xl bg-gradient-to-r from-primary to-primary/90 text-white text-sm md:text-base font-bold py-2 md:py-3 shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-60 disabled:bg-slate-400 transition-all duration-200 h-10 md:h-12 flex-shrink-0" disabled={isSubmitting || items.length === 0}>
-                {isSubmitting ? 'Submitting...' : '📱 Submit & Send to WhatsApp'}
-             </Button>
-
-             {/* Trust Badge */}
-             <div className="text-center p-3 md:p-4 rounded-lg md:rounded-xl bg-slate-50 border border-slate-200/50 flex-shrink-0">
-              <p className="text-xs text-slate-600">🔒 <span className="font-bold">Secure & Confidential</span></p>
-              <p className="text-xs text-slate-500 mt-1">Your information is protected and only used for order processing</p>
-             </div>
-          </div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">Quote Request Sent!</h2>
+                    <p className="text-lg text-slate-600 max-w-md mx-auto">You will be redirected to WhatsApp to confirm your request.</p>
+                </AnimatedDiv>
+            </div>
+        )}
         </div>
+
+        {step !== 'Submit' && (
+          <div className="mt-16">
+            <CTASection
+              title="Need Help with Your Order?"
+              description="Our team is ready to assist you with product selection, bulk pricing, and delivery options. Get in touch for personalized support."
+              ctaText="Contact Support"
+              ctaHref="/contact"
+              variant="default"
+            />
+          </div>
+        )}
       </Section>
     </main>
   );

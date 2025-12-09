@@ -1,101 +1,50 @@
-/**
- * Error Logging API Route
- * Receives and processes error logs from clients
- */
 
-import { NextRequest, NextResponse } from 'next/server'
-
-export interface ErrorLogReport {
-  id: string
-  message: string
-  stack?: string
-  context?: Record<string, any>
-  severity: 'info' | 'warning' | 'error' | 'critical'
-  timestamp: number
-  url: string
-  userAgent: string
-  sessionId: string
-  userId?: string
-  breadcrumbs: Array<{
-    message: string
-    timestamp: number
-    category: string
-    data?: Record<string, any>
-  }>
-  sourceMap?: {
-    file: string
-    line: number
-    column: number
-  }
-  environment: string
-  version: string
-}
+import { NextRequest, NextResponse } from 'next/server';
+import {
+  storeErrorLog,
+  getErrorLogs,
+  deleteErrorLog,
+  sendAlert,
+} from '@/services/errorLoggingService';
+import { ErrorLogReport } from './route';
 
 /**
  * POST /api/monitoring/errors
- * Receive error logs from clients
+ * Receive and process error logs from clients
  */
 export async function POST(request: NextRequest) {
   try {
-    const errorLog: ErrorLogReport = await request.json()
+    const errorLog: ErrorLogReport = await request.json();
 
-    // Validate required fields
     if (!errorLog.message || !errorLog.sessionId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
-      )
+      );
     }
 
-    // Determine if error should be logged based on severity
     const shouldLog =
       errorLog.severity === 'critical' ||
       errorLog.severity === 'error' ||
-      (process.env.NODE_ENV === 'development' && errorLog.severity === 'warning')
+      (process.env.NODE_ENV === 'development' && errorLog.severity === 'warning');
 
     if (shouldLog) {
-      console.error(`[Error Log] [${errorLog.severity.toUpperCase()}]`, {
-        id: errorLog.id,
-        message: errorLog.message,
-        url: errorLog.url,
-        sessionId: errorLog.sessionId,
-        userId: errorLog.userId,
-        timestamp: new Date(errorLog.timestamp).toISOString(),
-      })
-
-      // Log detailed info for critical errors
-      if (errorLog.severity === 'critical') {
-        console.error('[Error Details]', {
-          stack: errorLog.stack,
-          context: errorLog.context,
-          sourceMap: errorLog.sourceMap,
-          breadcrumbs: errorLog.breadcrumbs.slice(-5), // Last 5 breadcrumbs
-        })
+      const storedError = await storeErrorLog(errorLog);
+      if (storedError && errorLog.severity === 'critical') {
+        await sendAlert(errorLog);
       }
     }
 
-    // Store error log (you can implement database storage here)
-    // await storeErrorLog(errorLog)
-
-    // Send to external error tracking service (e.g., Sentry, Rollbar)
-    // await sendToErrorTrackingService(errorLog)
-
-    // Send alerts for critical errors
-    if (errorLog.severity === 'critical') {
-      // await sendAlert(errorLog)
-    }
-
-    // Return success response
     return NextResponse.json(
       { success: true, id: errorLog.id },
       { status: 200 }
-    )
+    );
   } catch (error) {
-    console.error('[Error Logging API] Error:', error)
+    console.error('[Error Logging API] Error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -105,35 +54,26 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    // Add authentication check here
-    const authHeader = request.headers.get('authorization')
-    if (!authHeader) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+    const authHeader = request.headers.get('authorization');
+    if (authHeader !== `Bearer ${process.env.MONITORING_API_KEY}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Query parameters for filtering
-    const { searchParams } = new URL(request.url)
-    const limit = parseInt(searchParams.get('limit') || '50', 10)
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get('limit') || '50', 10);
+    const severity = searchParams.get('severity') || undefined;
+    const sessionId = searchParams.get('sessionId') || undefined;
+    const cursor = searchParams.get('cursor') || undefined;
 
-    // Retrieve error logs from storage
-    // const errors = await getErrorLogs({ severity, sessionId, limit })
+    const errors = await getErrorLogs({ severity, sessionId, limit, cursor });
 
-    const errors = {
-      total: 0,
-      limit,
-      errors: [],
-    }
-
-    return NextResponse.json(errors, { status: 200 })
+    return NextResponse.json({ total: errors.length, limit, errors }, { status: 200 });
   } catch (error) {
-    console.error('[Error Logging API] Error:', error)
+    console.error('[Error Logging API] Error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -143,35 +83,24 @@ export async function GET(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    // Add authentication check here
-    const authHeader = request.headers.get('authorization')
-    if (!authHeader) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+    const authHeader = request.headers.get('authorization');
+    if (authHeader !== `Bearer ${process.env.MONITORING_API_KEY}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = request.nextUrl.pathname.split('/').pop()
+    const id = request.nextUrl.pathname.split('/').pop();
     if (!id) {
-      return NextResponse.json(
-        { error: 'Missing error ID' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing error ID' }, { status: 400 });
     }
 
-    // Delete error log from storage
-    // await deleteErrorLog(id)
+    await deleteErrorLog(id);
 
-    return NextResponse.json(
-      { success: true, id },
-      { status: 200 }
-    )
+    return NextResponse.json({ success: true, id }, { status: 200 });
   } catch (error) {
-    console.error('[Error Logging API] Error:', error)
+    console.error('[Error Logging API] Error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
-    )
+    );
   }
 }

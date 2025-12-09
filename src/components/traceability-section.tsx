@@ -27,6 +27,7 @@ export function TraceabilitySection() {
                   className="object-contain rounded-lg shadow-lg"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 50vw"
                   priority={false}
+                  unoptimized
                 />
             </div>
           </div>

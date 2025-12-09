@@ -1,0 +1,111 @@
+
+import { Prisma } from '@prisma/client';
+import prisma from './dbService';
+import { ErrorLogReport } from '@/app/api/monitoring/errors/route';
+
+/**
+ * Stores an error log in the database.
+ * 
+ * @param errorLog The error log report to store.
+ * @returns The created error log record.
+ */
+export async function storeErrorLog(errorLog: ErrorLogReport) {
+  try {
+    const createdError = await prisma.errorLog.create({
+      data: {
+        message: errorLog.message,
+        stack: errorLog.stack,
+        context: errorLog.context as Prisma.InputJsonValue | undefined,
+        severity: errorLog.severity,
+        url: errorLog.url,
+        userAgent: errorLog.userAgent,
+        sessionId: errorLog.sessionId,
+        userId: errorLog.userId,
+        breadcrumbs: errorLog.breadcrumbs as Prisma.InputJsonValue | undefined,
+        sourceMap: errorLog.sourceMap as Prisma.InputJsonValue | undefined,
+        environment: errorLog.environment,
+        version: errorLog.version,
+      },
+    });
+    return createdError;
+  } catch (error) {
+    console.error('[ErrorLoggingService] Failed to store error log:', error);
+    // Depending on the monitoring strategy, you might want to throw 
+    // the error or handle it in a way that doesn't disrupt the application.
+    // For now, we will just log it to the console.
+    return null;
+  }
+}
+
+/**
+ * Retrieves error logs from the database with optional filtering and pagination.
+ * 
+ * @param options - Filtering and pagination options.
+ * @param options.severity - Filter by severity level.
+ * @param options.sessionId - Filter by session ID.
+ * @param options.limit - The maximum number of records to return.
+ * @param options.cursor - The cursor for pagination.
+ * @returns A list of error logs.
+ */
+export async function getErrorLogs(options: {
+  severity?: string;
+  sessionId?: string;
+  limit?: number;
+  cursor?: string;
+}) {
+  const { severity, sessionId, limit = 50, cursor } = options;
+
+  try {
+    const errorLogs = await prisma.errorLog.findMany({
+      take: limit,
+      cursor: cursor ? { id: cursor } : undefined,
+      where: {
+        ...(severity && { severity }),
+        ...(sessionId && { sessionId }),
+      },
+      orderBy: {
+        timestamp: 'desc',
+      },
+    });
+    return errorLogs;
+  } catch (error) {
+    console.error('[ErrorLoggingService] Failed to retrieve error logs:', error);
+    return [];
+  }
+}
+
+/**
+ * Deletes an error log from the database.
+ * _This is a placeholder and requires robust authentication/authorization._
+ * 
+ * @param id The ID of the error log to delete.
+ * @returns The deleted error log record or null if not found.
+ */
+export async function deleteErrorLog(id: string) {
+  // IMPORTANT: Add robust authentication and authorization checks here
+  // to ensure that only authorized users can delete error logs.
+  try {
+    const deletedError = await prisma.errorLog.delete({
+      where: { id },
+    });
+    return deletedError;
+  } catch (error) {
+    console.error(`[ErrorLoggingService] Failed to delete error log with ID ${id}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Sends an alert for a critical error.
+ * Placeholder for integration with a notification service.
+ * 
+ * @param errorLog The critical error to report.
+ */
+export async function sendAlert(errorLog: ErrorLogReport) {
+  // This is a placeholder. In a real application, this would integrate
+  // with a notification service like email, Slack, or a dedicated
+  // alerting tool to notify developers of critical issues.
+  console.log(`[Alert] Critical Error Reported: ${errorLog.message}`);
+  // Example: await emailService.send(...)
+  // Example: await slackService.postMessage(...)
+}

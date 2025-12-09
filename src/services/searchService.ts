@@ -30,7 +30,7 @@ export async function searchProducts(query: string, minChars: number = 3): Promi
           ${product.name}
           ${product.brand}
           ${product.category}
-          ${product.description}
+          ${product.description || ''}
         `.toLowerCase();
 
       return searchableText.includes(lowerQuery);
@@ -41,9 +41,9 @@ export async function searchProducts(query: string, minChars: number = 3): Promi
       slug: product.slug,
       brand: product.brand,
       category: product.category,
-      price: product.price,
+      price: product.price ?? 0, // Fix: Default price to 0 if undefined
       imageUrl: product.imageUrl,
-      excerpt: product.description.substring(0, 100),
+      excerpt: (product.description ?? '').substring(0, 100), // Fix: Handle undefined description
     }))
     .slice(0, 10); // Return top 10 results
 }

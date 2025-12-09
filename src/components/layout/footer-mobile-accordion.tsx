@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Accordion,
@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FOOTER_LINKS } from "@/lib/constants";
+import { FOOTER_LINKS } from "@/lib/config/constants";
 import Link from 'next/link';
 
 export function FooterMobileAccordion() {

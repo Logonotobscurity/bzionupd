@@ -1,38 +1,46 @@
-import data from './placeholder-images.json';
-import productImages from './products.json';
+import data from '@/lib/data/placeholders.json';
+import productImages from '@/lib/db/products.json';
 
 export type ImagePlaceholder = {
   id: string;
-  description: string;
   imageUrl: string;
-  imageHint: string;
+  description?: string;
+  imageHint?: string;
 };
 
-export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;
+const placeholders: ImagePlaceholder[] = data.placeholderImages;
 
-export function findImage(id: string): ImagePlaceholder {
-  const image = PlaceHolderImages.find(img => img.id === id);
-  if (!image) {
-    // Return a default/fallback image if not found
-    return {
-      id: 'fallback',
-      description: 'Placeholder Image',
-      imageUrl: 'https://picsum.photos/seed/fallback/800/600',
-      imageHint: 'placeholder',
-    };
+export const getPlaceholderImage = (productId: string): string => {
+  // Check for product-specific image first.
+  const productImage = productImages.find(p => p.id === productId);
+  if (productImage && productImage.images && productImage.images.length > 0) {
+    return productImage.images[0];
   }
-  return image;
-}
 
-/**
- * Finds product images from products.json based on the product slug.
- * It uses the first part of the slug (the brand/product name) to find a match.
- * @param slug The slug of the product to find images for.
- * @returns An array of image URLs, or an empty array if not found.
- */
-export function getProductImages(slug: string): string[] {
-  if (!slug) return [];
-  const slugPrefix = slug.split('-')[0];
-  const imageInfo = productImages.products.find(p => p.id.startsWith(slugPrefix));
-  return imageInfo ? imageInfo.images : [];
-}
+  // Then, check for a placeholder with the matching ID.
+  const placeholder = placeholders.find(p => p.id === productId);
+  if (placeholder) {
+    return placeholder.imageUrl;
+  }
+
+  // Fallback to a default/hashed placeholder if no specific image or placeholder is found.
+  const hash = productId.split('').reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
+  const index = Math.abs(hash % placeholders.length);
+  return placeholders[index]?.imageUrl || '/images/placeholder.jpg';
+};
+
+export const getAllPlaceholders = (): ImagePlaceholder[] => {
+  return placeholders;
+};
+
+export const findImage = (id: string): ImagePlaceholder => {
+  const placeholder = placeholders.find(p => p.id === id);
+  if (placeholder) {
+    return placeholder;
+  }
+  
+  // Fallback
+  const hash = id.split('').reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
+  const index = Math.abs(hash % placeholders.length);
+  return placeholders[index] || { id, imageUrl: '/images/placeholder.jpg', description: 'Placeholder image', imageHint: 'placeholder' };
+};

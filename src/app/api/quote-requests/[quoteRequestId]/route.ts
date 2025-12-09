@@ -1,17 +1,18 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { prisma } from '@/lib/db';
 
 export async function GET(
-  req: Request,
-  { params }: { params: { quoteRequestId: string } }
+  _req: Request,
+  { params }: { params: Promise<{ quoteRequestId: string }> }
 ) {
   try {
-    const quoteRequest = await db.quoteRequest.findUnique({
+    const { quoteRequestId } = await params;
+    const quoteRequest = await prisma.quote.findUnique({
       where: {
-        id: params.quoteRequestId,
+        id: quoteRequestId,
       },
       include: {
-        product: true,
+        lines: true,
       },
     });
 
@@ -28,14 +29,15 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { quoteRequestId: string } }
+  { params }: { params: Promise<{ quoteRequestId: string }> }
 ) {
   try {
+    const { quoteRequestId } = await params;
     const { ...values } = await req.json();
 
-    const quoteRequest = await db.quoteRequest.update({
+    const quoteRequest = await prisma.quote.update({
       where: {
-        id: params.quoteRequestId,
+        id: quoteRequestId,
       },
       data: {
         ...values,
@@ -50,13 +52,14 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { quoteRequestId: string } }
+  _req: Request,
+  { params }: { params: Promise<{ quoteRequestId: string }> }
 ) {
   try {
-    const quoteRequest = await db.quoteRequest.delete({
+    const { quoteRequestId } = await params;
+    const quoteRequest = await prisma.quote.delete({
       where: {
-        id: params.quoteRequestId,
+        id: quoteRequestId,
       },
     });
 

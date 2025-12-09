@@ -1,162 +1,100 @@
 'use client';
 
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useQuoteStore } from "@/lib/quote-store";
+import { useQuoteStore } from "@/lib/store/quote";
 import { Trash2, Plus, Minus, ShoppingBag, Package } from "lucide-react";
 import Link from "next/link";
 import { AnimatedDiv } from "@/components/animated-div";
 
-export function QuoteDrawer() {
-  const { items, removeProduct, updateQuantity, clearQuote, isOpen, setOpen } = useQuoteStore();
-  
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+export const QuoteDrawer = () => {
+  const { items, isOpen, setOpen, removeProduct, updateQuantity } = useQuoteStore();
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleQuantityChange = (productId: string, newQuantity: number) => {
-    if (newQuantity < 1) {
-      removeProduct(productId);
-    } else {
+  const handleQuantityChange = (productId: string | number, newQuantity: number) => {
+    if (newQuantity > 0) {
       updateQuantity(productId, newQuantity);
+    } else {
+      removeProduct(productId);
     }
   };
 
   return (
     <Sheet open={isOpen} onOpenChange={setOpen}>
-      <SheetContent className="w-full sm:max-w-md flex flex-col p-0 bg-gradient-to-b from-white to-slate-50/80">
-        {/* Header */}
-        <SheetHeader className="p-6 border-b border-slate-200/80 bg-gradient-to-r from-slate-50 to-slate-100/50">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <ShoppingBag className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <SheetTitle className="text-xl">Quote Request</SheetTitle>
-                <p className="text-xs text-slate-600 mt-1">{totalItems} {totalItems === 1 ? 'item' : 'items'}</p>
-              </div>
-            </div>
-            <div className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm">
-              {items.length}
-            </div>
-          </div>
+      <SheetContent className="flex flex-col w-full sm:max-w-lg p-0">
+        <SheetHeader className="p-4 sm:p-6 border-b">
+          <SheetTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6" />
+            Request for Quote ({itemCount})
+          </SheetTitle>
         </SheetHeader>
-        
-        {items.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center p-8">
-                <div className="h-16 w-16 rounded-full bg-slate-100 flex items-center justify-center">
-                  <Package className="h-8 w-8 text-slate-400" />
-                </div>
-                <div>
-                  <p className="text-slate-700 font-semibold mb-2">Your quote is empty</p>
-                  <p className="text-sm text-slate-600">Browse products and add items to get started</p>
-                </div>
-                <Button onClick={() => setOpen(false)} variant="outline" size="lg" className="rounded-xl border-slate-300">
-                  Continue Browsing
-                </Button>
-            </div>
-        ) : (
-          <>
-            <ScrollArea className="flex-1">
-              <div className="divide-y divide-slate-200/50">
-                {items.map((item, index) => {
-                  return (
-                    <AnimatedDiv key={item.id} delay={index * 0.05} className="p-4 hover:bg-slate-50/50 transition-colors">
-                      <div className="flex items-start gap-4">
-                        {/* Product Image */}
-                        <div className="relative h-20 w-20 flex-shrink-0 rounded-xl overflow-hidden border-2 border-slate-200/80 bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-                          <Image
-                            src={item.imageUrl || '/images/placeholder.jpg'}
-                            alt={item.name}
-                            fill
-                            className="object-contain p-2"
-                            sizes="80px"
-                          />
-                        </div>
 
-                        {/* Product Info */}
-                        <div className="flex-1 min-w-0">
-                          <p className="font-bold text-slate-900 text-sm line-clamp-2 mb-1">{item.name}</p>
-                          <p className="text-xs text-slate-600">SKU: {item.id}</p>
-                          
-                          {/* Quantity Controls */}
-                          <div className="flex items-center gap-2 mt-3 bg-slate-100/80 rounded-lg p-1 w-fit border border-slate-200/80">
-                            <button 
-                              onClick={() => handleQuantityChange(String(item.id), item.quantity - 1)}
-                              className="h-7 w-7 rounded-md hover:bg-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary active:scale-95 active:shadow-md transition-all duration-200 flex items-center justify-center text-slate-600 hover:text-primary"
-                              aria-label="Decrease quantity"
-                            >
-                              <Minus className="h-3.5 w-3.5" />
-                            </button>
-                            <span className="font-bold text-slate-900 text-sm w-8 text-center">
-                              {item.quantity}
-                            </span>
-                            <button 
-                              onClick={() => handleQuantityChange(String(item.id), item.quantity + 1)}
-                              className="h-7 w-7 rounded-md hover:bg-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary active:scale-95 active:shadow-md transition-all duration-200 flex items-center justify-center text-slate-600 hover:text-primary"
-                              aria-label="Increase quantity"
-                            >
-                              <Plus className="h-3.5 w-3.5" />
-                            </button>
+        <ScrollArea className="flex-grow">
+          <div className="p-4 sm:p-6">
+            {items.length === 0 ? (
+              <div className="text-center py-10">
+                <Package className="mx-auto h-12 w-12 text-gray-400" />
+                <p className="mt-4 text-sm text-gray-500">Your quote request is empty.</p>
+              </div>
+            ) : (
+              <ul className="divide-y divide-gray-200">
+                {items.map((item) => (
+                  <AnimatedDiv key={item.id} className="flex items-center justify-between py-4">
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0">
+                        {item.imageUrl ? (
+                          <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
+                        ) : (
+                          <div className="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center">
+                            <Package className="h-8 w-8 text-gray-400" />
                           </div>
-                        </div>
-
-                        {/* Remove Button */}
-                        <button 
-                          onClick={() => removeProduct(item.id)}
-                          className="h-9 w-9 rounded-lg hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-400 active:scale-95 transition-all duration-200 flex items-center justify-center text-slate-400 hover:text-red-600 flex-shrink-0"
-                          title={`Remove ${item.name}`}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="sr-only">Remove {item.name}</span>
-                        </button>
+                        )}
                       </div>
-                    </AnimatedDiv>
-                  );
-                })}
-              </div>
-            </ScrollArea>
+                      <div className="flex-grow">
+                        <p className="font-medium text-sm sm:text-base">{item.name}</p>
+                        <p className="text-xs text-gray-500 mt-1">{item.brand}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <Button size="icon" variant="outline" className="h-7 w-7 sm:h-8 sm:w-8" onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
+                            <Minus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                          </Button>
+                          <Input
+                            type="number"
+                            className="w-14 h-7 sm:h-8 text-center px-0"
+                            value={item.quantity}
+                            onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10) || 1)}
+                            min="1"
+                          />
+                          <Button size="icon" variant="outline" className="h-7 w-7 sm:h-8 sm:w-8" onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
+                            <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => removeProduct(item.id)}>
+                      <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                  </AnimatedDiv>
+                ))}
+              </ul>
+            )}
+          </div>
+        </ScrollArea>
 
-            {/* Footer */}
-            <SheetFooter className="p-6 border-t border-slate-200/80 bg-gradient-to-r from-slate-50/50 to-white space-y-4">
-              <div className="w-full space-y-3">
-                {/* Summary */}
-                <div className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-semibold text-slate-700">Total Items:</span>
-                    <span className="font-bold text-primary text-lg">{totalItems}</span>
-                  </div>
-                  <p className="text-xs text-slate-600">Ready to submit? Click below to proceed</p>
-                </div>
-
-                {/* Actions */}
-                {items.length > 0 && (
-                  <Button 
-                    variant="destructive" 
-                    size="lg" 
-                    onClick={clearQuote} 
-                    className="w-full rounded-xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-400 transition-all duration-200"
-                  >
-                    Clear All Items
-                  </Button>
-                )}
-                <Button 
-                  size="lg" 
-                  className="w-full rounded-xl bg-gradient-to-r from-primary to-primary/90 text-base font-bold text-white shadow-lg hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200" 
-                  asChild 
-                  onClick={() => setOpen(false)}
-                >
-                  <Link href="/checkout" className="flex items-center justify-center">
-                    Submit Quote Request
-                    <Plus className="h-4 w-4 ml-2" />
-                  </Link>
+        {items.length > 0 && (
+          <SheetFooter className="p-4 sm:p-6 border-t bg-gray-50">
+            <div className="w-full space-y-3">
+              <p className="text-sm text-center text-gray-600">Ready to get our best offer?</p>
+              <Link href="/checkout" passHref>
+                <Button size="lg" className="w-full" onClick={() => setOpen(false)}>
+                  Proceed to Request Quote
                 </Button>
-              </div>
-            </SheetFooter>
-          </>
+              </Link>
+            </div>
+          </SheetFooter>
         )}
       </SheetContent>
     </Sheet>
   );
-}
+};

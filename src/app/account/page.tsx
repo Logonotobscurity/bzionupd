@@ -3,31 +3,61 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuthStore } from '@/lib/auth-store';
-import { useActivityStore } from '@/lib/activity-store';
+import { Skeleton } from '@/components/ui/skeleton';
+
+import { useAuthStore } from '@/lib/store/auth';
+import { useActivityStore } from '@/lib/store/activity';
 import { Section } from '@/components/ui/section';
-import Link from 'next/link';
 import {
   LogOut,
   Mail,
   Phone,
   Building2,
-  User,
   Calendar,
   ShoppingCart,
   Eye,
-  MessageSquare,
   Search,
   Edit2,
   Settings,
   FileText,
-  TrendingUp,
   Activity,
   Zap,
-  ArrowRight,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+
+const LoadingSkeleton = () => (
+    <>
+      <div className="bg-gradient-to-b from-primary via-primary/95 to-primary/90 pt-20 pb-32 sm:pt-32 sm:pb-40">
+        <Section>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
+              <Skeleton className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-primary/20" />
+              <div>
+                <Skeleton className="h-9 w-48 mb-3 bg-primary/20" />
+                <Skeleton className="h-5 w-32 bg-primary/20" />
+              </div>
+            </div>
+            <Skeleton className="h-12 w-full sm:w-32 bg-primary/20" />
+          </div>
+        </Section>
+      </div>
+
+      <Section className="py-8 sm:py-12 -mt-16 sm:-mt-20 relative z-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-8">
+          <Skeleton className="h-48 rounded-2xl" />
+          <Skeleton className="h-48 rounded-2xl" />
+          <Skeleton className="h-48 rounded-2xl" />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          <Skeleton className="h-[400px] rounded-2xl" />
+          <div className="lg:col-span-2">
+            <Skeleton className="h-[500px] rounded-2xl" />
+          </div>
+        </div>
+      </Section>
+    </>
+);
 
 export default function AccountPage() {
   const router = useRouter();
@@ -46,7 +76,7 @@ export default function AccountPage() {
   }, [isAuthenticated, router, isClient]);
 
   if (!isClient || !isAuthenticated || !user) {
-    return null;
+    return <LoadingSkeleton />;
   }
 
   const handleLogout = () => {
@@ -59,7 +89,6 @@ export default function AccountPage() {
   // Calculate stats
   const quoteRequestCount = userActivities.filter((a) => a.type === 'quote_request').length;
   const productViewCount = userActivities.filter((a) => a.type === 'product_view').length;
-  const searchCount = userActivities.filter((a) => a.type === 'search').length;
 
   return (
     <>
@@ -270,7 +299,7 @@ export default function AccountPage() {
             <div className="relative p-6 overflow-y-auto max-h-[500px]">
               {userActivities.length > 0 ? (
                 <div className="space-y-3">
-                  {userActivities.map((activity, index) => (
+                  {userActivities.map((activity) => (
                     <div
                       key={activity.id}
                       className="group/item p-4 rounded-lg bg-primary/5 border border-primary/10 hover:border-secondary/30 hover:bg-secondary/5 transition-all duration-200"

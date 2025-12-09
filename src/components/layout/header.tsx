@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"; // Added SheetTitle import
 import React from "react";
 import { QuoteListIcon } from "./quote-list-icon";
 import { getCategories, getBrands } from "@/services/productService";
@@ -175,14 +176,14 @@ export function Header() {
     <>
     <header
       className={cn(
-        "sticky top-0 left-0 right-0 z-50 w-full bg-white shadow-md transition-all duration-300 border-b border-slate-100",
+        "sticky top-0 left-0 right-0 z-[100] w-full bg-white shadow-sm transition-all duration-300",
         "will-change-transform"
       )}
     >
-      <div className="w-full px-[var(--navbar-padding-inline)] py-[var(--navbar-padding-block)] flex items-center justify-between gap-[var(--navbar-gap)]">
-        <div className="flex items-center gap-[var(--navbar-gap)] min-w-0">
-          <Logo className="w-32 sm:w-32 md:w-40 flex-shrink-0" />
-          <nav className="hidden lg:flex items-center gap-[var(--nav-link-spacing)]">
+      <div className="w-full px-fluid py-nav-padding-block flex items-center justify-between gap-fluid-md">
+        <div className="flex items-center gap-fluid-sm min-w-0">
+          <Logo className="w-28 sm:w-32 md:w-36 lg:w-40 flex-shrink-0" />
+          <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <React.Fragment key={link.label}>
                 {link.dropdown || link.subMenus ? (
@@ -247,7 +248,7 @@ export function Header() {
             ))}
           </nav>
         </div>
-        <div className="hidden md:flex items-center gap-2 lg:gap-[var(--navbar-gap)]">
+        <div className="hidden md:flex items-center gap-2 lg:gap-3">
             <SearchBar />
             <QuoteListIcon />
             <Button asChild size="sm" className="font-semibold">
@@ -262,7 +263,7 @@ export function Header() {
           <button
             onClick={toggleMenu}
             aria-label="Toggle menu"
-            className="min-w-10 min-h-10 flex flex-col justify-center items-center gap-1 p-1.5"
+            className="min-w-11 min-h-11 flex flex-col justify-center items-center gap-1 p-2"
           >
             <span
               className={cn(
@@ -285,35 +286,25 @@ export function Header() {
           </button>
         </div>
       </div>
-      {isMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-50 md:hidden"
-          onClick={toggleMenu}
-        />
-      )}
-      <div
-        className={cn(
-          "fixed inset-y-0 left-0 bg-white z-[100] w-full max-w-sm transform transition-transform duration-300 ease-in-out md:hidden",
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
-        <div className="flex flex-col h-full py-[var(--navbar-padding-block)] sm:py-6 overflow-hidden">
-          <div className="flex-shrink-0 px-[var(--container-padding-x)] sm:px-6">
+      <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <SheetContent side="left" className="flex flex-col w-[85vw] max-w-sm p-0 md:hidden">
+          <SheetTitle className="sr-only">Mobile Menu</SheetTitle> {/* Added SheetTitle */}
+          <div className="flex-shrink-0 px-4 py-4 border-b border-slate-200">
             <div className="flex justify-between items-center">
-              <Logo className="w-24 sm:w-28" />
+              <Logo className="w-28" />
               <button
                 onClick={toggleMenu}
                 aria-label="Close menu"
-                className="min-w-10 min-h-10 flex justify-center items-center p-1.5 -mr-1.5"
+                className="min-w-11 min-h-11 flex justify-center items-center p-2 hover:bg-slate-100 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                <X className="w-6 h-6" />
               </button>
             </div>
           </div>
-          <div className="mt-[var(--navbar-padding-block)] sm:mt-6 mb-[var(--navbar-padding-block)] sm:mb-6 flex-shrink-0 px-[var(--container-padding-x)] sm:px-6">
+          <div className="flex-shrink-0 px-4 py-3 border-b border-slate-200">
             <SearchBar />
           </div>
-          <nav className="mt-[var(--navbar-padding-block)] sm:mt-6 overflow-y-auto flex-1 px-[var(--container-padding-x)] sm:px-6">
+          <nav className="overflow-y-auto flex-1 px-4 py-4">
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => (
                 <React.Fragment key={link.label}>
@@ -395,7 +386,7 @@ export function Header() {
               ))}
             </div>
           </nav>
-          <div className="flex-shrink-0 space-y-3 border-t pt-[var(--navbar-padding-block)] sm:pt-6 pb-[var(--navbar-padding-block)] sm:pb-6 px-[var(--container-padding-x)] sm:px-6">
+          <div className="flex-shrink-0 space-y-3 border-t border-slate-200 p-4 bg-slate-50">
             <Button
               asChild
               size="lg"
@@ -416,8 +407,8 @@ export function Header() {
               </Link>
             </Button>
           </div>
-        </div>
-      </div>
+        </SheetContent>
+      </Sheet>
     </header>
     <QuoteDrawer />
     </>

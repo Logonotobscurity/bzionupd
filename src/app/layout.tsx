@@ -4,7 +4,6 @@ import "./globals.css";
 import "@/styles/focus-visible.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { SkipLink } from "@/components/skip-link";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import { ClientChatWidget } from "@/components/layout/ClientChatWidget";
@@ -48,7 +47,6 @@ export default function RootLayout({
           <PageLoadingProvider>
             <MonitoringProvider />
             <ErrorBoundary>
-              <SkipLink />
               <Header />
               <main id="main-content" className="flex-grow pt-0">{children}</main>
               <Footer />
@@ -56,7 +54,7 @@ export default function RootLayout({
               <WhatsappWidget />
               <ClientChatWidget />
               <CookieBanner />
-              <NewsletterPopup delay={4000} />
+              <NewsletterPopup delay={10000} />
             </ErrorBoundary>
           </PageLoadingProvider>
       </body>

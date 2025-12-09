@@ -195,6 +195,7 @@ const ContactDetails = () => {
                         className="relative object-cover rounded-xl"
                         sizes="(max-width: 1024px) 100vw, 50vw"
                         data-ai-hint={hqImage.imageHint}
+                        unoptimized
                     />
                 </div>
                 <div className="space-y-10">
@@ -205,8 +206,8 @@ const ContactDetails = () => {
                                 <MapPin className="h-5 w-5 text-secondary" />
                                 <h3 className="font-semibold text-primary">Ogun State</h3>
                             </div>
-                            <p className="text-slate-600 pl-8 mb-2">123 BZION Avenue, Sagamu, Ogun State, Nigeria</p>
-                            <p className="text-slate-600 pl-8 flex items-center gap-2"><Phone className="h-4 w-4"/>+234 1 234 5678</p>
+                            <p className="text-slate-600 pl-8 mb-2">9 Ali Isiba, Street, Ota 112104, Ogun State (opposite matrix filling station, beside stanbic IBTC bank)</p>
+                            <a href="tel:+2341234567" className="text-slate-600 hover:text-primary pl-8 flex items-center gap-2 transition-colors"><Phone className="h-4 w-4"/>+234 1 234 5678</a>
                         </div>
                     </div>
                     <div>
@@ -215,18 +216,18 @@ const ContactDetails = () => {
                             <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                                 <div className="flex items-center gap-3 mb-2">
                                     <MapPin className="h-5 w-5 text-secondary" />
-                                    <h3 className="font-semibold text-primary">Lagos State</h3>
+                                    <h3 className="font-semibold text-primary">Temidire</h3>
                                 </div>
-                                <p className="text-slate-600 pl-8 mb-2">BZION Lagos Hub<br/>456 Commerce Drive, Ikeja</p>
-                                <p className="text-slate-600 pl-8 flex items-center gap-2"><Phone className="h-4 w-4"/>+234 20 987 6543</p>
+                                <p className="text-slate-600 pl-8 mb-2">Kilometer 28 Lagos Abeokuta expressway Sango ota</p>
+                                <a href="tel:+23420987654" className="text-slate-600 hover:text-primary pl-8 flex items-center gap-2 transition-colors"><Phone className="h-4 w-4"/>+234 20 987 6543</a>
                             </div>
                             <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                                 <div className="flex items-center gap-3 mb-2">
                                     <MapPin className="h-5 w-5 text-secondary" />
-                                    <h3 className="font-semibold text-primary">Oyo State</h3>
+                                    <h3 className="font-semibold text-primary">Singer</h3>
                                 </div>
-                                <p className="text-slate-600 pl-8 mb-2">BZION Ibadan Depot<br/>789 Distribution Way, Ibadan</p>
-                                <p className="text-slate-600 pl-8 flex items-center gap-2"><Phone className="h-4 w-4"/>+234 30 212 3456</p>
+                                <p className="text-slate-600 pl-8 mb-2">Km 38, Lagos Abeokuta Exp. Way Singer bus stop</p>
+                                <a href="tel:+23430212345" className="text-slate-600 hover:text-primary pl-8 flex items-center gap-2 transition-colors"><Phone className="h-4 w-4"/>+234 30 212 3456</a>
                             </div>
                         </div>
                     </div>
@@ -243,21 +244,21 @@ const ContactDetails = () => {
                             <Mail className="h-5 w-5 text-secondary"/>
                             <h3 className="font-semibold text-primary">Customer Care</h3>
                         </div>
-                         <a href="mailto:customercare@bzion.shop" className="text-slate-600 hover:text-primary pl-8 block">customercare@bzion.shop</a>
+                         <a href="mailto:customercare@bzion.shop" className="text-slate-600 hover:text-primary pl-8 block transition-colors">customercare@bzion.shop</a>
                     </div>
                     <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                         <div className="flex items-center gap-3 mb-2">
                             <Mail className="h-5 w-5 text-secondary"/>
                             <h3 className="font-semibold text-primary">Sales Inquiries</h3>
                         </div>
-                        <a href="mailto:sales@bzion.shop" className="text-slate-600 hover:text-primary pl-8 block">sales@bzion.shop</a>
+                        <a href="mailto:sales@bzion.shop" className="text-slate-600 hover:text-primary pl-8 block transition-colors">sales@bzion.shop</a>
                     </div>
                     <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                         <div className="flex items-center gap-3 mb-2">
                             <Mail className="h-5 w-5 text-secondary"/>
                             <h3 className="font-semibold text-primary">General Information</h3>
                         </div>
-                        <a href="mailto:info@bzion.shop" className="text-slate-600 hover:text-primary pl-8 block">info@bzion.shop</a>
+                        <a href="mailto:info@bzion.shop" className="text-slate-600 hover:text-primary pl-8 block transition-colors">info@bzion.shop</a>
                     </div>
                 </div>
             </div>

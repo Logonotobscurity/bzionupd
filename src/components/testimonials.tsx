@@ -5,7 +5,7 @@ import React from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { Section, SectionHeading, SectionTitle, SectionDescription } from '@/components/ui/section';
 import { Card, CardContent } from '@/components/ui/card';
-import { TESTIMONIALS } from '@/lib/constants';
+import { TESTIMONIALS } from '@/lib/config/constants';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Quote } from 'lucide-react';

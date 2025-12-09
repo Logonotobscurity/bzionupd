@@ -1,4 +1,4 @@
-import rawProducts from '@/lib/all-products-data.json';
+import rawProducts from '@/lib/data/all-products.json';
 import { Product } from '@/lib/schema';
 import { normalizeProducts } from '@/lib/product-utils';
 

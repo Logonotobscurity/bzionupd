@@ -1,15 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useQuoteStore } from '@/lib/quote-store';
-import { Check, ShieldCheck, Factory, Share2, Truck, Star, AlertCircle } from 'lucide-react';
+import { useQuoteStore } from '@/lib/store/quote';
+import { Check, ShieldCheck, Factory, Share2, Truck, Star, AlertCircle, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { findImage } from '@/lib/placeholder-images';
+import { getPlaceholderImage } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { AnimatedDiv } from '@/components/animated-div';
-import { Section } from '@/components/ui/section';
-import { CTASection } from '@/components/cta-section';
 import { Product, Brand, Category, Company } from '@/lib/schema';
 
 interface ProductPageData {
@@ -18,6 +16,8 @@ interface ProductPageData {
   category: Category | undefined;
   company: Company | undefined;
   relatedProducts: Product[];
+  bestSellers: Product[];
+  bestSellersCategories: Category[];
 }
 
 export default function ProductDetailClient(data: ProductPageData) {
@@ -26,8 +26,8 @@ export default function ProductDetailClient(data: ProductPageData) {
   const [shareSuccess, setShareSuccess] = useState(false);
   const [isProductAdded, setIsProductAdded] = useState(false);
 
-  const { product, brand, company, category, relatedProducts } = data;
-  const fallbackImage = findImage('fallback');
+  const { product, brand, company, category, relatedProducts, bestSellers, bestSellersCategories } = data;
+  const fallbackImage = getPlaceholderImage(String(product.id));
 
   useEffect(() => {
     const productExists = items.some(item => item.id === product.id);
@@ -67,20 +67,20 @@ export default function ProductDetailClient(data: ProductPageData) {
   return (
     <div className="min-h-screen bg-white md:bg-gradient-to-b md:from-slate-50 md:via-white md:to-slate-50 pb-20">
       
-      <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2 items-start">
+      <div className="container mx-auto px-4 py-6 md:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6 md:gap-8 items-start">
           
-          <div className="md:sticky md:top-24 will-change-auto">
-            <div className="rounded-xl md:rounded-3xl bg-white md:bg-gradient-to-br md:from-white md:via-slate-50 md:to-white p-3 sm:p-4 md:p-8 shadow-sm md:shadow-lg border border-slate-200/50 md:border-slate-200/80 flex items-center justify-center min-h-[250px] sm:min-h-[350px] md:min-h-[500px] relative overflow-hidden">
-              <div className="hidden md:block absolute top-0 right-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -mr-32 -mt-32" />
-              <div className="hidden md:block absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl -ml-24 -mb-24" />
+          <div className="lg:sticky lg:top-24">
+            <div className="rounded-2xl bg-gradient-to-br from-white via-slate-50 to-white p-4 md:p-6 shadow-md border border-slate-200/80 flex items-center justify-center aspect-square relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full blur-2xl -mr-16 -mt-16" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/5 rounded-full blur-2xl -ml-12 -mb-12" />
               
               <Image 
-                src={product.imageUrl || fallbackImage.imageUrl} 
+                src={product.imageUrl || fallbackImage}
                 alt={product.name} 
-                width={400}
-                height={400}
-                className="max-h-[200px] sm:max-h-[300px] md:max-h-[450px] w-auto object-contain transition-transform duration-300 relative z-10" 
+                width={350}
+                height={350}
+                className="w-full h-full object-contain relative z-10" 
                 priority
               />
             </div>
@@ -175,22 +175,23 @@ export default function ProductDetailClient(data: ProductPageData) {
               </AnimatedDiv>
             )}
 
-            <AnimatedDiv delay={0.3} className="flex gap-3 pt-6 flex-col sm:flex-row">
+            <AnimatedDiv delay={0.3} className="flex gap-3 pt-6">
                <Button 
                  onClick={handleRequestQuote}
                  size="lg"
-                 className="flex-1 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-base font-bold text-white shadow-lg hover:shadow-2xl hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200"
+                 className="flex-1 rounded-2xl bg-gradient-to-r from-primary via-primary/95 to-primary/90 text-base font-bold text-white shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 group"
                >
-                 {isProductAdded ? '✓ Go to Checkout' : 'Add to Quote Request'}
+                 <ShoppingCart className="h-5 w-5 group-hover:rotate-12 transition-transform" />
+                 <span className="hidden sm:inline">{isProductAdded ? 'Go to Checkout' : 'Add to Quote'}</span>
+                 <span className="sm:hidden">{isProductAdded ? 'Checkout' : 'Quote'}</span>
                </Button>
                <Button 
                  onClick={handleSaveShare}
-                 variant="outline"
                  size="lg"
-                 className="flex-1 sm:flex-none rounded-xl border-2 border-slate-300 text-base font-bold text-slate-700 hover:bg-slate-100 hover:border-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary flex items-center justify-center gap-2 transition-all duration-200"
+                 className="rounded-2xl bg-gradient-to-br from-secondary to-secondary/90 text-primary font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 group px-6"
                  title={shareSuccess ? 'Copied to clipboard!' : 'Share this product'}>
-                 <Share2 className="h-5 w-5" />
-                 {shareSuccess ? 'Copied!' : 'Share'}
+                 <Share2 className="h-5 w-5 group-hover:rotate-12 transition-transform" />
+                 <span className="hidden sm:inline">{shareSuccess ? 'Copied!' : 'Share'}</span>
                </Button>
             </AnimatedDiv>
         </div>
@@ -204,27 +205,26 @@ export default function ProductDetailClient(data: ProductPageData) {
             <p className="text-lg text-slate-600">More products from {brand?.name}</p>
           </div>
           
-          <div className="grid grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {relatedProducts.length > 0 ? (
               relatedProducts.map((relProduct) => (
                 <Link 
                   key={relProduct.id} 
                   href={`/products/${relProduct.slug}`}
-                  className="group block overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-md hover:shadow-2xl transition-all duration-300 hover:border-primary hover:-translate-y-1"
+                  className="block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
                 >
-                  <div className="aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 p-4 flex items-center justify-center relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-secondary/5 group-hover:from-primary/5 group-hover:to-secondary/10 transition-all duration-300" />
+                  <div className="aspect-square w-full overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 p-3 flex items-center justify-center">
                     <Image
-                      src={relProduct.imageUrl || fallbackImage.imageUrl}
+                      src={relProduct.imageUrl || fallbackImage}
                       alt={relProduct.name}
-                      width={200}
-                      height={200}
-                      className="h-full w-full object-contain transition duration-300 group-hover:scale-110 relative z-10"
+                      width={150}
+                      height={150}
+                      className="h-full w-full object-contain"
                     />
                   </div>
-                  <div className="p-4">
-                    <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-2">{relProduct.brand}</p>
-                    <h3 className="text-sm font-bold text-slate-900 line-clamp-2 group-hover:text-primary transition-colors">
+                  <div className="p-3">
+                    <p className="text-xs text-slate-500 font-semibold uppercase mb-1">{relProduct.brand}</p>
+                    <h3 className="text-xs font-bold text-slate-900 line-clamp-2">
                       {relProduct.name}
                     </h3>
                   </div>
@@ -236,14 +236,7 @@ export default function ProductDetailClient(data: ProductPageData) {
           </div>
         </AnimatedDiv>
 
-        <Section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5">
-          <CTASection
-            title="Ready to Order?"
-            description="Add this product to your quote and get started with BZION today. We offer competitive pricing and reliable delivery."
-            ctaText="Add to Quote"
-            ctaHref="/checkout"
-          />
-        </Section>
+
       </div>
     </div>
   );

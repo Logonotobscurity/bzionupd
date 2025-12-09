@@ -4,12 +4,75 @@ import * as brandRepo from '@/repositories/static/brandRepository';
 import * as categoryRepo from '@/repositories/static/categoryRepository';
 import * as companyRepo from '@/repositories/static/companyRepository';
 import { Product, Brand, Category, Company } from '@/lib/schema';
+import { bestSellers } from '@/lib/db/best-sellers';
+import { cache, CACHE_KEYS, CACHE_TTL } from '@/lib/cache';
 
 const repo = staticRepo;
 
+// Types for Company Directory
+export interface CompanySpecialty {
+  categorySlug: string;
+  categoryName: string;
+  productCount: number;
+  brandCount: number;
+}
+
+export interface CompanyDirectoryData extends Company {
+  specialties: CompanySpecialty[];
+  strongestCategory: string | null;
+  productCount: number;
+  brandCount: number;
+}
+
+// Types for Brands Page Redesign
+export interface EnrichedBrandData {
+  id: string;
+  name: string;
+  slug: string;
+  imageUrl: string;
+  isFeatured: boolean;
+  brand_description?: string;
+  companyId?: number;
+  categoryCount?: number;
+  companyName: string | null;
+  companySlug: string | null;
+  productCount: number;
+  categories: { name: string, slug: string }[];
+  priceRange: { min: number, max: number };
+  packSizes: string[];
+  primaryCategory: string;
+}
+
+export interface CategorizedBrandGroup {
+  categoryName: string;
+  brands: EnrichedBrandData[];
+}
+
+// --- NEW TYPES FOR CATEGORY PAGE -- -
+export interface EnrichedCategoryData extends Category {
+  productCount: number;
+  brandCount: number;
+  inStockCount: number;
+  priceRange: { min: number; max: number };
+  topBrands: { name: string; productCount: number }[];
+  bestSellers: Product[];
+  bulkProductCount: number;
+}
+
+// --- EXISTING FUNCTIONS ---
+
 export const getAllProducts = async (): Promise<Product[]> => {
-    return repo.all();
+    const cached = await cache.get<Product[]>(CACHE_KEYS.products());
+    if (cached) return cached;
+
+    const products = await repo.all();
+    await cache.set(CACHE_KEYS.products(), products, CACHE_TTL.medium);
+    return products;
 };
+
+export const getBestSellers = async (): Promise<Product[]> => {
+    return bestSellers;
+}
 
 export const getProductBySku = async (sku: string): Promise<Product | undefined> => {
     return repo.findBySku(sku);
@@ -53,7 +116,12 @@ export const getCategoryStats = async () => {
 };
 
 export const getBrands = async (): Promise<Brand[]> => {
-    return brandRepo.all();
+    const cached = await cache.get<Brand[]>(CACHE_KEYS.brands);
+    if (cached) return cached;
+
+    const brands = await brandRepo.all();
+    await cache.set(CACHE_KEYS.brands, brands, CACHE_TTL.long);
+    return brands;
 };
 
 export const getBrandsByCompanyId = async (companyId: number): Promise<Brand[]> => {
@@ -106,17 +174,191 @@ export const getCategoriesByCompanyId = async (companyId: number): Promise<Categ
 };
 
 export const getCategories = async (): Promise<Category[]> => {
-    return categoryRepo.all();
+    const cached = await cache.get<Category[]>(CACHE_KEYS.categories);
+    if (cached) return cached;
+
+    const categories = await categoryRepo.all();
+    await cache.set(CACHE_KEYS.categories, categories, CACHE_TTL.long);
+    return categories;
 };
 
-export const getCompanies = async (): Promise<Company[]> => {
-    return companyRepo.all();
+export const getCompanies = async (): Promise<CompanyDirectoryData[]> => {
+    const cached = await cache.get<CompanyDirectoryData[]>(CACHE_KEYS.companies);
+    if (cached) return cached;
+
+    const [companies, allProducts, allBrands, allCategories] = await Promise.all([
+        companyRepo.all(),
+        staticRepo.all(),
+        brandRepo.all(),
+        categoryRepo.all()
+    ]);
+
+    const categoryMap = new Map(allCategories.map(c => [c.slug, c.name]));
+
+    return companies.map(company => {
+        const companyBrands = allBrands.filter(b => b.companyId === company.id);
+        const companyBrandNames = companyBrands.map(b => b.name);
+        const companyProducts = allProducts.filter(p => companyBrandNames.includes(p.brand));
+
+        const productsByCategory: Record<string, Product[]> = {};
+        for (const product of companyProducts) {
+            if (!productsByCategory[product.categorySlug]) {
+                productsByCategory[product.categorySlug] = [];
+            }
+            productsByCategory[product.categorySlug].push(product);
+        }
+
+        const specialties: CompanySpecialty[] = Object.keys(productsByCategory).map(categorySlug => {
+            const products = productsByCategory[categorySlug];
+            const brandNames = new Set(products.map(p => p.brand));
+            return {
+                categorySlug,
+                categoryName: categoryMap.get(categorySlug) || 'Unknown Category',
+                productCount: products.length,
+                brandCount: brandNames.size
+            };
+        });
+
+        specialties.sort((a, b) => b.productCount - a.productCount);
+
+        const strongestCategory = specialties.length > 0 ? specialties[0].categoryName : null;
+
+        return {
+            ...company,
+            productCount: companyProducts.length,
+            brandCount: companyBrands.length,
+            specialties,
+            strongestCategory
+        };
+    });
+
+    await cache.set(CACHE_KEYS.companies, companies, CACHE_TTL.long);
+    return companies;
 };
 
 export const getCompanyBySlug = async (slug: string): Promise<Company | undefined> => {
     const allCompanies = await companyRepo.all();
     return allCompanies.find(c => c.slug === slug);
 };
+
+// --- NEW FUNCTION FOR CATEGORIES PAGE ---
+export const getCategoryPageData = async (): Promise<EnrichedCategoryData[]> => {
+    const [products, categories] = await Promise.all([
+      repo.all(),
+      categoryRepo.all(),
+    ]);
+  
+    return categories.map(category => {
+      const categoryProducts = products.filter(p => p.categorySlug === category.slug);
+      const productCount = categoryProducts.length;
+      const brandCount = new Set(categoryProducts.map(p => p.brand)).size;
+      const inStockCount = categoryProducts.filter(p => p.inStock).length;
+  
+      const prices = categoryProducts.map(p => p.price ?? 0).filter(p => p > 0);
+      const priceRange = {
+        min: prices.length > 0 ? Math.min(...prices) : 0,
+        max: prices.length > 0 ? Math.max(...prices) : 0,
+      };
+  
+      const brandCounts: Record<string, number> = {};
+      categoryProducts.forEach(p => {
+        brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1;
+      });
+  
+      const topBrands = Object.entries(brandCounts)
+        .map(([name, productCount]) => ({ name, productCount }))
+        .sort((a, b) => b.productCount - a.productCount)
+        .slice(0, 3);
+  
+      const bestSellers = [...categoryProducts]
+        .sort((a, b) => (b.isFeatured ? 1 : -1) - (a.isFeatured ? 1 : -1) || (b.rating ?? 0) - (a.rating ?? 0))
+        .slice(0, 3);
+
+      const bulkProductCount = categoryProducts.filter(p => (p.moq ?? 0) > 10).length;
+
+      return {
+        ...category,
+        productCount,
+        brandCount,
+        inStockCount,
+        priceRange,
+        topBrands,
+        bestSellers,
+        bulkProductCount,
+      };
+    });
+  };
+
+// --- NEW FUNCTION FOR BRANDS PAGE ---
+
+export const getBrandsPageData = async (): Promise<CategorizedBrandGroup[]> => {
+    const [products, brands, companies, categories] = await Promise.all([
+        repo.all(),
+        brandRepo.all(),
+        companyRepo.all(),
+        categoryRepo.all(),
+    ]);
+
+    const companyMap = new Map(companies.map(c => [c.id, c]));
+    const categoryMap = new Map(categories.map(c => [c.slug, c]));
+
+    const enrichedBrands: EnrichedBrandData[] = brands.map(brand => {
+        const company = brand.companyId ? companyMap.get(brand.companyId) : null;
+        const brandProducts = products.filter(p => p.brand === brand.name);
+
+        if (brandProducts.length === 0) {
+            return null;
+        }
+
+        const categoryCounts: Record<string, number> = {};
+        brandProducts.forEach(p => {
+            categoryCounts[p.categorySlug] = (categoryCounts[p.categorySlug] || 0) + 1;
+        });
+
+        const primaryCategorySlug = Object.keys(categoryCounts).sort((a, b) => categoryCounts[b] - categoryCounts[a])[0];
+        const primaryCategory = categoryMap.get(primaryCategorySlug)?.name || 'General';
+
+        const brandCategories = [...new Set(brandProducts.map(p => p.categorySlug))]
+            .map(slug => categoryMap.get(slug))
+            .filter(Boolean) as Category[];
+
+        const prices = brandProducts.map(p => p.price ?? 0).filter(p => p > 0);
+        const priceRange = {
+            min: prices.length > 0 ? Math.min(...prices) : 0,
+            max: prices.length > 0 ? Math.max(...prices) : 0,
+        };
+
+        const packSizes = [...new Set(brandProducts.map(p => p.unit ?? ''))];
+
+        return {
+            ...brand,
+            companyName: company?.name || null,
+            companySlug: company?.slug || null,
+            productCount: brandProducts.length,
+            categories: brandCategories.map(c => ({ name: c.name, slug: c.slug })),
+            priceRange,
+            packSizes,
+            primaryCategory,
+        };
+    }).filter(Boolean) as EnrichedBrandData[];
+
+    const groupedByCat: Record<string, EnrichedBrandData[]> = {};
+    for (const brand of enrichedBrands) {
+        if (!groupedByCat[brand.primaryCategory]) {
+            groupedByCat[brand.primaryCategory] = [];
+        }
+        groupedByCat[brand.primaryCategory].push(brand);
+    }
+
+    return Object.keys(groupedByCat)
+        .map(categoryName => ({
+            categoryName,
+            brands: groupedByCat[categoryName].sort((a, b) => b.productCount - a.productCount),
+        }))
+        .sort((a, b) => b.brands.reduce((sum, brand) => sum + brand.productCount, 0) - a.brands.reduce((sum, brand) => sum + brand.productCount, 0));
+};
+
+// --- EXISTING PRODUCT PAGE DATA FUNCTION ---
 
 interface ProductPageData {
     product: Product;
