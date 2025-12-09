@@ -8,6 +8,7 @@
     pkgs.nodejs_20
     pkgs.zulu
     pkgs.sudo
+    pkgs.docker
   ];
   # Sets environment variables in the workspace
   env = {};

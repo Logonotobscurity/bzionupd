@@ -1,13 +1,12 @@
-
 import { NextResponse } from 'next/server';
-import { ProductService } from '@/services/productService';
+import { getProductBySlug } from '@/services/productService';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const product = ProductService.getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return new NextResponse('Product not found', { status: 404 });

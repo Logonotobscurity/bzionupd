@@ -2,6 +2,20 @@
 const nextConfig = {
   // TypeScript and ESLint errors MUST be fixed - no ignoring in production
   // Strict mode enabled for zero-tolerance build pipeline
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       {
@@ -17,6 +31,11 @@ const nextConfig = {
       {
         source: '/brands',
         destination: '/products/brands',
+        permanent: true,
+      },
+      {
+        source: '/categories/:slug*',
+        destination: '/products/category/:slug*',
         permanent: true,
       },
     ]

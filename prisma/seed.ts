@@ -1,15 +1,19 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
-import { products } from '@/lib/all-products-data';
-import { brands } from '@/lib/brand-data';
-import { categories } from '@/lib/category-data';
-import { companies } from '@/lib/company-data';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
+import products from '../src/lib/data/all-products.json';
+import brands from '../src/lib/data/brands.json';
+import categories from '../src/lib/data/categories.json';
+import companies from '../src/lib/data/companies.json';
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL is not set');
 }
 
-const prisma = new PrismaClient({ datasources: { db: { url: process.env.DATABASE_URL } } });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 function normalizeCategorySlugs(p: any): string[] {
   if (Array.isArray(p.categorySlugs)) return p.categorySlugs;

@@ -1,4 +1,5 @@
 import { type Product, type Brand, type Category, type Company } from '@/lib/schema';
+import productsData from './all-products.json';
 
 // --- Extended Interface for PDP ---
 export interface PDPContext {
@@ -8,3 +9,5 @@ export interface PDPContext {
   category: Category;
   relatedProducts: Product[];
 }
+
+export const products = productsData;
