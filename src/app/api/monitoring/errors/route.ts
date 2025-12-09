@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import {
   storeErrorLog,
@@ -6,7 +5,7 @@ import {
   deleteErrorLog,
   sendAlert,
 } from '@/services/errorLoggingService';
-import { ErrorLogReport } from './route';
+import { ErrorLogReport } from '@/lib/schema';
 
 /**
  * POST /api/monitoring/errors

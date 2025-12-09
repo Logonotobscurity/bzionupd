@@ -87,13 +87,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Query parameters for filtering
-    const { searchParams } = new URL(request.url)
-    const metricName = searchParams.get('metric')
-    const sessionId = searchParams.get('sessionId')
-
     // Retrieve metrics from storage
-    // const metrics = await getMetrics({ metricName, sessionId })
+    // const metrics = await getMetrics()
 
     const metrics = {
       total: 0,

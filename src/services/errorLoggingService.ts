@@ -1,7 +1,6 @@
-
 import { Prisma } from '@prisma/client';
 import prisma from './dbService';
-import { ErrorLogReport } from '@/app/api/monitoring/errors/route';
+import { ErrorLogReport } from '@/lib/schema';
 
 /**
  * Stores an error log in the database.
