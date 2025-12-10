@@ -5,3 +5,26 @@
 
 # Dependencies
 node_modules
+
+# Next.js
+.next/
+.turbo/
+out/
+
+# Build outputs
+build/
+dist/
+
+# Testing
+coverage/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

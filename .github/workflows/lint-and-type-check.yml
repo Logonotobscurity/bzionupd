@@ -42,7 +42,7 @@ jobs:
       - name: Run TypeScript compiler
         run: |
           echo "📦 Running TypeScript compiler..."
-          npm run type-check
+          npm run typecheck
         continue-on-error: false
       
       - name: Build project
