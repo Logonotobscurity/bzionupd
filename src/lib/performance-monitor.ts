@@ -210,7 +210,7 @@ class PerformanceMonitor {
       })
 
       observer.observe({ entryTypes: ['longtask'] })
-    } catch (e) {
+    } catch (_e) {
       // Long task observer not supported
     }
   }
@@ -290,7 +290,7 @@ class PerformanceMonitor {
         }),
         keepalive: true,
       })
-    } catch (e) {
+    } catch (_e) {
       // Silently fail
     }
   }

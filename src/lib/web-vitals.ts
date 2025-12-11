@@ -157,7 +157,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ entryTypes: ['largest-contentful-paint'] })
-    } catch (e) {
+    } catch (_e) {
       // Observer not supported
     }
   }
@@ -192,7 +192,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ entryTypes: ['first-input'] })
-    } catch (e) {
+    } catch (_e) {
       // Observer not supported
     }
   }
@@ -230,7 +230,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ type: 'layout-shift', buffered: true })
-    } catch (e) {
+    } catch (_e) {
       // Observer not supported
     }
   }
@@ -284,7 +284,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ entryTypes: ['paint'] })
-    } catch (e) {
+    } catch (_e) {
       // Observer not supported
     }
   }
@@ -326,7 +326,7 @@ class WebVitalsTracker {
           return firstEntry.startTime
         })
         observer.observe({ entryTypes: ['first-input', 'pointerdown'], buffered: true })
-      } catch (e) {
+      } catch (_e) {
         return Infinity
       }
     }

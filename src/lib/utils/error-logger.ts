@@ -269,7 +269,7 @@ class ErrorLogger {
         navigator.sendBeacon(this.reportEndpoint, JSON.stringify(payload))
         return
       }
-    } catch (error) {
+    } catch (_error) {
       // Silently fail if sendBeacon throws
     }
 
