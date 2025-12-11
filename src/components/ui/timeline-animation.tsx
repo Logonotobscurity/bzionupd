@@ -20,7 +20,7 @@ export function TimelineContent({
   timelineRef,
   customVariants,
   id,
-  as,
+  as: Component = "div",
 }: TimelineContentProps) {
   const ref = useRef(null);
   const isInView = useInView(timelineRef, { once: true, amount: 0.5 });
@@ -32,10 +32,11 @@ export function TimelineContent({
     }
   }, [isInView, controls]);
 
+  const MotionComponent = motion(Component as any);
+
   return (
-    <motion.div
+    <MotionComponent
       ref={ref}
-      as={as}
       id={id}
       className={className}
       variants={customVariants}
@@ -44,6 +45,6 @@ export function TimelineContent({
       custom={animationNum}
     >
       {children}
-    </motion.div>
+    </MotionComponent>
   );
 }

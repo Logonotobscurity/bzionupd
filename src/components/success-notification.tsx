@@ -27,6 +27,7 @@ export const SuccessNotification = ({
       }, duration);
       return () => clearTimeout(timer);
     }
+    return;
   }, [isVisible, duration, onClose]);
 
   if (!isVisible) return null;
@@ -149,6 +150,4 @@ export const SuccessNotification = ({
       </div>
     </div>
   );
-
-  return null;
 };

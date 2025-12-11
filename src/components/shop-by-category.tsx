@@ -46,8 +46,6 @@ export function ShopByCategorySection() {
                             category={{
                                 ...category,
                                 productCount: category.productCount ?? 0,
-                                brands: category.brands ?? [],
-                                subCategories: category.subCategories ?? [],
                             }}
                         />
                     ))}

@@ -20,6 +20,8 @@ export async function storeErrorLog(errorLog: ErrorLogReport) {
         userAgent: errorLog.userAgent,
         sessionId: errorLog.sessionId,
         userId: errorLog.userId,
+        environment: errorLog.environment || 'development',
+        version: errorLog.version || '0.0.0',
       },
     });
     return createdError;
