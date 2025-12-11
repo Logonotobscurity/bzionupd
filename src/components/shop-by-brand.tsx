@@ -1,7 +1,7 @@
 
 'use client';
-import React, { useState, useEffect } from 'react';
-import { Section, SectionHeading, SectionPreamble, SectionTitle, SectionDescription } from '@/components/ui/section';
+import { useState, useEffect } from 'react';
+import { Section, SectionHeading, SectionPreamble, SectionTitle } from '@/components/ui/section';
 import { type Brand } from '@/lib/schema';
 import Image from 'next/image';
 import Link from 'next/link';

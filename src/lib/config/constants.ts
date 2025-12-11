@@ -1,4 +1,4 @@
-import { UtensilsCrossed, Building, Truck, Globe, School, Hospital, ShieldCheck, Banknote, Cake, Package, Warehouse, Scaling, Hotel, LucideIcon } from 'lucide-react';
+import { Building, Truck, ShieldCheck, Banknote, Cake, Package, Warehouse, Scaling, Hotel, LucideIcon } from 'lucide-react';
 
 export const FOOTER_LINKS = {
     platform: [

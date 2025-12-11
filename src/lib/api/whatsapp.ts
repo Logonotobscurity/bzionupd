@@ -107,7 +107,6 @@ export async function sendQuoteRequestToWhatsApp(
   try {
     // Use the specific BZION WhatsApp Business URL
     const whatsappUrl = 'https://api.whatsapp.com/message/TOVLTP6EMAWNI1?autoload=1&app_absent=0';
-    
     return {
       success: true,
       whatsappUrl,

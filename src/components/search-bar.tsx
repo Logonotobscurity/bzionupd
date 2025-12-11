@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useUIStore } from '@/stores/uiStore';
 import { searchProducts, getSuggestions, type SearchResult } from '@/services/searchService';
 import { Search, X, ChevronRight, Loader2 } from 'lucide-react';

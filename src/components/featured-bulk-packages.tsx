@@ -1,12 +1,26 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Section, SectionDescription } from '@/components/ui/section';
+import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 
+interface BulkPackage {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+  includedItems: string[];
+  moq: string;
+  leadTime: string;
+  delivery: string;
+  badge: string;
+  isTopSeller: boolean;
+  images: string[];
+}
+
 // Dummy data for bulk packages
-const bulkPackages = [
+const bulkPackages: BulkPackage[] = [
   {
     id: 1,
     name: 'Restaurant Starter Pack',
@@ -60,7 +74,7 @@ const bulkPackages = [
   },
 ];
 
-const BulkPackageCard = ({ pkg }) => (
+const BulkPackageCard = ({ pkg }: { pkg: BulkPackage }) => (
   <div className="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col border border-transparent hover:border-amber-400 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out group">
     <div className="relative h-72 w-full bg-gradient-to-br from-amber-50 to-amber-100 p-5 flex items-end justify-center overflow-hidden border-b border-gray-200">
       {pkg.badge && (

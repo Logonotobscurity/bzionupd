@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
 
 const FeaturedContent = () => {

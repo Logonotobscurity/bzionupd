@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Section, SectionHeading, SectionPreamble, SectionTitle, SectionDescription } from '@/components/ui/section';
 import { getCategories, getCategoryStats } from '@/services/productService';
 import { CategoryCard } from '@/components/ui/category-card';
