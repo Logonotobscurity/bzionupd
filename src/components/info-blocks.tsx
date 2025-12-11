@@ -39,7 +39,7 @@ interface ClosingInfo {
 }
 
 export interface InfoBlockProps {
-    _id?: string;
+    id?: string;
     preamble: string;
     title: string;
     description: string;
@@ -52,7 +52,7 @@ export interface InfoBlockProps {
     isDark: boolean;
 }
 
-export const InfoBlock = ({ _id, preamble, title, description, features, closing, images, align, isDark }: InfoBlockProps) => {
+export const InfoBlock = ({ preamble, title, description, features, closing, images, align, isDark }: Omit<InfoBlockProps, '_id'>) => {
     const textContent = (
     <div className={cn(
         "col-span-12 md:col-span-5 flex flex-col justify-center",
