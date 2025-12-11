@@ -39,7 +39,7 @@ interface ClosingInfo {
 }
 
 export interface InfoBlockProps {
-    id: string;
+    _id?: string;
     preamble: string;
     title: string;
     description: string;
