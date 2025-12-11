@@ -101,8 +101,8 @@ export function openWhatsAppChat(url: string): void {
  * @returns WhatsApp URL for opening chat
  */
 export async function sendQuoteRequestToWhatsApp(
-  data: QuoteRequestMessage,
-  businessPhone?: string
+  _data: QuoteRequestMessage,
+  _businessPhone?: string
 ): Promise<{ success: boolean; whatsappUrl?: string; error?: string }> {
   try {
     // Use the specific BZION WhatsApp Business URL

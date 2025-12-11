@@ -85,7 +85,7 @@ export function Header() {
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
+  useEffect((): (() => void) | undefined => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
       const handleEscapeKey = (e: KeyboardEvent) => {
@@ -95,9 +95,9 @@ export function Header() {
       };
       document.addEventListener("keydown", handleEscapeKey);
       return () => document.removeEventListener("keydown", handleEscapeKey);
-    } else {
-      document.body.style.overflow = "";
     }
+    document.body.style.overflow = "";
+    return undefined;
   }, [isMenuOpen]);
 
   useEffect(() => {
