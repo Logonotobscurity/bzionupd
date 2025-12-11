@@ -34,6 +34,7 @@ export const PageLoadingProvider = ({ children }: { children: React.ReactNode })
       
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [isInitialLoad]);
 
   // Show loader on pathname change (client-side navigation)
@@ -50,6 +51,7 @@ export const PageLoadingProvider = ({ children }: { children: React.ReactNode })
       
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [pathname, isInitialLoad]);
 
   // Auto hide loader after 3 seconds as safety measure
@@ -60,6 +62,7 @@ export const PageLoadingProvider = ({ children }: { children: React.ReactNode })
       }, 3000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [isLoading]);
 
   const showLoader = (msg?: string): void => {
