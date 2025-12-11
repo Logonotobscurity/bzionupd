@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useQuoteStore } from '@/lib/store/quote';
 import { Button } from '@/components/ui/button';
 import { SuccessNotification } from '@/components/success-notification';
-import { type Product } from '@/lib/data';
+import { Product } from '@/lib/schema';
 
 interface AddToQuoteButtonProps {
   product: Product;

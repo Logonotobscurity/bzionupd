@@ -56,11 +56,11 @@ export async function POST(request: Request) {
       await sendEmail({
         to: validated.email,
         subject: `BZION RFQ Confirmation: ${quote.reference}`,
-        react: RfqSubmissionEmail({
-          fullName: validated.fullName,
-          quoteReference: quote.reference,
-          items: validated.items,
-        }),
+        react: <RfqSubmissionEmail
+          fullName={validated.fullName}
+          quoteReference={quote.reference}
+          items={validated.items}
+        />,
       });
     } catch (emailError) {
       console.error('Failed to send confirmation email:', emailError);

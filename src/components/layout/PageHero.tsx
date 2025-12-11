@@ -7,6 +7,7 @@ import { AnimatedDiv } from '../animated-div';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ReactNode } from 'react';
 
 interface PageHeroProps {
   preamble?: string;
@@ -24,8 +25,10 @@ interface PageHeroProps {
   imageUrl?: string;
   stats?: {
     label: string;
-    value: number;
+    value: number | string;
+    sublabel?: string;
   }[];
+  actions?: ReactNode[];
 }
 
 export function PageHero({
@@ -37,6 +40,7 @@ export function PageHero({
   secondaryCta,
   imageUrl,
   stats,
+  actions,
 }: PageHeroProps) {
   const hasImage = !!imageUrl;
   const containerClasses = cn(
@@ -138,10 +142,13 @@ export function PageHero({
                     {/* Content */}
                     <div className="relative z-10 p-3 sm:p-5 md:p-7">
                       <div className="flex items-baseline gap-2">
-                        <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">{stat.value.toLocaleString()}</p>
+                        <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">{typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}</p>
                         <span className="text-xs md:text-sm font-bold text-secondary/70">+</span>
                       </div>
                       <p className="text-xs sm:text-sm md:text-base text-slate-100 mt-1 sm:mt-2 font-medium tracking-wide group-hover:text-white transition-colors">{stat.label}</p>
+                      {stat.sublabel && (
+                        <p className="text-xs text-slate-300 mt-1">{stat.sublabel}</p>
+                      )}
                     </div>
                     
                     {/* Bottom accent line */}
@@ -164,6 +171,7 @@ export function PageHero({
                   <Link href={secondaryCta.href}>{secondaryCta.text}</Link>
                 </Button>
               )}
+              {actions && actions.map((action, index) => <div key={index}>{action}</div>)}
             </div>
           </AnimatedDiv>
         </div>

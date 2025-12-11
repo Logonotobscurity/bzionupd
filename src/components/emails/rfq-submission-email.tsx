@@ -4,9 +4,8 @@ interface RfqSubmissionEmailProps {
   fullName: string;
   quoteReference: string;
   items: Array<{
-    productName: string;
+    name: string;
     quantity: number;
-    unit: string;
   }>;
 }
 
@@ -18,7 +17,7 @@ export const RfqSubmissionEmail: React.FC<RfqSubmissionEmailProps> = ({
   items,
 }) => {
   const itemsList = items
-    .map((item) => `${item.productName}: ${item.quantity} ${item.unit}`)
+    .map((item) => `${item.name}: ${item.quantity}`)
     .join('\n');
 
   const htmlContent = `

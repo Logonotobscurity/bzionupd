@@ -6,17 +6,6 @@ import { CTASection } from '@/components/cta-section';
 import { getBrandsPageData } from '@/services/productService';
 import { notFound } from 'next/navigation';
 
-// The CATEGORY_EMOJIS object is preserved as requested, with empty values.
-const CATEGORY_EMOJIS: Record<string, string> = {
-  'Cooking Oils & Fats': '',
-  'Pasta, Rice & Grains': '',
-  'Dairy': '',
-  'Baking & Confectionery': '',
-  'Seasonings & Flavor Enhancers': '',
-  'Snacks & Beverages': '',
-  'General': ''
-};
-
 export default async function AllBrandsPage() {
   const categorizedBrands = await getBrandsPageData();
 

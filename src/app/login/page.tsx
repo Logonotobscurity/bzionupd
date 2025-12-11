@@ -180,7 +180,7 @@ export default function LoginPage() {
         {loginImage && (
           <Image
             src={loginImage.imageUrl}
-            alt={loginImage.description}
+            alt={loginImage.description || ''}
             data-ai-hint={loginImage.imageHint}
             fill
             className="object-cover opacity-20"

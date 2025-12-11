@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Section, SectionHeading, SectionTitle, SectionDescription } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';

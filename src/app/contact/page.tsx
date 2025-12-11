@@ -190,7 +190,7 @@ const ContactDetails = () => {
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:1rem_1rem] rounded-2xl"></div>
                     <Image 
                         src={hqImage.imageUrl}
-                        alt={hqImage.description}
+                        alt={hqImage.description || ''}
                         fill
                         className="relative object-cover rounded-xl"
                         sizes="(max-width: 1024px) 100vw, 50vw"

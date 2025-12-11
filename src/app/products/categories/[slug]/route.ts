@@ -9,7 +9,7 @@ interface RouteParams {
  * to /products/category/[slug] for unified routing
  */
 export async function GET(
-  request: Request,
+  _: Request,
   { params }: { params: Promise<RouteParams> }
 ) {
   const { slug } = await params;

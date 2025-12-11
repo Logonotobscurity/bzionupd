@@ -51,7 +51,7 @@ export const CustomerSegments = () => {
                             <div className={cn("relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg p-2 bg-slate-50 border border-slate-200", index % 2 !== 0 && "md:col-start-1")}>
                                 <Image
                                     src={image.imageUrl}
-                                    alt={image.description}
+                                    alt={image.description || segment.title}
                                     fill
                                     className="object-cover rounded-xl"
                                     sizes="(max-width: 768px) 100vw, 50vw"

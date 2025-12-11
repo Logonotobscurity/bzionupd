@@ -1,6 +1,4 @@
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import HomeCarousel from '@/components/home-carousel';
 import { getPlaceholderImage } from '@/lib/placeholder-images';
 import dynamic from 'next/dynamic';

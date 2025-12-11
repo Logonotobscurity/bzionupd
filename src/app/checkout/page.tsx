@@ -3,7 +3,6 @@
 import { useQuoteStore, type QuoteItem } from '@/lib/store/quote';
 import { Button } from '@/components/ui/button';
 import { Section } from '@/components/ui/section';
-import { Breadcrumbs } from '@/components/ui/breadcrumb';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -157,7 +156,6 @@ export default function CheckoutPage() {
       const userAgent = navigator.userAgent.toLowerCase();
       const isAndroid = userAgent.includes('android');
       const isIOS = /iphone|ipad|ipod/.test(userAgent);
-      const isDesktop = !isAndroid && !isIOS;
 
       if (isAndroid || isIOS) {
         // Mobile: Use wa.me link which opens WhatsApp directly

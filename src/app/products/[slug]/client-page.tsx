@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuoteStore } from '@/lib/store/quote';
 import { Check, ShieldCheck, Factory, Share2, Truck, Star, AlertCircle, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
@@ -14,10 +14,8 @@ interface ProductPageData {
   product: Product;
   brand: Brand | undefined;
   category: Category | undefined;
-  company: Company | undefined;
+  company?: Company | undefined;
   relatedProducts: Product[];
-  bestSellers: Product[];
-  bestSellersCategories: Category[];
 }
 
 export default function ProductDetailClient(data: ProductPageData) {
@@ -26,7 +24,7 @@ export default function ProductDetailClient(data: ProductPageData) {
   const [shareSuccess, setShareSuccess] = useState(false);
   const [isProductAdded, setIsProductAdded] = useState(false);
 
-  const { product, brand, company, category, relatedProducts, bestSellers, bestSellersCategories } = data;
+  const { product, brand, company, category, relatedProducts } = data;
   const fallbackImage = getPlaceholderImage(String(product.id));
 
   useEffect(() => {

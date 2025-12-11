@@ -1,9 +1,22 @@
-
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default [
+  {
+    ignores: [
+      'node_modules/',
+      '.next/',
+      'dist/',
+      'build/',
+      '*.config.js',
+      '*.config.mjs',
+      '*.json',
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/__tests__/**',
+    ],
+  },
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -39,17 +52,5 @@ export default [
     rules: {
       'no-undef': 'error',
     },
-    ignores: [
-      'node_modules/',
-      '.next/',
-      'dist/',
-      'build/',
-      '*.config.js',
-      '*.config.mjs',
-      '*.json',
-      '**/*.test.ts',
-      '**/*.test.tsx',
-      '**/__tests__/**',
-    ],
   },
 ];

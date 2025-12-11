@@ -6,7 +6,6 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Section } from '@/components/ui/section';
-import { Breadcrumbs } from '@/components/ui/breadcrumb';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Clock, User, Share2, Calendar } from 'lucide-react';

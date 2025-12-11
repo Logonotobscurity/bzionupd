@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import { Section, SectionHeading, SectionTitle, SectionDescription } from "@/components/ui/section";
 import { Mail, MapPin } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
@@ -30,7 +29,7 @@ const CtaBanner = () => {
         }
     });
 
-    const onSubmit = (data: ContactFormValues) => {
+    const onSubmit = () => {
         toast({
             title: "Message Sent!",
             description: "Thanks for reaching out. We'll get back to you shortly.",

@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // TypeScript and ESLint errors MUST be fixed - no ignoring in production
-  // Strict mode enabled for zero-tolerance build pipeline
   async headers() {
     return [
       {
@@ -38,7 +36,7 @@ const nextConfig = {
         destination: '/products/category/:slug*',
         permanent: true,
       },
-    ]
+    ];
   },
   images: {
     remotePatterns: [
@@ -68,19 +66,19 @@ const nextConfig = {
         pathname: '/**',
       },
       {
-           protocol: 'https',
-           hostname: 'www.legal500.com',
-           pathname: '/**',
+        protocol: 'https',
+        hostname: 'www.legal500.com',
+        pathname: '/**',
       },
       {
-           protocol: 'https',
-           hostname: 'encrypted-tbn0.gstatic.com',
-           pathname: '/**',
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
+        pathname: '/**',
       },
       {
-           protocol: 'https',
-           hostname: 'www.bofikng.com',
-           pathname: '/**',
+        protocol: 'https',
+        hostname: 'www.bofikng.com',
+        pathname: '/**',
       },
     ],
     qualities: [75, 80, 85],
@@ -88,4 +86,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

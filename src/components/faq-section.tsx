@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Section, SectionPreamble, SectionHeading, SectionTitle } from "@/components/ui/section";
+import { Section, SectionHeading, SectionTitle } from "@/components/ui/section";
 import Link from "next/link";
 import { AnimatedDiv } from "./animated-div";
 

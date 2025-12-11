@@ -45,8 +45,8 @@ export default function CategoriesPage() {
                   { label: 'Categories', value: allCategories.length },
                   { label: 'Products', value: totalProducts },
                   { label: 'Brands', value: totalBrands },
-                  { label: 'In Stock', value: `${categoriesInStock}/${allCategories.length}` },
-                  { label: 'Bulk Options', value: 'Available' }
+                  { label: 'In Stock', value: categoriesInStock },
+                  { label: 'Bulk Options', value: 100 }
                 ]}
                 actions={[
                     <div key="search-bar" className="relative w-full max-w-md mx-auto">

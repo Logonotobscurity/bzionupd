@@ -8,6 +8,12 @@ export function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const shouldReset = params.has('reset-cookie-consent');
+    if (shouldReset) {
+      localStorage.removeItem('bzion-cookie-consent');
+    }
+
     const consent = localStorage.getItem('bzion-cookie-consent');
     if (!consent) {
       setShowBanner(true);

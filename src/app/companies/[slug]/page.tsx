@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCompanyBySlug, getProductsByCompanySlug, getBrandsByCompanyId, getCategoriesByCompanyId } from '@/services/productService';
 import { Section, SectionHeading, SectionTitle, SectionDescription } from '@/components/ui/section';
-import { Breadcrumbs } from '@/components/ui/breadcrumb';
 import { ProductGrid } from '@/components/product-grid';
 import { BrandGrid } from '@/components/brand-grid';
 import { CategoryGrid } from '@/components/category-grid';

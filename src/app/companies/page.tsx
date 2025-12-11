@@ -1,6 +1,6 @@
 
 import { PageHero } from '@/components/layout/PageHero';
-import { Section, SectionHeading, SectionTitle, SectionDescription } from '@/components/ui/section';
+import { Section } from '@/components/ui/section';
 import { getCompanies, getCategories } from '@/services/productService';
 import { CompanyCard } from '@/components/CompanyCard';
 import { CTASection } from '@/components/cta-section';

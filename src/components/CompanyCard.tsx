@@ -19,13 +19,15 @@ export function CompanyCard({ company }: CompanyCardProps) {
       <Card className="h-full flex flex-col group overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/20">
         <CardContent className="p-6 flex flex-col flex-grow">
           <div className="relative h-24 mb-6 flex items-center justify-center">
-            <Image
-              src={company.logo}
-              alt={`${company.name} logo`}
-              width={180}
-              height={96}
-              className="object-contain max-h-full max-w-full transition-transform duration-300 group-hover:scale-105"
-            />
+            {company.logo && (
+              <Image
+                src={company.logo}
+                alt={`${company.name} logo`}
+                width={180}
+                height={96}
+                className="object-contain max-h-full max-w-full transition-transform duration-300 group-hover:scale-105"
+              />
+            )}
           </div>
           <h3 className="text-xl font-bold text-slate-800 mb-2 text-center">{company.name}</h3>
           <p className="text-sm text-slate-600 mb-6 text-center h-10">{company.positioningStatement}</p>
@@ -56,14 +58,16 @@ export function CompanyCard({ company }: CompanyCardProps) {
             )}
           </div>
 
-          <div className="mb-4">
-            <p className="text-xs font-semibold text-slate-500 mb-2 tracking-wider uppercase">Serves</p>
-            <div className="flex flex-wrap gap-2">
-                {company.buyerSegments.map((segment) => (
-                    <Badge key={segment} variant='outline' className="text-xs">{segment}</Badge>
-                ))}
+          {company.buyerSegments && company.buyerSegments.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs font-semibold text-slate-500 mb-2 tracking-wider uppercase">Serves</p>
+              <div className="flex flex-wrap gap-2">
+                  {company.buyerSegments.map((segment) => (
+                      <Badge key={segment} variant='outline' className="text-xs">{segment}</Badge>
+                  ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="mt-auto pt-4 border-t border-slate-200">
             <div className="grid grid-cols-2 gap-2">

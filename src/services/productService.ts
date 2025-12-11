@@ -22,6 +22,8 @@ export interface CompanyDirectoryData extends Company {
   strongestCategory: string | null;
   productCount: number;
   brandCount: number;
+  positioningStatement?: string;
+  buyerSegments?: string[];
 }
 
 // Types for Brands Page Redesign

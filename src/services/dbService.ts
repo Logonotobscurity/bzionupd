@@ -1,16 +1,2 @@
-import { PrismaClient } from '@prisma/client';
-
-// Prevent multiple instances of Prisma Client in development
-declare global {
-  // allow global `var` declarations
-   
-  var prisma: PrismaClient | undefined;
-}
-
-const prisma = global.prisma || new PrismaClient();
-
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
-}
-
-export default prisma;
+// This file is deprecated. Use @/lib/db instead for consistent PrismaClient singleton.
+export { prisma as default } from '@/lib/db';

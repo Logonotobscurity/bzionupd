@@ -1,5 +1,3 @@
-
-import React from 'react';
 import { Section, SectionHeading, SectionPreamble, SectionTitle, SectionDescription } from '@/components/ui/section';
 import { BestSellerProductCard } from '@/components/best-seller-product-card';
 import { Button } from '@/components/ui/button';
