@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { _persist } from 'zustand/middleware';
 
 interface MenuStore {
   isMenuOpen: boolean;

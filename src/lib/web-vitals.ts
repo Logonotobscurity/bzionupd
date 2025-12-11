@@ -126,7 +126,7 @@ class WebVitalsTracker {
     if (!('PerformanceObserver' in window)) return
 
     let lastEntryTime = 0
-    let sessionEntryTime = 0
+    let _sessionEntryTime = 0
     let sessionValue = 0
 
     const observer = new PerformanceObserver((list) => {
@@ -135,7 +135,7 @@ class WebVitalsTracker {
 
       sessionValue = lastEntry.startTime
       lastEntryTime = sessionValue
-      sessionEntryTime = sessionValue
+      _sessionEntryTime = sessionValue
 
       // Ignore entries that start after user interaction
       if (lastEntry.startTime < this.getFirstInputOrPointerDown()) {

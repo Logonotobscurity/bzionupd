@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, _CardTitle } from '@/components/ui/card';
 import { EnrichedCategoryData } from '@/services/productService';
-import { formatPrice } from '@/lib/utils/formatters';
-import { Package, ShoppingCart, Star } from 'lucide-react';
+import { _formatPrice } from '@/lib/utils/formatters';
+import { Package, _ShoppingCart, _Star } from 'lucide-react';
 
 interface CategoryCardProps {
   category: EnrichedCategoryData;

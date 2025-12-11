@@ -25,7 +25,7 @@ export function FooterNewsletter() {
         }
     });
 
-     const onSubmit = (data: NewsletterFormValues) => {
+     const onSubmit = (_data: NewsletterFormValues) => {
         toast({
             title: "Subscribed!",
             description: "Thanks for subscribing to our newsletter.",

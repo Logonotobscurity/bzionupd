@@ -8,10 +8,10 @@ interface ProductGridProps {
   viewType?: 'all' | 'brand' | 'category';
   activeSlug?: string;
   allBrands?: Brand[];
-  allCategories?: Category[];
+  _allCategories?: Category[];
 }
 
-export const ProductGrid = ({ products, viewType = 'all', activeSlug, allBrands, allCategories }: ProductGridProps) => {
+export const ProductGrid = ({ products, viewType = 'all', _activeSlug, _allBrands, _allCategories }: ProductGridProps) => {
   if (products.length === 0) {
     return <p className="text-center text-muted-foreground">No products found.</p>;
   }

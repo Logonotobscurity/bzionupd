@@ -2,8 +2,8 @@
 "use client";
 import { Button } from '@/components/ui/button';
 import { Truck, Handshake, Scaling, ShoppingCart } from 'lucide-react';
-import Link from 'next/link';
-import { Section, SectionPreamble, SectionTitle, SectionHeading } from '@/components/ui/section';
+import _Link from 'next/link';
+import { Section, _SectionPreamble, SectionTitle, SectionHeading } from '@/components/ui/section';
 import { Warehouse } from 'lucide-react';
 import { AnimatedDiv } from '@/components/animated-div';
 import { GsapScrollTrigger } from '@/components/ui/GsapScrollTrigger';

@@ -13,10 +13,10 @@ interface Brand {
 interface BrandCardProps {
   brand: Brand;
   productCount: number;
-  categoryCount: number;
+  _categoryCount: number;
 }
 
-export function BrandCard({ brand, productCount, categoryCount }: BrandCardProps) {
+export function BrandCard({ brand, productCount, _categoryCount }: BrandCardProps) {
   return (
     <Link href={`/products/brand/${brand.slug}`}>
         <Card className="group block overflow-hidden rounded-lg border border-slate-200 transition-colors duration-200 h-full flex flex-col">

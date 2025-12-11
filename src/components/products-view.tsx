@@ -30,13 +30,13 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
   const [currentPage, setCurrentPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [brandStats, setBrandStats] = useState<any>({});
-  const [categoryStats, setCategoryStats] = useState<any>({});
+  const [_categoryStats, setCategoryStats] = useState<any>({});
   const [brands, setBrands] = useState<Brand[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const [products, brandStats, categoryStats, brandData, categoryData] = await Promise.all([
+      const [products, brandStats, _categoryStats, brandData, categoryData] = await Promise.all([
         getAllProducts(),
         getBrandStats(),
         getCategoryStats(),
@@ -45,7 +45,7 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
       ]);
       setAllProducts(products || []);
       setBrandStats(brandStats || {});
-      setCategoryStats(categoryStats || {});
+      setCategoryStats(_categoryStats || {});
       setBrands(brandData || []);
       setCategories(categoryData || []);
     };
