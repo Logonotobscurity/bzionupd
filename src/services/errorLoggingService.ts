@@ -13,25 +13,18 @@ export async function storeErrorLog(errorLog: ErrorLogReport) {
     const createdError = await prisma.errorLog.create({
       data: {
         message: errorLog.message,
-        stack: errorLog.stack,
+        stack: errorLog.stack || '',
         context: errorLog.context as Prisma.InputJsonValue | undefined,
         severity: errorLog.severity,
         url: errorLog.url,
         userAgent: errorLog.userAgent,
         sessionId: errorLog.sessionId,
         userId: errorLog.userId,
-        breadcrumbs: errorLog.breadcrumbs as Prisma.InputJsonValue | undefined,
-        sourceMap: errorLog.sourceMap as Prisma.InputJsonValue | undefined,
-        environment: errorLog.environment,
-        version: errorLog.version,
       },
     });
     return createdError;
   } catch (error) {
     console.error('[ErrorLoggingService] Failed to store error log:', error);
-    // Depending on the monitoring strategy, you might want to throw 
-    // the error or handle it in a way that doesn't disrupt the application.
-    // For now, we will just log it to the console.
     return null;
   }
 }

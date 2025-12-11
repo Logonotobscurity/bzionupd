@@ -149,4 +149,6 @@ export const SuccessNotification = ({
       </div>
     </div>
   );
+
+  return null;
 };

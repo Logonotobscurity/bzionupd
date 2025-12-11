@@ -15,7 +15,23 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-function normalizeCategorySlugs(p: any): string[] {
+interface RawProduct {
+  sku?: string;
+  name?: string;
+  slug?: string;
+  description?: string;
+  price?: number;
+  isActive?: boolean;
+  brandSlug?: string;
+  brand?: string;
+  companySlug?: string;
+  company?: string;
+  categorySlugs?: string[];
+  categorySlug?: string;
+  images?: string[];
+}
+
+function normalizeCategorySlugs(p: RawProduct): string[] {
   if (Array.isArray(p.categorySlugs)) return p.categorySlugs;
   if (p.categorySlug) return [p.categorySlug];
   return [];
@@ -53,8 +69,8 @@ async function main() {
 
   // upsert products
   // treat source products as untyped to avoid Prisma model type assumptions
-  for (const pRaw of products as any[]) {
-    const p = pRaw as any;
+  for (const pRaw of products as unknown[]) {
+    const p = pRaw as RawProduct;
 
     // support multiple possible source field names; normalize before DB operations
     const brandSlug = p.brandSlug ?? p.brand ?? undefined;
@@ -65,9 +81,9 @@ async function main() {
     const company = companySlug ? await prisma.company.findUnique({ where: { slug: String(companySlug) } }) : null;
 
     const upserted = await prisma.product.upsert({
-      where: { sku: p.sku },
+      where: { sku: p.sku || '' },
       update: {
-        name: p.name,
+        name: p.name || '',
         description: p.description || null,
         price: p.price || null,
         isActive: p.isActive ?? true,
@@ -75,9 +91,9 @@ async function main() {
         companyId: company?.id ?? undefined,
       },
       create: {
-        sku: p.sku,
-        name: p.name,
-        slug: p.slug || p.sku,
+        sku: p.sku || '',
+        name: p.name || '',
+        slug: p.slug || p.sku || '',
         description: p.description || null,
         price: p.price || null,
         isActive: p.isActive ?? true,
@@ -111,7 +127,7 @@ async function main() {
           data: {
             productId: upserted.id,
             url,
-            alt: p.name,
+            alt: p.name || '',
             order: i
           }
         });

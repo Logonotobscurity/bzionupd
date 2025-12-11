@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 
 interface Brand {
-  id: string;
+  id: string | number;
   name: string;
   slug: string;
   imageUrl?: string;
@@ -13,10 +13,10 @@ interface Brand {
 interface BrandCardProps {
   brand: Brand;
   productCount: number;
-  categoryCount: number;
+  categoryCount?: number;
 }
 
-export function BrandCard({ brand, productCount, categoryCount }: BrandCardProps) {
+export function BrandCard({ brand, productCount }: BrandCardProps) {
   return (
     <Link href={`/products/brand/${brand.slug}`}>
         <Card className="group block overflow-hidden rounded-lg border border-slate-200 transition-colors duration-200 h-full flex flex-col">

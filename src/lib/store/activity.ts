@@ -9,7 +9,7 @@ export interface UserActivity {
   title: string;
   description: string;
   timestamp: Date;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
 }
 
 interface ActivityState {

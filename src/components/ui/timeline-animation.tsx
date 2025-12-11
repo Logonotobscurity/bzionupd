@@ -1,26 +1,26 @@
 "use client";
 
-import { motion, useAnimation, useInView } from "framer-motion";
-import { ElementType, useRef, useEffect } from "react";
+import { motion, useAnimation, useInView, Variants } from "framer-motion";
+import { useRef, useEffect, ElementType } from "react";
 
 interface TimelineContentProps {
   children: React.ReactNode;
-  as?: ElementType;
   className?: string;
   animationNum: number;
-  timelineRef: React.RefObject<HTMLElement>;
-  customVariants: any;
+  timelineRef: React.RefObject<HTMLDivElement | null>;
+  customVariants: Variants;
   id?: string;
+  as?: ElementType;
 }
 
 export function TimelineContent({
   children,
-  as: Tag = "div",
   className,
   animationNum,
   timelineRef,
   customVariants,
   id,
+  as,
 }: TimelineContentProps) {
   const ref = useRef(null);
   const isInView = useInView(timelineRef, { once: true, amount: 0.5 });
@@ -34,8 +34,8 @@ export function TimelineContent({
 
   return (
     <motion.div
-      as={Tag}
       ref={ref}
+      as={as}
       id={id}
       className={className}
       variants={customVariants}

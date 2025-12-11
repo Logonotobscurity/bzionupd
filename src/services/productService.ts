@@ -197,7 +197,7 @@ export const getCompanies = async (): Promise<CompanyDirectoryData[]> => {
 
     const categoryMap = new Map(allCategories.map(c => [c.slug, c.name]));
 
-    return companies.map(company => {
+    const enrichedCompanies = companies.map(company => {
         const companyBrands = allBrands.filter(b => b.companyId === company.id);
         const companyBrandNames = companyBrands.map(b => b.name);
         const companyProducts = allProducts.filter(p => companyBrandNames.includes(p.brand));
@@ -234,8 +234,8 @@ export const getCompanies = async (): Promise<CompanyDirectoryData[]> => {
         };
     });
 
-    await cache.set(CACHE_KEYS.companies, companies, CACHE_TTL.long);
-    return companies;
+    await cache.set(CACHE_KEYS.companies, enrichedCompanies, CACHE_TTL.long);
+    return enrichedCompanies;
 };
 
 export const getCompanyBySlug = async (slug: string): Promise<Company | undefined> => {

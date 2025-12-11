@@ -5,7 +5,7 @@ import { Section, SectionHeading, SectionPreamble, SectionTitle } from '@/compon
 import { type Brand } from '@/lib/schema';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getBrands } from '@/services/brandService';
+import { getAllBrands } from '@/services/brandService';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
@@ -56,7 +56,13 @@ export function BrandGrid() {
     const [brands, setBrands] = useState<Brand[]>([]);
 
     useEffect(() => {
-        getBrands().then(setBrands);
+        getAllBrands().then((data) => {
+            const normalizedBrands = data.map(b => ({
+                ...b,
+                id: typeof b.id === 'number' ? String(b.id) : b.id,
+            })) as Brand[];
+            setBrands(normalizedBrands);
+        });
     }, []);
 
     return (

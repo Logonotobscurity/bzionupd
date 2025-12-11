@@ -52,7 +52,7 @@ export interface InfoBlockProps {
     isDark: boolean;
 }
 
-export const InfoBlock = ({ id: _id, preamble, title, description, features, closing, images, align, isDark }: InfoBlockProps) => {
+export const InfoBlock = ({ preamble, title, description, features, closing, images, align, isDark }: InfoBlockProps) => {
     const textContent = (
     <div className={cn(
         "col-span-12 md:col-span-5 flex flex-col justify-center",

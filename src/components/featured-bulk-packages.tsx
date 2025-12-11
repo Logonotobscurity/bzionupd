@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Section } from '@/components/ui/section';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
+import { BulkPackagesCarousel } from '@/components/banner/bulk-packages-carousel';
 
 interface BulkPackage {
   id: number;
@@ -139,6 +140,8 @@ const BulkPackageCard = ({ pkg }: { pkg: BulkPackage }) => (
 );
 
 export const FeaturedBulkPackages = () => {
+  const useCarousel = process.env.NEXT_PUBLIC_USE_BANNER_CAROUSEL !== 'false';
+
   useEffect(() => {
     const styleId = 'truncate-2-lines-style';
     if (!document.getElementById(styleId)) {
@@ -156,6 +159,10 @@ export const FeaturedBulkPackages = () => {
       document.head.appendChild(style);
     }
   }, []);
+
+  if (useCarousel) {
+    return <BulkPackagesCarousel packages={bulkPackages} />;
+  }
 
   return (
     <div className="bg-gradient-to-b from-yellow-50 via-yellow-100 to-white">

@@ -25,12 +25,13 @@ export function FooterNewsletter() {
         }
     });
 
-     const onSubmit = (_data: NewsletterFormValues) => {
-        toast({
-            title: "Subscribed!",
-            description: "Thanks for subscribing to our newsletter.",
-        });
-        form.reset();
+    const onSubmit = (data: NewsletterFormValues) => {
+      console.log('Newsletter subscription:', data);
+      toast({
+        title: "Subscribed!",
+        description: "Thanks for subscribing to our newsletter.",
+      });
+      form.reset();
     };
 
     return (

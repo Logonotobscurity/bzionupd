@@ -36,7 +36,7 @@ export default function BrandPage() {
         notFound();
         return;
       }
-      setBrand(brandData);
+      setBrand(brandData ?? null);
 
       const [products, stats] = await Promise.all([
         getProductsByBrand(brandData.name),
@@ -66,8 +66,8 @@ export default function BrandPage() {
       <PageHero 
         preamble="Premium Brand Collection"
         title={brand.name}
-        description={brand.brand_description || `Discover the complete range of quality products from ${brand.name}. We're proud to distribute their finest offerings.`}
-        imageUrl={brand.imageUrl}
+        description={brand.brand_description ?? `Discover the complete range of quality products from ${brand.name}. We're proud to distribute their finest offerings.`}
+        imageUrl={brand.imageUrl ?? ''}
         breadcrumbs={breadcrumbItems}
         stats={[
           { label: 'Quality Products', value: stats.productCount },

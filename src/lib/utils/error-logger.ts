@@ -7,7 +7,7 @@ export interface ErrorLogEntry {
   id: string
   message: string
   stack?: string
-  context?: Record<string, any>
+  context?: Record<string, unknown>
   severity: 'info' | 'warning' | 'error' | 'critical'
   timestamp: number
   url: string
@@ -26,7 +26,7 @@ export interface Breadcrumb {
   message: string
   timestamp: number
   category: string
-  data?: Record<string, any>
+  data?: Record<string, unknown>
 }
 
 export interface ErrorLogPayload extends ErrorLogEntry {
@@ -94,7 +94,7 @@ class ErrorLogger {
   captureError(error: {
     message: string
     stack?: string
-    context?: Record<string, any>
+    context?: Record<string, unknown>
     severity?: 'info' | 'warning' | 'error' | 'critical'
   }): ErrorLogEntry {
     const entry: ErrorLogEntry = {
@@ -147,7 +147,7 @@ class ErrorLogger {
   /**
    * Capture an exception
    */
-  captureException(error: Error, context?: Record<string, any>): ErrorLogEntry {
+  captureException(error: Error, context?: Record<string, unknown>): ErrorLogEntry {
     return this.captureError({
       message: error.message,
       stack: error.stack,
@@ -162,7 +162,7 @@ class ErrorLogger {
   captureMessage(
     message: string,
     severity: 'info' | 'warning' | 'error' | 'critical' = 'info',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ): ErrorLogEntry {
     return this.captureError({
       message,
@@ -177,7 +177,7 @@ class ErrorLogger {
   addBreadcrumb(breadcrumb: {
     message: string
     category?: string
-    data?: Record<string, any>
+    data?: Record<string, unknown>
   }): void {
     this.breadcrumbs.push({
       message: breadcrumb.message,
@@ -195,7 +195,7 @@ class ErrorLogger {
   /**
    * Track user action
    */
-  trackUserAction(action: string, data?: Record<string, any>): void {
+  trackUserAction(action: string, data?: Record<string, unknown>): void {
     this.addBreadcrumb({
       message: action,
       category: 'user-action',
@@ -206,7 +206,7 @@ class ErrorLogger {
   /**
    * Track page navigation
    */
-  trackPageNavigation(url: string, data?: Record<string, any>): void {
+  trackPageNavigation(url: string, data?: Record<string, unknown>): void {
     this.addBreadcrumb({
       message: `Navigation to ${url}`,
       category: 'navigation',
@@ -233,7 +233,7 @@ class ErrorLogger {
   /**
    * Set user context
    */
-  setUser(userId: string, userData?: Record<string, any>): void {
+  setUser(userId: string, userData?: Record<string, unknown>): void {
     this.userId = userId
     this.addBreadcrumb({
       message: `User ${userId} set`,
@@ -269,7 +269,7 @@ class ErrorLogger {
         navigator.sendBeacon(this.reportEndpoint, JSON.stringify(payload))
         return
       }
-    } catch (_error) {
+    } catch {
       // Silently fail if sendBeacon throws
     }
 
@@ -281,7 +281,7 @@ class ErrorLogger {
         body: JSON.stringify(payload),
         keepalive: true,
       }).catch(() => {
-        // Silently fail
+        // Silently fail - network error
       })
     }
   }
@@ -370,7 +370,7 @@ export function getErrorLogger(): ErrorLogger | null {
 /**
  * Quick capture error
  */
-export function captureError(error: Error, context?: Record<string, any>): void {
+export function captureError(error: Error, context?: Record<string, unknown>): void {
   const instance = getErrorLogger()
   if (instance) {
     instance.captureException(error, context)
@@ -383,7 +383,7 @@ export function captureError(error: Error, context?: Record<string, any>): void 
 export function captureMessage(
   message: string,
   severity?: 'info' | 'warning' | 'error' | 'critical',
-  context?: Record<string, any>
+  context?: Record<string, unknown>
 ): void {
   const instance = getErrorLogger()
   if (instance) {
@@ -397,7 +397,7 @@ export function captureMessage(
 export function addBreadcrumb(
   message: string,
   category?: string,
-  data?: Record<string, any>
+  data?: Record<string, unknown>
 ): void {
   const instance = getErrorLogger()
   if (instance) {

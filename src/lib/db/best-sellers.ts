@@ -1,5 +1,5 @@
 
-import { Product } from './schema';
+import { Product } from '@/lib/schema';
 
 export const bestSellers: Product[] = [
   {
@@ -14,7 +14,15 @@ export const bestSellers: Product[] = [
     "brandId": 30,
     "company": "TGI Group",
     "companyId": 20,
-    "images": ["https://i.ibb.co/8LMKBtJ4/Terra-oil-1-4-L.png"]
+    "images": ["https://i.ibb.co/8LMKBtJ4/Terra-oil-1-4-L.png"],
+    "description": "",
+    "detailedDescription": "",
+    "price": 0,
+    "unit": "",
+    "moq": 1,
+    "inStock": true,
+    "rating": 0,
+    "isFeatured": false
   },
   {
     "id": 67,
@@ -28,7 +36,15 @@ export const bestSellers: Product[] = [
     "brandId": 30,
     "company": "TGI Group",
     "companyId": 20,
-    "images": ["https://i.ibb.co/PZvWJWzV/Terra-Saver-Pack.png", "https://i.ibb.co/RGSKzN89/Terra-Beef-Saver-Pack.png", "https://i.ibb.co/wts1vYN/Terra-Chicken-Super-Saver-Pack.png"]
+    "images": ["https://i.ibb.co/PZvWJWzV/Terra-Saver-Pack.png", "https://i.ibb.co/RGSKzN89/Terra-Beef-Saver-Pack.png", "https://i.ibb.co/wts1vYN/Terra-Chicken-Super-Saver-Pack.png"],
+    "description": "",
+    "detailedDescription": "",
+    "price": 0,
+    "unit": "",
+    "moq": 1,
+    "inStock": true,
+    "rating": 0,
+    "isFeatured": false
   },
   {
     "id": 45,
@@ -38,11 +54,19 @@ export const bestSellers: Product[] = [
     "category": "Snacks & Beverages",
     "categorySlug": "snacks-beverages",
     "imageUrl": "https://i.ibb.co/nqS8nkXc/Laziz-Chocolate-Drink.jpg",
-     "sku": "LAZIZ-45-CHOCO",
+    "sku": "LAZIZ-45-CHOCO",
     "brandId": 34,
     "company": "Laziz",
     "companyId": 24,
-    "images": ["https://i.ibb.co/nqS8nkXc/Laziz-Chocolate-Drink.jpg"]
+    "images": ["https://i.ibb.co/nqS8nkXc/Laziz-Chocolate-Drink.jpg"],
+    "description": "",
+    "detailedDescription": "",
+    "price": 0,
+    "unit": "",
+    "moq": 1,
+    "inStock": true,
+    "rating": 0,
+    "isFeatured": false
   },
   {
     "id": 7,
@@ -56,7 +80,15 @@ export const bestSellers: Product[] = [
     "brandId": 25,
     "company": "Dangote",
     "companyId": 4,
-    "images": ["https://i.ibb.co/VY07nMWV/Dangote-1kg-sugar-x10.png"]
+    "images": ["https://i.ibb.co/VY07nMWV/Dangote-1kg-sugar-x10.png"],
+    "description": "",
+    "detailedDescription": "",
+    "price": 0,
+    "unit": "",
+    "moq": 1,
+    "inStock": true,
+    "rating": 0,
+    "isFeatured": false
   },
   {
     "id": 9,
@@ -70,7 +102,15 @@ export const bestSellers: Product[] = [
     "brandId": 19,
     "company": "Arla Dano",
     "companyId": 14,
-    "images": ["https://i.ibb.co/ksr6PWs4/Dano-cool-cow-sachet.png"]
+    "images": ["https://i.ibb.co/ksr6PWs4/Dano-cool-cow-sachet.png"],
+    "description": "",
+    "detailedDescription": "",
+    "price": 0,
+    "unit": "",
+    "moq": 1,
+    "inStock": true,
+    "rating": 0,
+    "isFeatured": false
   },
   {
     "id": 23,
@@ -84,6 +124,14 @@ export const bestSellers: Product[] = [
     "brandId": 2,
     "company": "Flour Mills of Nigeria (FMN)",
     "companyId": 1,
-    "images": ["https://i.ibb.co/mnhsCwf/Goldenpenny-wheatmeal-goldenvita.jpg"]
+    "images": ["https://i.ibb.co/mnhsCwf/Goldenpenny-wheatmeal-goldenvita.jpg"],
+    "description": "",
+    "detailedDescription": "",
+    "price": 0,
+    "unit": "",
+    "moq": 1,
+    "inStock": true,
+    "rating": 0,
+    "isFeatured": false
   }
 ];

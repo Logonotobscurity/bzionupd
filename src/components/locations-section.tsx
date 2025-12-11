@@ -53,7 +53,6 @@ export function LocationsSection() {
           <div className="flex-1 space-y-8">
             <div>
               <TimelineContent
-                as="div"
                 animationNum={0}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
@@ -63,7 +62,6 @@ export function LocationsSection() {
               </TimelineContent>
 
               <TimelineContent
-                as="h2"
                 id="about-heading"
                 animationNum={0.5}
                 timelineRef={heroRef}
@@ -76,7 +74,6 @@ export function LocationsSection() {
 
             <div className="mt-12 flex flex-col sm:flex-row gap-6 justify-between items-center w-full">
               <TimelineContent
-                as="div"
                 animationNum={4}
                 timelineRef={heroRef}
                 customVariants={textVariants}
@@ -91,7 +88,6 @@ export function LocationsSection() {
               </TimelineContent>
 
                 <TimelineContent
-                  as="div"
                   animationNum={5}
                   timelineRef={heroRef}
                   customVariants={textVariants}
@@ -109,5 +105,3 @@ export function LocationsSection() {
     </Section>
   );
 }
-
-export default LocationsSection;

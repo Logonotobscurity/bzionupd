@@ -1,7 +1,7 @@
 
 'use client';
 import { useState, useEffect } from 'react';
-import { getAllProducts, getBrandStats, getCategoryStats, getBrands, getCategories } from '@/services/productService';
+import { getAllProducts, getBrandStats, getBrands, getCategories } from '@/services/productService';
 import { ProductCard } from '@/components/product-card';
 import { BrandCard } from '@/components/ui/brand-card';
 import { SimplifiedCategoryCard } from '@/components/ui/simplified-category-card'; // Import the new card
@@ -29,23 +29,20 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [brandStats, setBrandStats] = useState<any>({});
-  const [_categoryStats, setCategoryStats] = useState<any>({});
+  const [brandStats, setBrandStats] = useState<Record<string, { productCount: number; categoryCount: number }>>({});
   const [brands, setBrands] = useState<Brand[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const [products, brandStats, _categoryStats, brandData, categoryData] = await Promise.all([
+      const [products, brandStatsData, brandData, categoryData] = await Promise.all([
         getAllProducts(),
         getBrandStats(),
-        getCategoryStats(),
         getBrands(),
         getCategories(),
       ]);
       setAllProducts(products || []);
-      setBrandStats(brandStats || {});
-      setCategoryStats(_categoryStats || {});
+      setBrandStats(brandStatsData || {});
       setBrands(brandData || []);
       setCategories(categoryData || []);
     };
@@ -106,10 +103,10 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
               <SectionDescription>Browse our extensive catalog of quality products.</SectionDescription>
           </SectionHeading>
 
-          <div className="flex justify-center py-4">
-              <Button onClick={() => handleFilterClick('all')} variant={activeFilter === 'all' ? 'default' : 'outline'} className='mx-2'>All</Button>
-              <Button onClick={() => handleFilterClick('brand')} variant={activeFilter === 'brand' ? 'default' : 'outline'} className='mx-2'>Shop by Brand</Button>
-              <Button onClick={() => handleFilterClick('category')} variant={activeFilter === 'category' ? 'default' : 'outline'} className='mx-2'>Shop by Category</Button>
+          <div className="flex justify-center py-4 gap-2 flex-wrap">
+              <Button onClick={() => handleFilterClick('all')} variant={activeFilter === 'all' ? 'default' : 'outline'} size="sm" className="text-xs sm:text-sm">All</Button>
+              <Button onClick={() => handleFilterClick('brand')} variant={activeFilter === 'brand' ? 'default' : 'outline'} size="sm" className="text-xs sm:text-sm">Shop by Brand</Button>
+              <Button onClick={() => handleFilterClick('category')} variant={activeFilter === 'category' ? 'default' : 'outline'} size="sm" className="text-xs sm:text-sm">Shop by Category</Button>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-fluid-sm">
@@ -118,7 +115,7 @@ export default function ProductsView({ title = 'All Products' }: ProductsViewPro
               ))}
               {activeFilter === 'brand' && brands.map(brand => {
                   const stats = brandStats[brand.name] || { productCount: 0, categoryCount: 0 };
-                  return <BrandCard key={brand.id} brand={brand} productCount={stats.productCount} categoryCount={stats.categoryCount} />;
+                  return <BrandCard key={String(brand.id)} brand={brand as Brand} productCount={stats.productCount} categoryCount={stats.categoryCount} brandCount={stats.categoryCount} />;
               })}
               {activeFilter === 'category' && categories.map(category => (
                   <SimplifiedCategoryCard key={category.id} category={category} />

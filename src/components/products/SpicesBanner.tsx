@@ -1,21 +1,23 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 import { SectionTitle } from "@/components/ui/section";
 
 export const SpicesBanner = () => {
   return (
     <section className="bg-zinc-100">
       <div className="container-constrained grid grid-cols-1 md:grid-cols-2">
-        <div className="relative min-h-[300px] md:min-h-[500px]">
-          <Image
+        <div className="relative min-h-[300px] md:min-h-[500px] bg-gradient-to-br from-red-50 to-orange-100">
+          <img
             src="https://i.ibb.co/RNVf7X/banner-2.png"
             alt="A variety of colorful spices"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            data-ai-hint="colorful spices"
-            unoptimized
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = 'https://placehold.co/800x600/FEE2E2/991B1B?text=Spices+%26+Seasonings';
+            }}
           />
         </div>
         <div className="flex items-center justify-center p-8 md:p-12">

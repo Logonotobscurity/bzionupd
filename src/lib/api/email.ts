@@ -1,6 +1,6 @@
 import { ISendEmailOptions } from '@/lib/types/index';
 
-let Resend: any;
+let Resend: unknown;
 try {
   Resend = require('resend').Resend;
 } catch {
@@ -14,14 +14,16 @@ const getResendClient = () => {
   if (!process.env.RESEND_API_KEY) {
     throw new Error('RESEND_API_KEY not configured');
   }
-  return new Resend(process.env.RESEND_API_KEY);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ResendClass = Resend as unknown as new (key: string) => any;
+  return new ResendClass(process.env.RESEND_API_KEY);
 };
 
 export const sendEmail = async (options: ISendEmailOptions): Promise<void> => {
   try {
     const resend = getResendClient();
     
-    const { data, error } = await resend.emails.send({
+    const { error, data } = await resend.emails.send({
       from: options.from || process.env.EMAIL_FROM || 'BZION <onboarding@resend.dev>',
       to: options.to,
       subject: options.subject,

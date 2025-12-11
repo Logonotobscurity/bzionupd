@@ -33,22 +33,24 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function handleIncomingMessage(webhook: any) {
+async function handleIncomingMessage(webhook: Record<string, unknown>): Promise<void> {
   try {
     if (!process.env.DATABASE_URL) {
       console.log('Database not configured, skipping message storage');
       return;
     }
 
+    const payload = webhook.payload as Record<string, unknown> | undefined;
     await prisma.negotiationMessage.create({
       data: {
-        quoteId: webhook.payload?.quoteId || 'unknown',
+        quoteId: (payload?.quoteId as string) || 'unknown',
         direction: 'inbound',
         channel: 'whatsapp',
-        fromNumber: webhook.payload?.from || '',
-        body: webhook.payload?.body || '',
-        vendorMessageId: webhook.payload?.id,
-        metadata: webhook.payload || {},
+        fromNumber: (payload?.from as string) || '',
+        body: (payload?.body as string) || '',
+        vendorMessageId: payload?.id as string | undefined,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        metadata: (payload || {}) as any,
         status: 'received',
       },
     });

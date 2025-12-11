@@ -19,14 +19,15 @@ export const sanitizeHtml = (html: string): string => {
 /**
  * Sanitize object by sanitizing all string values
  */
-export const sanitizeObject = <T extends Record<string, any>>(obj: T): T => {
+export const sanitizeObject = <T extends Record<string, unknown>>(obj: T): T => {
   const sanitized = { ...obj };
   
   for (const key in sanitized) {
-    if (typeof sanitized[key] === 'string') {
-      sanitized[key] = sanitizeInput(sanitized[key]) as any;
-    } else if (typeof sanitized[key] === 'object' && sanitized[key] !== null) {
-      sanitized[key] = sanitizeObject(sanitized[key]);
+    const value = sanitized[key];
+    if (typeof value === 'string') {
+      sanitized[key] = sanitizeInput(value) as T[Extract<keyof T, string>];
+    } else if (typeof value === 'object' && value !== null) {
+      sanitized[key] = sanitizeObject(value as Record<string, unknown>) as T[Extract<keyof T, string>];
     }
   }
   

@@ -27,15 +27,16 @@ export const FmcgBanner = () => {
             </div>
           </div>
         </div>
-        <div className="relative min-h-[300px] md:min-h-[500px] order-1 md:order-2">
-            <Image
-              src="https://i.ibb.co/pdt2YJc/banner3.png"
-              alt="A variety of cooking oils"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              data-ai-hint="cooking oils"
-              unoptimized
+        <div className="relative min-h-[300px] md:min-h-[500px] order-1 md:order-2 bg-gradient-to-br from-amber-50 to-amber-100">
+          <img
+            src="https://i.ibb.co/pdt2YJc/banner3.png"
+            alt="A variety of cooking oils"
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = 'https://placehold.co/800x600/FEF3C7/92400E?text=Cooking+Oils';
+            }}
           />
         </div>
       </div>

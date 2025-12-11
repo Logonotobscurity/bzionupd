@@ -1,31 +1,21 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Section, SectionHeading, SectionPreamble, SectionTitle, SectionDescription } from '@/components/ui/section';
-import { getCategories, getCategoryStats } from '@/services/productService';
+import { getCategoryPageData, type EnrichedCategoryData } from '@/services/productService';
 import { CategoryCard } from '@/components/ui/category-card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { type Category } from '@/lib/schema';
-
-interface CategoryStats {
-    [key: string]: { productCount: number; brandCount: number };
-}
 
 export function ShopByCategorySection() {
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [categoryStats, setCategoryStats] = useState<CategoryStats>({});
+    const [categories, setCategories] = useState<EnrichedCategoryData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const [fetchedCategories, fetchedStats] = await Promise.all([
-                getCategories(),
-                getCategoryStats()
-            ]);
+            const fetchedCategories = await getCategoryPageData();
             setCategories(fetchedCategories || []);
-            setCategoryStats(fetchedStats || {});
             setIsLoading(false);
         };
         fetchData();
@@ -50,17 +40,17 @@ export function ShopByCategorySection() {
             </SectionHeading>
             <div className="mt-12">
                 <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4 overflow-hidden">
-                    {categories.slice(0, 6).map(category => {
-                        const stats = categoryStats[category.name] || { productCount: 0, brandCount: 0 };
-                        return (
-                            <CategoryCard 
-                                key={category.id} 
-                                category={category} 
-                                productCount={stats.productCount} 
-                                brandCount={stats.brandCount} 
-                            />
-                        );
-                    })}
+                    {categories.slice(0, 6).map((category: EnrichedCategoryData) => (
+                        <CategoryCard 
+                            key={category.id} 
+                            category={{
+                                ...category,
+                                productCount: category.productCount ?? 0,
+                                brands: category.brands ?? [],
+                                subCategories: category.subCategories ?? [],
+                            }}
+                        />
+                    ))}
                 </div>
             </div>
              <div className="mt-12 text-center">

@@ -62,7 +62,8 @@ const ContactForm = () => {
         }
     });
 
-    const onSubmit = (_data: ContactFormValues) => {
+    const onSubmit = (data: ContactFormValues) => {
+        console.log('Contact form submitted:', data);
         toast({
             title: "Message Sent!",
             description: "Thanks for reaching out. We'll get back to you shortly.",

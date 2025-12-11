@@ -12,7 +12,7 @@ const ValueProps = dynamic(() => import('@/components/value-props').then(mod => 
 const InfoBlocks = dynamic(() => import('@/components/info-blocks').then(mod => mod.default), {
   loading: () => <Skeleton className="h-[500px] w-full" />,
 });
-const LocationsSection = dynamic(() => import('@/components/locations-section').then(mod => mod.default), {
+const LocationsSection = dynamic(() => import('@/components/locations-section').then(mod => mod.LocationsSection), {
   loading: () => <Skeleton className="h-[400px] w-full" />,
 });
 const Testimonials = dynamic(() => import('@/components/testimonials').then(mod => mod.default), {

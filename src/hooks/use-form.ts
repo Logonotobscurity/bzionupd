@@ -17,7 +17,7 @@ export interface ValidationRules {
     maxLength?: { value: number; message: string };
     pattern?: { value: RegExp; message: string };
     validate?: (value: string | number | boolean) => boolean | string;
-    custom?: (value: any, allValues: FormValues) => boolean | string;
+    custom?: (value: unknown, allValues: FormValues) => boolean | string;
   };
 }
 
@@ -49,7 +49,7 @@ export function useForm<T extends FormValues>({
   onSubmit,
   validate,
   validationRules,
-  onError,
+  onError = undefined,
 }: UseFormOptions<T>) {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -63,7 +63,7 @@ export function useForm<T extends FormValues>({
    * Validate a single field with rules
    */
   const validateField = useCallback(
-    (fieldName: string, fieldValue: any, allValues: T): string => {
+    (fieldName: string, fieldValue: string | number | boolean | null | undefined, allValues: T): string => {
       const rules = validationRules?.[fieldName];
       if (!rules) return '';
 
@@ -76,7 +76,7 @@ export function useForm<T extends FormValues>({
       }
 
       // Email validation
-      if (rules.email && fieldValue) {
+      if (rules.email && fieldValue && typeof fieldValue === 'string') {
         if (!validateEmailUtil(fieldValue)) {
           return typeof rules.email === 'string' ? rules.email : 'Invalid email format';
         }
@@ -105,9 +105,11 @@ export function useForm<T extends FormValues>({
 
       // Custom validation function
       if (rules.validate) {
-        const result = rules.validate(fieldValue);
-        if (result !== true) {
-          return typeof result === 'string' ? result : `${fieldName} is invalid`;
+        if (typeof fieldValue === 'string' || typeof fieldValue === 'number' || typeof fieldValue === 'boolean') {
+            const result = rules.validate(fieldValue);
+            if (result !== true) {
+              return typeof result === 'string' ? result : `${fieldName} is invalid`;
+            }
         }
       }
 
@@ -270,6 +272,7 @@ export function useForm<T extends FormValues>({
   /**
    * Set field value programmatically
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setFieldValue = useCallback((name: string, value: any) => {
     setValues(prev => ({
       ...prev,

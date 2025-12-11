@@ -1,17 +1,11 @@
 import { ProductCard } from '@/components/product-card';
 import { type Product } from '@/lib/schema';
-import { type Brand } from '@/lib/schema';
-import { type Category } from '@/lib/schema';
 
 interface ProductGridProps {
   products: Product[];
-  viewType?: 'all' | 'brand' | 'category';
-  activeSlug?: string;
-  allBrands?: Brand[];
-  _allCategories?: Category[];
 }
 
-export const ProductGrid = ({ products, viewType = 'all', activeSlug, allBrands, allCategories }: ProductGridProps) => {
+export const ProductGrid = ({ products }: ProductGridProps) => {
   if (products.length === 0) {
     return <p className="text-center text-muted-foreground">No products found.</p>;
   }

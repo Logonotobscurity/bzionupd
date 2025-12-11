@@ -164,11 +164,13 @@ class PerformanceMonitor {
     jsHeapSizeLimit: number
     percentUsed: number
   } | null {
-    if (!(performance as any).memory) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const perfWithMemory = performance as unknown as { memory?: any };
+    if (!perfWithMemory.memory) {
       return null
     }
 
-    const memory = (performance as any).memory
+    const memory = perfWithMemory.memory
     const percentUsed = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100
 
     const metric: PerformanceMetric = {
@@ -210,7 +212,7 @@ class PerformanceMonitor {
       })
 
       observer.observe({ entryTypes: ['longtask'] })
-    } catch (_e) {
+    } catch {
       // Long task observer not supported
     }
   }
@@ -224,7 +226,7 @@ class PerformanceMonitor {
     averageLoadTime: number
     slowestResources: Array<{ name: string; duration: number; size: number }>
   } {
-    const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[]
+    const resources = performance.getEntriesByType('resource') as unknown as PerformanceResourceTiming[]
 
     const totalSize = resources.reduce((sum, r) => sum + (r.transferSize || 0), 0)
     const totalDuration = resources.reduce((sum, r) => sum + r.duration, 0)
@@ -290,7 +292,7 @@ class PerformanceMonitor {
         }),
         keepalive: true,
       })
-    } catch (_e) {
+    } catch {
       // Silently fail
     }
   }

@@ -3,16 +3,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { EnrichedCategoryData } from '@/services/productService';
-import { formatPrice } from '@/lib/utils/formatters';
-import { Package, ShoppingCart, Star } from 'lucide-react';
+import { Package } from 'lucide-react';
 
 interface CategoryCardProps {
   category: EnrichedCategoryData;
 }
 
-const CategoryStat = ({ value, label }: { value: string | number, label: string }) => (
+const CategoryStat = ({ value, label }: { value: string | number; label: string }) => (
     <div className="text-center">
         <p className="font-bold text-sm sm:text-base text-slate-800">{value}</p>
         <p className="text-xs text-slate-500">{label}</p>

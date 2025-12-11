@@ -37,6 +37,9 @@ export const QuoteDrawer = () => {
               <div className="text-center py-10">
                 <Package className="mx-auto h-12 w-12 text-gray-400" />
                 <p className="mt-4 text-sm text-gray-500">Your quote request is empty.</p>
+                <Button variant="outline" className="mt-4" onClick={() => setOpen(false)}>
+                  Close
+                </Button>
               </div>
             ) : (
               <ul className="divide-y divide-gray-200">

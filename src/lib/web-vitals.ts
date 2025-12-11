@@ -50,7 +50,8 @@ class WebVitalsTracker {
     value: number
   ): 'good' | 'needs-improvement' | 'poor' {
     // Based on Google's Web Vitals thresholds
-    const thresholds: { [key: string]: { good: number; needsImprovement: number } } = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const thresholds: any = {
       LCP: { good: 2500, needsImprovement: 4000 }, // Largest Contentful Paint
       FID: { good: 100, needsImprovement: 300 }, // First Input Delay
       CLS: { good: 0.1, needsImprovement: 0.25 }, // Cumulative Layout Shift
@@ -126,7 +127,6 @@ class WebVitalsTracker {
     if (!('PerformanceObserver' in window)) return
 
     let lastEntryTime = 0
-    let _sessionEntryTime = 0
     let sessionValue = 0
 
     const observer = new PerformanceObserver((list) => {
@@ -135,7 +135,6 @@ class WebVitalsTracker {
 
       sessionValue = lastEntry.startTime
       lastEntryTime = sessionValue
-      _sessionEntryTime = sessionValue
 
       // Ignore entries that start after user interaction
       if (lastEntry.startTime < this.getFirstInputOrPointerDown()) {
@@ -157,7 +156,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ entryTypes: ['largest-contentful-paint'] })
-    } catch (_e) {
+    } catch {
       // Observer not supported
     }
   }
@@ -192,7 +191,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ entryTypes: ['first-input'] })
-    } catch (_e) {
+    } catch {
       // Observer not supported
     }
   }
@@ -208,6 +207,7 @@ class WebVitalsTracker {
 
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const layoutShiftEntry = entry as any
         if (!layoutShiftEntry.hadRecentInput) {
           clsValue += layoutShiftEntry.value
@@ -230,7 +230,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ type: 'layout-shift', buffered: true })
-    } catch (_e) {
+    } catch {
       // Observer not supported
     }
   }
@@ -284,7 +284,7 @@ class WebVitalsTracker {
 
     try {
       observer.observe({ entryTypes: ['paint'] })
-    } catch (_e) {
+    } catch {
       // Observer not supported
     }
   }
@@ -326,7 +326,7 @@ class WebVitalsTracker {
           return firstEntry.startTime
         })
         observer.observe({ entryTypes: ['first-input', 'pointerdown'], buffered: true })
-      } catch (_e) {
+      } catch {
         return Infinity
       }
     }
@@ -338,8 +338,9 @@ class WebVitalsTracker {
    */
   private getNavigationType(): string {
     if ('navigation' in performance) {
-      const navigation = performance.getEntriesByType('navigation')[0] as any
-      return navigation?.type || 'navigate'
+      const navigation = performance.getEntriesByType('navigation')[0] as unknown as PerformanceNavigationTiming
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (navigation as any)?.type || 'navigate'
     }
     return 'navigate'
   }

@@ -299,56 +299,59 @@ export default function AccountPage() {
             <div className="relative p-6 overflow-y-auto max-h-[500px]">
               {userActivities.length > 0 ? (
                 <div className="space-y-3">
-                  {userActivities.map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="group/item p-4 rounded-lg bg-primary/5 border border-primary/10 hover:border-secondary/30 hover:bg-secondary/5 transition-all duration-200"
-                    >
-                      <div className="flex gap-3 sm:gap-4">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-secondary to-secondary/70 flex items-center justify-center text-primary/80 group-hover/item:text-primary transition-colors">
-                          {activity.type === 'quote_request' && <FileText className="w-5 h-5" />}
-                          {activity.type === 'product_view' && <Eye className="w-5 h-5" />}
-                          {activity.type === 'search' && <Search className="w-5 h-5" />}
-                          {activity.type === 'purchase' && <ShoppingCart className="w-5 h-5" />}
-                          {activity.type === 'profile_update' && <Edit2 className="w-5 h-5" />}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mb-2">
-                            <h4 className="font-semibold text-sm text-primary">
-                              {activity.title}
-                            </h4>
-                            <span className="text-xs text-primary/50 whitespace-nowrap">
-                              {formatDistanceToNow(new Date(activity.timestamp), {
-                                addSuffix: true,
-                              })}
-                            </span>
+                  {userActivities.map((activity) => {
+                    const details = activity.details as Record<string, unknown> | undefined;
+                    return (
+                      <div
+                        key={activity.id}
+                        className="group/item p-4 rounded-lg bg-primary/5 border border-primary/10 hover:border-secondary/30 hover:bg-secondary/5 transition-all duration-200"
+                      >
+                        <div className="flex gap-3 sm:gap-4">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-secondary to-secondary/70 flex items-center justify-center text-primary/80 group-hover/item:text-primary transition-colors">
+                            {activity.type === 'quote_request' && <FileText className="w-5 h-5" />}
+                            {activity.type === 'product_view' && <Eye className="w-5 h-5" />}
+                            {activity.type === 'search' && <Search className="w-5 h-5" />}
+                            {activity.type === 'purchase' && <ShoppingCart className="w-5 h-5" />}
+                            {activity.type === 'profile_update' && <Edit2 className="w-5 h-5" />}
                           </div>
-                          <p className="text-xs text-primary/60">
-                            {activity.description}
-                          </p>
-                          {activity.details && (
-                            <div className="mt-2 pt-2 border-t border-primary/10 text-xs text-primary/50 space-x-3 flex flex-wrap">
-                              {activity.details.items && (
-                                <span>
-                                  Items: <span className="text-primary/80 font-medium">{activity.details.items}</span>
-                                </span>
-                              )}
-                              {activity.details.value && (
-                                <span>
-                                  Value: <span className="text-primary/80 font-medium">{activity.details.value}</span>
-                                </span>
-                              )}
-                              {activity.details.results && (
-                                <span>
-                                  Results: <span className="text-primary/80 font-medium">{activity.details.results}</span>
-                                </span>
-                              )}
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mb-2">
+                              <h4 className="font-semibold text-sm text-primary">
+                                {activity.title}
+                              </h4>
+                              <span className="text-xs text-primary/50 whitespace-nowrap">
+                                {formatDistanceToNow(new Date(activity.timestamp), {
+                                  addSuffix: true,
+                                })}
+                              </span>
                             </div>
-                          )}
+                            <p className="text-xs text-primary/60">
+                              {activity.description}
+                            </p>
+                            {details && (
+                              <div className="mt-2 pt-2 border-t border-primary/10 text-xs text-primary/50 space-x-3 flex flex-wrap">
+                                {details.items !== undefined && (
+                                  <span>
+                                    Items: <span className="text-primary/80 font-medium">{String(details.items)}</span>
+                                  </span>
+                                )}
+                                {details.value !== undefined && (
+                                  <span>
+                                    Value: <span className="text-primary/80 font-medium">{String(details.value)}</span>
+                                  </span>
+                                )}
+                                {details.results !== undefined && (
+                                  <span>
+                                    Results: <span className="text-primary/80 font-medium">{String(details.results)}</span>
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-12">
@@ -362,7 +365,7 @@ export default function AccountPage() {
             </div>
           </div>
         </div>
-        </Section>
-      </>
-    );
-  }
+      </Section>
+    </>
+  );
+}

@@ -41,25 +41,25 @@ const AboutContent = () => {
             <div className="flex justify-center">
                  <div className="relative w-full max-w-sm aspect-[3/4] overflow-hidden shadow-lg border border-secondary rounded-lg">
                     <Image 
-                        src={storyImage.imageUrl} 
-                        alt={storyImage.description}
+                        src={storyImage?.imageUrl ?? ''} 
+                        alt={storyImage?.description || 'Story image'}
                         fill
                         className="w-full h-full object-cover"
                         sizes="(max-width: 768px) 100vw, 33vw"
-                        data-ai-hint={storyImage.imageHint}
+                        data-ai-hint={storyImage?.imageHint}
                         unoptimized
                     />
                 </div>
             </div>
             <div className="text-center md:text-left space-y-6">
                 <SectionDescription className="!text-left !mx-0 !max-w-full">
-                    Founded in 2002 by Bukola Atinsola, <span className="font-bold text-primary">BZION</span> began with a single, powerful mission: to ensure no Nigerian business ever faces a stock-out of essential goods. 
+                    Founded in 2002 by Bukola Atinsola, <span className="font-bold text-primary">BZION</span> began with a single, powerful mission: to ensure no Nigerian business ever faces a stock-out of essential goods.
                 </SectionDescription>
                  <SectionDescription className="!text-left !mx-0 !max-w-full">
-                    From this vision, we have grown into a leading B2B distribution partner with three strategic branches across Ogun State, serving a diverse network of retailers, institutions, and wholesalers throughout South-West Nigeria.
+                    {`From this vision, we have grown into a leading B2B distribution partner with three strategic branches across Ogun State, serving a diverse network of retailers, institutions, and wholesalers throughout South-West Nigeria.`}
                 </SectionDescription>
                  <SectionDescription className="!text-left !mx-0 !max-w-full">
-                    We specialize in creating a direct, transparent bridge between Nigeria's most <Link href="/companies/" className="text-primary hover:underline font-semibold">reputable manufacturers</Link> and local businesses. Our 24-hour delivery promise is not just a service—it's our commitment to ensuring your business never has to tell a customer, "We don't have it."
+                    {`We specialize in creating a direct, transparent bridge between Nigeria's most `}<Link href="/companies/" className="text-primary hover:underline font-semibold">reputable manufacturers</Link>{` and local businesses. Our 24-hour delivery promise is not just a service—it's our commitment to ensuring your business never has to tell a customer, "We don't have it."`}
                 </SectionDescription>
                  <div className="pt-2">
                   <Button asChild size="lg">
@@ -128,12 +128,12 @@ const AboutContent = () => {
             <div className="flex justify-center">
                 <div className="relative w-full max-w-sm aspect-[3/4] overflow-hidden shadow-lg border border-secondary rounded-lg">
                     <Image
-                      src={founderImage.imageUrl}
-                      alt={founderImage.description}
+                      src={founderImage?.imageUrl ?? ''}
+                      alt={founderImage?.description || 'Founder image'}
                       fill
                       className="object-cover object-top"
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      data-ai-hint={founderImage.imageHint}
+                      data-ai-hint={founderImage?.imageHint}
                       unoptimized
                     />
                 </div>
@@ -143,7 +143,7 @@ const AboutContent = () => {
               <p className="text-secondary font-medium text-xl mt-1">Founder & CEO</p>
               <blockquote className="mt-6">
                   <p className="text-slate-600 text-lg lg:text-xl max-w-prose mx-auto md:mx-0">
-                    "We didn't just build a business; we built a promise. A promise that no retailer will have to turn a customer away because of a broken supply chain. That's the <span className="font-bold text-primary">BZION</span> guarantee."
+                    {`"We didn't just build a business; we built a promise. A promise that no retailer will have to turn a customer away because of a broken supply chain. That's the `}<span className="font-bold text-primary">BZION</span>{` guarantee."`}
                   </p>
               </blockquote>
             </div>

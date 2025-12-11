@@ -1,8 +1,9 @@
 import { prisma } from '@/lib/db';
+import { Prisma } from '@prisma/client';
 
 export const productRepo = {
   async getAll(options: { brandSlug?: string; categorySlug?: string } = {}) {
-    const where: any = {}; // Prisma.ProductWhereInput
+    const where: Prisma.ProductWhereInput = {};
     if (options.brandSlug) {
       where.brand = { slug: options.brandSlug };
     }
@@ -17,7 +18,7 @@ export const productRepo = {
         images: true,
         categories: { include: { category: true } },
       },
-    });
+    }) as Awaited<ReturnType<typeof prisma.product.findMany>>;
   },
 
   async getBySlug(slug: string) {
