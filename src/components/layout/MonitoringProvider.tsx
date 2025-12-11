@@ -9,11 +9,7 @@ import { useMonitoring } from "@/hooks/use-monitoring";
  */
 export function MonitoringProvider() {
   // Initialize all monitoring services
-  useMonitoring({
-    enableWebVitals: true,
-    enableErrorLogging: true,
-    enablePerformanceMonitoring: true,
-  })
+  useMonitoring()
 
   return null
 }
