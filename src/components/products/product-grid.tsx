@@ -11,7 +11,7 @@ interface ProductGridProps {
   _allCategories?: Category[];
 }
 
-export const ProductGrid = ({ products, viewType = 'all', _activeSlug, _allBrands, _allCategories }: ProductGridProps) => {
+export const ProductGrid = ({ products, _viewType = 'all', _activeSlug, _allBrands, _allCategories }: ProductGridProps) => {
   if (products.length === 0) {
     return <p className="text-center text-muted-foreground">No products found.</p>;
   }
