@@ -2,7 +2,7 @@
 "use client";
 import { Button } from '@/components/ui/button';
 import { Truck, Handshake, Scaling, ShoppingCart } from 'lucide-react';
-import Link from 'next/link';
+
 import { Section, SectionTitle, SectionHeading, SectionDescription } from '@/components/ui/section';
 import { Warehouse } from 'lucide-react';
 import { AnimatedDiv } from '@/components/animated-div';

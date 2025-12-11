@@ -22,8 +22,8 @@ interface QuoteRequestMessage {
  * Use this to create a link that opens WhatsApp with pre-filled message
  */
 export function generateQuoteRequestWhatsAppURL(
-  _data: QuoteRequestMessage,
-  _businessPhone: string = process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_PHONE || ''
+  data: QuoteRequestMessage,
+  businessPhone: string = process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_PHONE || ''
 ): string {
   // Format product list
   const productList = data.items
@@ -54,7 +54,7 @@ Please respond to this customer within 24 hours.
   const encodedMessage = encodeURIComponent(message);
 
   // Remove non-digits from phone number
-  const cleanPhone = _businessPhone.replace(/\D/g, '');
+  const cleanPhone = businessPhone.replace(/\D/g, '');
 
   // Return WhatsApp URL
   return `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
@@ -101,8 +101,8 @@ export function openWhatsAppChat(url: string): void {
  * @returns WhatsApp URL for opening chat
  */
 export async function sendQuoteRequestToWhatsApp(
-  _data: QuoteRequestMessage,
-  _businessPhone?: string
+  data: QuoteRequestMessage,
+  businessPhone?: string
 ): Promise<{ success: boolean; whatsappUrl?: string; error?: string }> {
   try {
     // Use the specific BZION WhatsApp Business URL
