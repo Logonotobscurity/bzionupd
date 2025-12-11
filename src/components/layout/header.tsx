@@ -207,15 +207,15 @@ export function Header() {
                               </DropdownMenuSub>
                             ))}
                           </>
-                        ) : (
-                          link.dropdown?.map((item) => (
+                        ) : link.dropdown ? (
+                          link.dropdown.map((item) => (
                             <DropdownMenuItem key={item.title} asChild>
                               <button onClick={() => scrollToSection(item.href)} className="w-full text-left text-sm font-medium">
                                 {item.title}
                               </button>
                             </DropdownMenuItem>
                           ))
-                        )}
+                        ) : null}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   ) : (
@@ -295,13 +295,13 @@ export function Header() {
                                   </div>
                                 ))}
                               </>
-                            ) : (
-                              link.dropdown?.map((item) => (
+                            ) : link.dropdown ? (
+                              link.dropdown.map((item) => (
                                 <button key={item.title} onClick={() => { scrollToSection(item.href); toggleMenu(); }} className="w-full px-4 py-2.5 text-sm text-muted-foreground hover:bg-slate-200 hover:text-foreground transition-colors flex items-center text-left">
                                   {item.title}
                                 </button>
                               ))
-                            )}
+                            ) : null}
                           </div>
                         )}
                       </div>
