@@ -3,7 +3,6 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 import { SectionTitle } from "@/components/ui/section";
 
 export const FmcgBanner = () => {

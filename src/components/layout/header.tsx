@@ -172,7 +172,7 @@ export function Header() {
         <div className="w-full px-fluid py-nav-padding-block flex items-center justify-between gap-fluid-md">
           <div className="flex items-center gap-fluid-sm min-w-0">
             <Logo className="w-28 sm:w-32 md:w-36 lg:w-40 flex-shrink-0" />
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-1" aria-label="Desktop">
               {navLinks.map((link) => (
                 <React.Fragment key={link.label}>
                   {link.dropdown || link.subMenus ? (

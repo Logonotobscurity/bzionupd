@@ -3,12 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 
-interface Brand {
-  id: string | number;
-  name: string;
-  slug: string;
-  imageUrl?: string;
-}
+import { Brand } from '@/lib/schema';
 
 interface BrandCardProps {
   brand: Brand;

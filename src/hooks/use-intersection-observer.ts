@@ -10,7 +10,7 @@ export interface UseIntersectionObserverOptions {
 }
 
 export interface UseIntersectionObserverReturn {
-  ref: RefObject<HTMLDivElement>
+  ref: RefObject<HTMLDivElement | null>
   isVisible: boolean
   isIntersecting: boolean
   entry?: IntersectionObserverEntry

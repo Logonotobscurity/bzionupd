@@ -10,6 +10,8 @@ describe('Logo', () => {
 
     const image = screen.getByRole('img');
     expect(image).toHaveAttribute('alt', 'Bzion Hub Logo');
-    expect(image).toHaveAttribute('src', '/logo.svg');
+    expect(image.getAttribute('src')).toMatch(
+      /_next\/image\?url=https%3A%2F%2Fi\.ibb\.co%2F1tfpsbFT%2Flogo-2\.png/
+    );
   });
 });
