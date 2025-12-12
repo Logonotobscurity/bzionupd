@@ -14,6 +14,7 @@ The following is a summary of the major changes made during the audit:
 *   **Corrected Project Configuration:** Updated the `tsconfig.json` file to correctly resolve modules without altering the standard project layout.
 *   **Improved Test Robustness:** Updated the `Logo.test.tsx` file to check if the `src` attribute *contains* the base image path, making the test less brittle.
 *   **Removed Unused Dependencies:** Removed the `@react-email/components` and `@auth/core` packages, as they were leftovers from a previous attempt and were no longer needed.
+*   **Fixed NextAuth.js Route Handler:** Updated the NextAuth.js route handler to correctly export the `GET` and `POST` handlers, which resolved a build error on Netlify.
 
 ## Detailed Findings and Resolutions
 
@@ -21,6 +22,9 @@ The following is a summary of the major changes made during the audit:
 
 *   **Issue:** The build was failing with a `TypeError: Cannot read properties of undefined (reading 'custom')` error.
 *   **Resolution:** This error was caused by a misconfiguration in the NextAuth.js setup. The issue was resolved by reverting the `next-auth` package to its original version and correcting the import and usage of the `motion` component from Framer Motion.
+
+*   **Issue:** The build was failing on Netlify with a `TypeError: Cannot destructure property 'GET' of 'i.handlers' as it is undefined` error.
+*   **Resolution:** This error was caused by an incorrect NextAuth.js route handler configuration. The issue was resolved by updating the `src/app/api/auth/[...nextauth]/route.ts` file to correctly export the `GET` and `POST` handlers.
 
 ### Type Errors
 
